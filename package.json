@@ -1,7 +1,6 @@
 {
   "name": "sinwan-ui-registry",
   "version": "1.0.0",
-  "private": true,
   "description": "Source of the sinwan-ui component registry: components copied into apps by the sinwan-ui CLI.",
   "author": "Mohammed Ben Cheikh",
   "license": "MIT",
