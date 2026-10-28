@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "kbd",
+  "type": "registry:ui",
+  "title": "Kbd",
+  "description": "Keyboard key and shortcut display.",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "kbd.tsx",
+      "type": "registry:ui",
+      "content": "import { cn } from \"@/lib/utils\";\n\nfunction Kbd({ class: className, ...props }: JSX.IntrinsicElements[\"kbd\"]) {\n  return (\n    <kbd\n      data-slot=\"kbd\"\n      class={cn(\n        \"pointer-events-none inline-flex h-5 w-fit min-w-5 items-center justify-center gap-1 rounded-sm bg-muted px-1 font-sans text-xs font-medium text-muted-foreground select-none in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 [&_svg:not([class*='size-'])]:size-3\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction KbdGroup({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"kbd\"]) {\n  return (\n    <kbd\n      data-slot=\"kbd-group\"\n      class={cn(\"inline-flex items-center gap-1\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Kbd, KbdGroup };\n"
+    }
+  ]
+}

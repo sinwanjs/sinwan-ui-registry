@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "tooltip",
+  "type": "registry:ui",
+  "title": "Tooltip",
+  "description": "Popup with information shown on hover or focus.",
+  "dependencies": [
+    "sinwan-ui-core@^1.0.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "tooltip.tsx",
+      "type": "registry:ui",
+      "content": "import type { SinwanNode } from \"sinwan/component\";\n\nimport { cn } from \"@/lib/utils\";\nimport {\n  TooltipContent as TooltipContentPrimitive,\n  TooltipProvider as TooltipProviderPrimitive,\n  TooltipRoot,\n  TooltipTrigger as TooltipTriggerPrimitive,\n} from \"sinwan-ui-core/overlay\";\nimport type { Placement } from \"sinwan-ui-core/floating\";\n\ntype TooltipProviderProps = {\n  children?: SinwanNode;\n  delayDuration?: number;\n};\n\nfunction TooltipProvider(props: TooltipProviderProps) {\n  return <TooltipProviderPrimitive {...props} />;\n}\n\ntype TooltipProps = {\n  children?: SinwanNode;\n  open?: boolean;\n  defaultOpen?: boolean;\n  onOpenChange?: (open: boolean) => void;\n};\n\nfunction Tooltip(props: TooltipProps) {\n  return <TooltipRoot {...props} />;\n}\n\ntype TooltipTriggerProps = {\n  children?: SinwanNode;\n  class?: string;\n  asChild?: boolean;\n};\n\nfunction TooltipTrigger(props: TooltipTriggerProps) {\n  return <TooltipTriggerPrimitive {...props} />;\n}\n\ntype TooltipContentProps = {\n  children?: SinwanNode;\n  class?: string;\n  side?: Placement;\n  sideOffset?: number;\n};\n\nfunction TooltipContent({\n  class: className,\n  side = \"top\",\n  sideOffset = 8,\n  children,\n}: TooltipContentProps) {\n  return (\n    <TooltipContentPrimitive\n      side={side}\n      sideOffset={sideOffset}\n      class={cn(\n        \"pointer-events-none relative z-50 inline-flex w-fit max-w-xs items-center rounded-md bg-primary px-3 py-1.5 text-xs text-background has-data-[slot=kbd]:pr-1.5 duration-200 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:!fill-mode-forwards\",\n        className,\n      )}\n    >\n      {children}\n      <span\n        data-slot=\"tooltip-arrow\"\n        class=\"pointer-events-none absolute z-50 size-2.5 rotate-45 rounded-[2px] bg-primary fill-primary in-data-[side=bottom]:top-[-5px] in-data-[side=bottom]:left-1/2 in-data-[side=bottom]:-translate-x-1/2 in-data-[side=top]:bottom-[-5px] in-data-[side=top]:left-1/2 in-data-[side=top]:-translate-x-1/2 in-data-[side=left]:right-[-5px] in-data-[side=left]:top-1/2 in-data-[side=left]:-translate-y-1/2 in-data-[side=right]:left-[-5px] in-data-[side=right]:top-1/2 in-data-[side=right]:-translate-y-1/2\"\n      />\n    </TooltipContentPrimitive>\n  );\n}\n\nexport { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };\n"
+    }
+  ]
+}

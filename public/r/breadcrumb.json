@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "breadcrumb",
+  "type": "registry:ui",
+  "title": "Breadcrumb",
+  "description": "Navigation trail showing the current page within a hierarchy.",
+  "dependencies": [
+    "lucide@^0.544.0",
+    "sinwan-ui-core@^1.0.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "icons",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "breadcrumb.tsx",
+      "type": "registry:ui",
+      "content": "import { ChevronRight, MoreHorizontal } from \"lucide\";\nimport type { SinwanNode } from \"sinwan/component\";\n\nimport { Icon } from \"@/lib/icons\";\nimport { Slot } from \"sinwan-ui-core/slot\";\nimport { cn } from \"@/lib/utils\";\n\nfunction Breadcrumb({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"nav\"]) {\n  return (\n    <nav\n      aria-label=\"breadcrumb\"\n      data-slot=\"breadcrumb\"\n      class={cn(className)}\n      {...props}\n    />\n  );\n}\n\nfunction BreadcrumbList({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"ol\"]) {\n  return (\n    <ol\n      data-slot=\"breadcrumb-list\"\n      class={cn(\n        \"flex flex-wrap items-center gap-1.5 text-sm wrap-break-word text-muted-foreground\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction BreadcrumbItem({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"li\"]) {\n  return (\n    <li\n      data-slot=\"breadcrumb-item\"\n      class={cn(\"inline-flex items-center gap-1\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction BreadcrumbLink({\n  asChild = false,\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"a\"] & {\n  asChild?: boolean;\n}) {\n  const shared = {\n    \"data-slot\": \"breadcrumb-link\",\n    class: cn(\"transition-colors hover:text-foreground\", className),\n    ...props,\n  };\n\n  if (asChild) {\n    return <Slot {...shared} />;\n  }\n\n  return <a {...shared} />;\n}\n\nfunction BreadcrumbPage({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"span\"]) {\n  return (\n    <span\n      data-slot=\"breadcrumb-page\"\n      role=\"link\"\n      aria-disabled=\"true\"\n      aria-current=\"page\"\n      class={cn(\"font-normal text-foreground\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction BreadcrumbSeparator({\n  children,\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"li\"] & { children?: SinwanNode }) {\n  return (\n    <li\n      data-slot=\"breadcrumb-separator\"\n      role=\"presentation\"\n      aria-hidden=\"true\"\n      class={cn(\"[&>svg]:size-3.5\", className)}\n      {...props}\n    >\n      {children ?? <Icon icon={ChevronRight} />}\n    </li>\n  );\n}\n\nfunction BreadcrumbEllipsis({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"span\"]) {\n  return (\n    <span\n      data-slot=\"breadcrumb-ellipsis\"\n      role=\"presentation\"\n      aria-hidden=\"true\"\n      class={cn(\n        \"flex size-5 items-center justify-center [&>svg]:size-4\",\n        className,\n      )}\n      {...props}\n    >\n      <Icon icon={MoreHorizontal} />\n      <span class=\"sr-only\">More</span>\n    </span>\n  );\n}\n\nexport {\n  Breadcrumb,\n  BreadcrumbEllipsis,\n  BreadcrumbItem,\n  BreadcrumbLink,\n  BreadcrumbList,\n  BreadcrumbPage,\n  BreadcrumbSeparator,\n};\n"
+    }
+  ]
+}

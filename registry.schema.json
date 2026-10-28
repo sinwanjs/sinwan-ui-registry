@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry.schema.json",
+  "title": "sinwan-ui registry manifest",
+  "description": "Shape of `registry.json`, the authored input of `sinwan-ui build`. Mirrors `parseRegistryManifest` in `sinwan-ui/src/build/manifest.ts`. File contents, npm ranges and import-detected dependencies are filled in by the build.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "description": "Registry name, written to `index.json`.",
+      "type": "string",
+      "minLength": 1
+    },
+    "homepage": {
+      "type": "string"
+    },
+    "aliasRoots": {
+      "description": "Manifest-relative directory behind each canonical alias. The build rewrites relative imports between these roots to `@/components`, `@/components/ui`, `@/lib` and `@/hooks`.",
+      "type": "object",
+      "properties": {
+        "components": { "$ref": "#/$defs/relativePath" },
+        "ui": { "$ref": "#/$defs/relativePath" },
+        "lib": { "$ref": "#/$defs/relativePath" },
+        "hooks": { "$ref": "#/$defs/relativePath" }
+      },
+      "required": ["components", "ui", "lib", "hooks"]
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    }
+  },
+  "required": ["name", "aliasRoots", "items"],
+  "$defs": {
+    "registryItemType": {
+      "enum": [
+        "registry:ui",
+        "registry:lib",
+        "registry:hook",
+        "registry:style",
+        "registry:block",
+        "registry:file"
+      ]
+    },
+    "relativePath": {
+      "description": "Non-empty path inside the registry directory: no leading `/`, no leading `..`, no backslashes.",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!\\.\\.(?:/|$))[^\\\\]+$"
+    },
+    "stringList": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "file": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "Source file, relative to the manifest directory, e.g. `src/components/ui/button.tsx`.",
+          "$ref": "#/$defs/relativePath"
+        },
+        "type": { "$ref": "#/$defs/registryItemType" },
+        "target": {
+          "description": "Explicit project-relative destination. Required for `registry:file`.",
+          "type": "string"
+        }
+      },
+      "required": ["path", "type"],
+      "if": {
+        "properties": { "type": { "const": "registry:file" } }
+      },
+      "then": {
+        "required": ["target"]
+      }
+    },
+    "item": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Item name; also the output file name `public/r/<name>.json`.",
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "type": { "$ref": "#/$defs/registryItemType" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/file" }
+        },
+        "dependencies": {
+          "description": "npm packages declared in addition to the ones detected from imports.",
+          "$ref": "#/$defs/stringList"
+        },
+        "devDependencies": { "$ref": "#/$defs/stringList" },
+        "registryDependencies": {
+          "description": "Items declared in addition to the ones detected from imports.",
+          "$ref": "#/$defs/stringList"
+        },
+        "cssVars": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
+        },
+        "docs": { "type": "string" }
+      },
+      "required": ["name", "type", "description", "files"]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "skeleton",
+  "type": "registry:ui",
+  "title": "Skeleton",
+  "description": "Loading placeholder that mimics content layout.",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "skeleton.tsx",
+      "type": "registry:ui",
+      "content": "import { cn } from \"@/lib/utils\";\n\nfunction Skeleton({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      class={cn(\"animate-pulse rounded-md bg-muted\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Skeleton };\n"
+    }
+  ]
+}

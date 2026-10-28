@@ -1,0 +1,652 @@
+{
+  "name": "sinwan-ui",
+  "homepage": "https://sinwanjs.com",
+  "version": "1.0.0",
+  "items": [
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "Vertically stacked headings that expand and collapse their sections.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Callout for important messages, with title and description slots.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert Dialog",
+      "description": "Modal dialog that interrupts the user and expects a confirmation.",
+      "registryDependencies": [
+        "button",
+        "utils"
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "registry:ui",
+      "title": "Aspect Ratio",
+      "description": "Container that keeps its content at a fixed width-to-height ratio.",
+      "registryDependencies": []
+    },
+    {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "Attachment",
+      "description": "File attachment preview with name, size and actions.",
+      "registryDependencies": [
+        "button",
+        "utils"
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "User image with a fallback shown while loading or on error.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Small status or label pill with variants.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Navigation trail showing the current page within a hierarchy.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "bubble",
+      "type": "registry:ui",
+      "title": "Bubble",
+      "description": "Chat bubble with content, grouping and reactions.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Button with variants, sizes and a loading state.",
+      "registryDependencies": [
+        "spinner",
+        "utils"
+      ]
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button Group",
+      "description": "Groups related buttons into a single segmented control.",
+      "registryDependencies": [
+        "separator",
+        "utils"
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "Date picker calendar with single, multiple and range selection.",
+      "registryDependencies": [
+        "button",
+        "icons",
+        "native-select",
+        "utils"
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Surface with header, content and footer sections.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "Carousel",
+      "description": "Slide carousel with previous/next controls and swipe support.",
+      "registryDependencies": [
+        "button",
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "ECharts wrapper with theming, toolbox and 3D (echarts-gl) support.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Accessible checkbox with checked and indeterminate states.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "Panel that shows and hides its content with an animation.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Searchable select with a filterable list of options.",
+      "registryDependencies": [
+        "button",
+        "icons",
+        "input-group",
+        "utils"
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "Command palette with search, groups and keyboard navigation.",
+      "registryDependencies": [
+        "dialog",
+        "icons",
+        "input-group",
+        "utils"
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "Right-click menu with items, checkboxes, radios and submenus.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "TanStack Table powered data table with sorting, filtering and pagination.",
+      "registryDependencies": [
+        "button",
+        "checkbox",
+        "dropdown-menu",
+        "icons",
+        "input",
+        "label",
+        "native-select",
+        "table",
+        "utils"
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Modal window rendered in a portal with focus management.",
+      "registryDependencies": [
+        "button",
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "direction",
+      "type": "registry:ui",
+      "title": "Direction",
+      "description": "Re-exports the direction provider for component-level imports.",
+      "registryDependencies": []
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "Drawer",
+      "description": "Panel that slides in from an edge of the screen.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "Menu opened from a trigger, with checkboxes, radios and submenus.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "Empty",
+      "description": "Empty-state placeholder with icon, title, description and actions.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Form field layout with label, description and error message.",
+      "registryDependencies": [
+        "label",
+        "separator",
+        "utils"
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover Card",
+      "description": "Floating card shown while hovering a trigger.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "icons",
+      "type": "registry:lib",
+      "title": "Icons",
+      "description": "Lucide icon component shared by sinwan-ui components.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Text input styled for sinwan-ui forms.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "Input with leading or trailing addons, buttons and text.",
+      "registryDependencies": [
+        "button",
+        "input",
+        "textarea",
+        "utils"
+      ]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input OTP",
+      "description": "One-time password input split into individual slots.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "List item layout with media, content and actions.",
+      "registryDependencies": [
+        "separator",
+        "utils"
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "Keyboard key and shortcut display.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "Accessible label for form controls.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "Marker",
+      "description": "Inline marker with icon and content for highlights and annotations.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "Menubar",
+      "description": "Desktop-style menu bar with menus, checkboxes, radios and submenus.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "Chat message layout with avatar, header and content.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "title": "Message Scroller",
+      "description": "Scrollable message list that sticks to the bottom with jump buttons.",
+      "registryDependencies": [
+        "button",
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "native-select",
+      "type": "registry:ui",
+      "title": "Native Select",
+      "description": "Styled native select element.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation Menu",
+      "description": "Site navigation with hover or click panels.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Page navigation with previous, next and page links.",
+      "registryDependencies": [
+        "button",
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Floating panel anchored to a trigger.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "Progress bar showing completion of a task.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "title": "Questionnaire",
+      "description": "Multi-step questionnaire with choices, keyboard shortcuts and progress.",
+      "registryDependencies": [
+        "button",
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio Group",
+      "description": "Set of radio buttons where only one can be selected.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "Resizable panel groups with draggable handles and collapse support.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "Scroll container with custom overlay scrollbars.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Select menu with a floating list of options.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Horizontal or vertical divider.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "Dialog that slides in from a side of the screen.",
+      "registryDependencies": [
+        "button",
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Collapsible application sidebar with groups, menus and mobile sheet.",
+      "registryDependencies": [
+        "button",
+        "icons",
+        "input",
+        "separator",
+        "sheet",
+        "skeleton",
+        "tooltip",
+        "use-mobile",
+        "utils"
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Loading placeholder that mimics content layout.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "Range input with one or more draggable thumbs.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui",
+      "title": "Sonner",
+      "description": "Toast notification store and Toaster rendering under the shadcn-style sonner name.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "Animated loading indicator.",
+      "registryDependencies": [
+        "icons",
+        "utils"
+      ]
+    },
+    {
+      "name": "style",
+      "type": "registry:style",
+      "title": "Style",
+      "description": "Global stylesheet with theme tokens, palettes and custom variants.",
+      "registryDependencies": []
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Toggle switch for on/off settings.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Styled table elements.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Tabbed panels with line and vertical variants.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Multi-line text input.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "Two-state button that can be on or off.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "description": "Group of toggles with single or multiple selection.",
+      "registryDependencies": [
+        "toggle",
+        "utils"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Popup with information shown on hover or focus.",
+      "registryDependencies": [
+        "utils"
+      ]
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:hook",
+      "title": "useIsMobile",
+      "description": "Hook that tracks whether the viewport is below the mobile breakpoint.",
+      "registryDependencies": []
+    },
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Utils",
+      "description": "Class name helper combining clsx and tailwind-merge.",
+      "registryDependencies": []
+    }
+  ]
+}

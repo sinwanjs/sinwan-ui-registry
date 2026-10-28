@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "button-group",
+  "type": "registry:ui",
+  "title": "Button Group",
+  "description": "Groups related buttons into a single segmented control.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1",
+    "sinwan-ui-core@^1.0.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "separator",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "button-group.tsx",
+      "type": "registry:ui",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { Slot } from \"sinwan-ui-core/slot\";\nimport { cn } from \"@/lib/utils\";\n\nimport { Separator, type SeparatorProps } from \"@/components/ui/separator\";\n\nconst buttonGroupVariants = cva(\n  \"group/button-group flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10 has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1\",\n  {\n    variants: {\n      orientation: {\n        horizontal:\n          \"[&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg!\",\n        vertical:\n          \"flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-lg!\",\n      },\n    },\n    defaultVariants: {\n      orientation: \"horizontal\",\n    },\n  },\n);\n\nfunction ButtonGroup({\n  class: className,\n  orientation,\n  ...props\n}: JSX.IntrinsicElements[\"div\"] & VariantProps<typeof buttonGroupVariants>) {\n  return (\n    <div\n      role=\"group\"\n      data-slot=\"button-group\"\n      data-orientation={orientation}\n      class={cn(buttonGroupVariants({ orientation }), className)}\n      {...props}\n    />\n  );\n}\n\nfunction ButtonGroupText({\n  class: className,\n  asChild = false,\n  ...props\n}: JSX.IntrinsicElements[\"div\"] & {\n  asChild?: boolean;\n}) {\n  const shared = {\n    class: cn(\n      \"flex items-center gap-2 rounded-lg border bg-muted px-2.5 text-sm font-medium [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4\",\n      className,\n    ),\n    ...props,\n  };\n\n  if (asChild) {\n    return <Slot {...shared} />;\n  }\n\n  return <div {...shared} />;\n}\n\nfunction ButtonGroupSeparator({\n  class: className,\n  orientation = \"vertical\",\n  ...props\n}: SeparatorProps) {\n  return (\n    <Separator\n      data-slot=\"button-group-separator\"\n      orientation={orientation}\n      class={cn(\n        \"relative self-stretch bg-input data-horizontal:mx-px data-horizontal:w-auto data-vertical:my-px data-vertical:h-auto\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport {\n  ButtonGroup,\n  ButtonGroupSeparator,\n  ButtonGroupText,\n  buttonGroupVariants,\n};\n"
+    }
+  ]
+}

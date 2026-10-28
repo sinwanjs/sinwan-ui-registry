@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "pagination",
+  "type": "registry:ui",
+  "title": "Pagination",
+  "description": "Page navigation with previous, next and page links.",
+  "dependencies": [
+    "lucide@^0.544.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "button",
+    "icons",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "pagination.tsx",
+      "type": "registry:ui",
+      "content": "import { ChevronLeft, ChevronRight, MoreHorizontal } from \"lucide\";\nimport type { SinwanNode } from \"sinwan/component\";\n\nimport { Icon } from \"@/lib/icons\";\nimport { cn } from \"@/lib/utils\";\n\nimport { Button, type ButtonProps } from \"@/components/ui/button\";\n\nfunction Pagination({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"nav\"]) {\n  return (\n    <nav\n      role=\"navigation\"\n      aria-label=\"pagination\"\n      data-slot=\"pagination\"\n      class={cn(\"mx-auto flex w-full justify-center\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction PaginationContent({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"ul\"]) {\n  return (\n    <ul\n      data-slot=\"pagination-content\"\n      class={cn(\"flex items-center gap-0.5\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction PaginationItem({ ...props }: JSX.IntrinsicElements[\"li\"]) {\n  return <li data-slot=\"pagination-item\" {...props} />;\n}\n\ntype PaginationLinkProps = {\n  isActive?: boolean;\n  children?: SinwanNode;\n} & Pick<ButtonProps, \"size\"> &\n  JSX.IntrinsicElements[\"a\"];\n\nfunction PaginationLink({\n  class: className,\n  isActive,\n  size = \"icon\",\n  children,\n  ...props\n}: PaginationLinkProps) {\n  return (\n    <Button\n      asChild\n      variant={isActive ? \"outline\" : \"ghost\"}\n      size={size}\n      class={className}\n    >\n      <a\n        aria-current={isActive ? \"page\" : undefined}\n        data-slot=\"pagination-link\"\n        data-active={isActive}\n        {...props}\n      >\n        {children}\n      </a>\n    </Button>\n  );\n}\n\nfunction PaginationPrevious({\n  class: className,\n  text = \"Previous\",\n  children,\n  ...props\n}: PaginationLinkProps & { text?: string }) {\n  return (\n    <PaginationLink\n      aria-label=\"Go to previous page\"\n      size=\"default\"\n      class={cn(\"pl-1.5!\", className)}\n      {...props}\n    >\n      {children ?? (\n        <>\n          <Icon icon={ChevronLeft} data-icon=\"inline-start\" />\n          <span class=\"hidden sm:block\">{text}</span>\n        </>\n      )}\n    </PaginationLink>\n  );\n}\n\nfunction PaginationNext({\n  class: className,\n  text = \"Next\",\n  children,\n  ...props\n}: PaginationLinkProps & { text?: string }) {\n  return (\n    <PaginationLink\n      aria-label=\"Go to next page\"\n      size=\"default\"\n      class={cn(\"pr-1.5!\", className)}\n      {...props}\n    >\n      {children ?? (\n        <>\n          <span class=\"hidden sm:block\">{text}</span>\n          <Icon icon={ChevronRight} data-icon=\"inline-end\" />\n        </>\n      )}\n    </PaginationLink>\n  );\n}\n\nfunction PaginationEllipsis({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"span\"]) {\n  return (\n    <span\n      aria-hidden\n      data-slot=\"pagination-ellipsis\"\n      class={cn(\n        \"flex size-8 items-center justify-center [&_svg:not([class*='size-'])]:size-4\",\n        className,\n      )}\n      {...props}\n    >\n      <Icon icon={MoreHorizontal} />\n      <span class=\"sr-only\">More pages</span>\n    </span>\n  );\n}\n\nexport {\n  Pagination,\n  PaginationContent,\n  PaginationEllipsis,\n  PaginationItem,\n  PaginationLink,\n  PaginationNext,\n  PaginationPrevious,\n};\n"
+    }
+  ]
+}

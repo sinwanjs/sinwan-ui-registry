@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "toggle",
+  "type": "registry:ui",
+  "title": "Toggle",
+  "description": "Two-state button that can be on or off.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1",
+    "sinwan-ui-core@^1.0.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "toggle.tsx",
+      "type": "registry:ui",
+      "content": "import { getRawProps, type SinwanNode } from \"sinwan/component\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\nimport { ToggleRoot } from \"sinwan-ui-core/controls\";\n\nconst toggleVariants = cva(\n  \"group/toggle inline-flex items-center justify-center gap-1 rounded-lg text-sm font-medium whitespace-nowrap transition-all outline-none hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-pressed:bg-muted data-[state=on]:bg-muted dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-transparent\",\n        outline: \"border border-input bg-transparent hover:bg-muted\",\n      },\n      size: {\n        default:\n          \"h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2\",\n        sm: \"h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5\",\n        lg: \"h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n      size: \"default\",\n    },\n  },\n);\n\ntype ToggleProps = {\n  pressed?: boolean;\n  defaultPressed?: boolean;\n  onPressedChange?: (pressed: boolean) => void;\n  disabled?: boolean;\n  class?: string;\n  children?: SinwanNode;\n  variant?: VariantProps<typeof toggleVariants>[\"variant\"];\n  size?: VariantProps<typeof toggleVariants>[\"size\"];\n};\n\nfunction Toggle(props: ToggleProps) {\n  const {\n    class: className,\n    variant = \"default\",\n    size = \"default\",\n    ...rest\n  } = getRawProps(props);\n  return (\n    <ToggleRoot\n      class={cn(toggleVariants({ variant, size, className }))}\n      {...rest}\n    />\n  );\n}\n\nexport { Toggle, toggleVariants };\n"
+    }
+  ]
+}

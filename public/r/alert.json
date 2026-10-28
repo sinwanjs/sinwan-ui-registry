@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "alert",
+  "type": "registry:ui",
+  "title": "Alert",
+  "description": "Callout for important messages, with title and description slots.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "alert.tsx",
+      "type": "registry:ui",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst alertVariants = cva(\n  \"group/alert relative grid w-full gap-0.5 rounded-lg border px-2.5 py-2 text-left text-sm has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-card text-card-foreground\",\n        destructive:\n          \"bg-card text-destructive *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  },\n);\n\nfunction Alert({\n  class: className,\n  variant,\n  ...props\n}: JSX.IntrinsicElements[\"div\"] & VariantProps<typeof alertVariants>) {\n  return (\n    <div\n      data-slot=\"alert\"\n      role=\"alert\"\n      class={cn(alertVariants({ variant }), className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertTitle({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"alert-title\"\n      class={cn(\n        \"font-medium group-has-[>svg]/alert:col-start-2 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDescription({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"alert-description\"\n      class={cn(\n        \"text-sm text-balance text-muted-foreground md:text-pretty [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction AlertAction({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"alert-action\"\n      class={cn(\"absolute top-2 right-2\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Alert, AlertAction, AlertDescription, AlertTitle };\n"
+    }
+  ]
+}

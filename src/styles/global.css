@@ -1,0 +1,756 @@
+/* =============================================================================
+ * sinwan-ui — global stylesheet
+ * Palettes: "credit-blue" (default) | "jomlaty" via html[data-palette]
+ * Mode: light / dark / system via .light / .dark (ThemeProvider)
+ * ========================================================================== */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* -----------------------------------------------------------------------
+ * 1. Tailwind content sources
+ * ---------------------------------------------------------------------
+ * Tailwind ignores node_modules / gitignored paths by default. Consumers
+ * that only import this stylesheet never see class names from sinwan-ui
+ * components unless we register them. Scan package sources, and also
+ * dist so published installs (files: dist + styles) still generate
+ * utilities.
+ * -------------------------------------------------------------------- */
+@source "../";
+
+/* -----------------------------------------------------------------------
+ * 2. Custom variants
+ * ---------------------------------------------------------------------
+ * Map shadcn-style data-* utilities onto data-state values emitted by
+ * Radix/sinwan primitives, plus a dark-mode variant.
+ * -------------------------------------------------------------------- */
+@custom-variant dark (&:is(.dark *));
+@custom-variant enabled-only (&:not(:disabled, [aria-disabled="true"]));
+
+@custom-variant data-checked (&[data-state="checked"]);
+@custom-variant data-unchecked (&[data-state="unchecked"]);
+@custom-variant data-indeterminate (&[data-state="indeterminate"]);
+@custom-variant data-on (&[data-state="on"]);
+@custom-variant data-off (&[data-state="off"]);
+@custom-variant data-active (&[data-state="active"], &[data-active]);
+@custom-variant data-open (&[data-state="open"], &[data-open]);
+@custom-variant data-closed (&[data-state="closed"], &[data-closed]);
+@custom-variant data-horizontal (&[data-orientation="horizontal"], &[data-horizontal]);
+@custom-variant data-vertical (&[data-orientation="vertical"], &[data-vertical]);
+
+/* -----------------------------------------------------------------------
+ * 3. Theme tokens → Tailwind
+ * ---------------------------------------------------------------------
+ * Wires design tokens defined below (:root / .dark) into Tailwind's
+ * `@theme inline` layer so utilities like bg-primary, text-muted-
+ * foreground, rounded-lg, etc. pick them up automatically.
+ * -------------------------------------------------------------------- */
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: "Geist Variable", sans-serif;
+
+  /* Surfaces */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  /* Brand */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  /* Neutrals */
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  /* Feedback */
+  --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-success: var(--success);
+
+  /* Structure */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Radius scale */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* -----------------------------------------------------------------------
+ * 4. Light theme — "Credit Blue"
+ * ---------------------------------------------------------------------
+ * Deep navy + electric blue, styled after premium fintech / credit-card
+ * UI (think metal card, banking app, statement dashboard).
+ * -------------------------------------------------------------------- */
+:root {
+  /* Surfaces */
+  --background: oklch(0.98 0.004 250);
+  --foreground: oklch(0.18 0.03 255);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.03 255);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.03 255);
+
+  /* Brand — electric blue primary, muted blue secondary */
+  --primary: oklch(0.55 0.22 262);
+  --primary-foreground: oklch(0.98 0.01 250);
+  --secondary: oklch(0.9 0.04 262);
+  --secondary-foreground: oklch(0.3 0.09 262);
+  --tertiary: oklch(0.72 0.14 230);
+  --tertiary-foreground: oklch(0.15 0.03 255);
+
+  /* Neutrals */
+  --muted: oklch(0.96 0.006 250);
+  --muted-foreground: oklch(0.5 0.02 255);
+  --accent: oklch(0.94 0.02 255);
+  --accent-foreground: oklch(0.22 0.04 260);
+
+  /* Feedback */
+  --destructive: oklch(0.577 0.245 27.325);
+  --success: oklch(0.6 0.16 155);
+  --info: oklch(0.6 0.16 240);
+  --warning: oklch(0.75 0.16 80);
+
+  /* Structure */
+  --border: oklch(0.9 0.01 255);
+  --input: oklch(0.9 0.01 255);
+  --ring: oklch(0.55 0.22 262 / 0.5);
+
+  /* Charts — tonal blue ramp */
+  --chart-1: oklch(0.55 0.22 262);
+  --chart-2: oklch(0.62 0.18 235);
+  --chart-3: oklch(0.7 0.13 210);
+  --chart-4: oklch(0.45 0.15 270);
+  --chart-5: oklch(0.75 0.08 262);
+
+  --radius: 0.625rem;
+
+  /* Sidebar — light, same family as the main surface */
+  --sidebar: oklch(0.96 0.01 255);
+  --sidebar-foreground: oklch(0.18 0.03 255);
+  --sidebar-primary: oklch(0.55 0.22 262);
+  --sidebar-primary-foreground: oklch(0.98 0.01 250);
+  --sidebar-accent: oklch(0.92 0.02 258);
+  --sidebar-accent-foreground: oklch(0.22 0.04 260);
+  --sidebar-border: oklch(0.9 0.01 255);
+  --sidebar-ring: oklch(0.55 0.22 262 / 0.5);
+
+  /* Ambient brand gradient — light blue → electric blue */
+  --gradient-from: var(--tertiary);
+  --gradient-to: var(--primary);
+  --gradient-from-position: 10%;
+  --gradient-to-position: 100%;
+  --gradient-angle: 150deg;
+  --gradient-brand: linear-gradient(in oklch var(--gradient-angle),
+      var(--gradient-from) var(--gradient-from-position),
+      var(--gradient-to) var(--gradient-to-position));
+
+  --background-gradient:
+    radial-gradient(110% 85% at 0% 0%, oklch(from var(--gradient-from) l c h / 0.08), transparent 60%),
+    radial-gradient(110% 85% at 100% 0%, oklch(from var(--gradient-to) l c h / 0.07), transparent 60%),
+    radial-gradient(110% 85% at 100% 100%, oklch(from var(--gradient-from) l c h / 0.08), transparent 60%),
+    radial-gradient(110% 85% at 0% 100%, oklch(from var(--gradient-to) l c h / 0.06), transparent 60%);
+}
+
+/* -----------------------------------------------------------------------
+ * 5. Dark theme — explicit `.dark` class
+ * -------------------------------------------------------------------- */
+.dark {
+  --background: oklch(0.16 0.025 258);
+  --foreground: oklch(0.96 0.008 250);
+  --card: oklch(0.2 0.03 258);
+  --card-foreground: oklch(0.96 0.008 250);
+  --popover: oklch(0.2 0.03 258);
+  --popover-foreground: oklch(0.96 0.008 250);
+
+  --primary: oklch(0.65 0.2 260);
+  --primary-foreground: oklch(0.12 0.02 258);
+  --secondary: oklch(0.4 0.1 262);
+  --secondary-foreground: oklch(0.96 0.008 250);
+  --tertiary: oklch(0.75 0.13 225);
+  --tertiary-foreground: oklch(0.12 0.02 258);
+
+  --muted: oklch(0.26 0.03 258);
+  --muted-foreground: oklch(0.7 0.02 255);
+  --accent: oklch(0.28 0.04 258);
+  --accent-foreground: oklch(0.96 0.008 250);
+
+  --destructive: oklch(0.704 0.191 22.216);
+  --success: oklch(0.65 0.16 155);
+  --info: oklch(0.65 0.16 240);
+  --warning: oklch(0.78 0.15 80);
+
+  --border: oklch(0.34 0.03 258);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.65 0.2 260 / 0.5);
+
+  --chart-1: oklch(0.65 0.2 260);
+  --chart-2: oklch(0.68 0.16 235);
+  --chart-3: oklch(0.74 0.12 210);
+  --chart-4: oklch(0.5 0.15 270);
+  --chart-5: oklch(0.4 0.1 262);
+
+  --sidebar: oklch(0.13 0.025 258);
+  --sidebar-foreground: oklch(0.96 0.008 250);
+  --sidebar-primary: oklch(0.65 0.2 260);
+  --sidebar-primary-foreground: oklch(0.12 0.02 258);
+  --sidebar-accent: oklch(0.22 0.03 258);
+  --sidebar-accent-foreground: oklch(0.96 0.008 250);
+  --sidebar-border: oklch(0.3 0.03 258);
+  --sidebar-ring: oklch(0.65 0.2 260 / 0.5);
+
+  --background-gradient:
+    radial-gradient(110% 85% at 0% 0%, oklch(from var(--gradient-from) l c h / 0.16), transparent 62%),
+    radial-gradient(110% 85% at 100% 0%, oklch(from var(--gradient-to) l c h / 0.12), transparent 62%),
+    radial-gradient(110% 85% at 100% 100%, oklch(from var(--gradient-from) l c h / 0.16), transparent 62%),
+    radial-gradient(110% 85% at 0% 100%, oklch(from var(--gradient-to) l c h / 0.12), transparent 62%);
+}
+
+/* -----------------------------------------------------------------------
+ * 5b. Palette — Jomlaty (warm orange / coral / pink)
+ * ---------------------------------------------------------------------
+ * Applied when ThemeProvider sets html[data-palette="jomlaty"].
+ * Light tokens on the attribute; dark when combined with .dark.
+ * -------------------------------------------------------------------- */
+html[data-palette="jomlaty"] {
+  --font-sans: "Be Vietnam Pro", sans-serif;
+
+  --background: oklch(0.985 0.008 55);
+  --foreground: oklch(0.2 0.025 35);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.025 35);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.025 35);
+
+  --primary: oklch(0.68 0.19 48);
+  --primary-foreground: oklch(0.99 0.01 55);
+
+  --secondary: oklch(0.93 0.045 20);
+  --secondary-foreground: oklch(0.4 0.11 25);
+
+  --tertiary: oklch(0.82 0.17 88);
+  --tertiary-foreground: oklch(0.25 0.05 55);
+
+  --muted: oklch(0.965 0.008 55);
+  --muted-foreground: oklch(0.52 0.025 35);
+
+  --accent: oklch(0.95 0.035 40);
+  --accent-foreground: oklch(0.3 0.05 35);
+
+  --destructive: oklch(0.62 0.22 25);
+  --success: oklch(0.62 0.16 150);
+  --info: oklch(0.62 0.15 240);
+  --warning: oklch(0.78 0.17 80);
+
+  --border: oklch(0.9 0.018 50);
+  --input: oklch(0.9 0.018 50);
+  --ring: oklch(0.68 0.19 48 / 0.5);
+
+  --chart-1: oklch(0.68 0.19 48);
+  --chart-2: oklch(0.68 0.2 25);
+  --chart-3: oklch(0.72 0.18 88);
+  --chart-4: oklch(0.62 0.18 350);
+  --chart-5: oklch(0.64 0.14 300);
+
+  --sidebar: oklch(0.985 0.008 55);
+  --sidebar-foreground: oklch(0.2 0.025 35);
+
+  --sidebar-primary: oklch(0.68 0.19 48);
+  --sidebar-primary-foreground: oklch(0.99 0.01 55);
+
+  --sidebar-accent: oklch(0.95 0.035 40);
+  --sidebar-accent-foreground: oklch(0.3 0.05 35);
+
+  --sidebar-border: oklch(0.9 0.018 50);
+  --sidebar-ring: oklch(0.68 0.19 48 / 0.5);
+
+  --gradient-from: oklch(0.82 0.17 88);
+  --gradient-mid: oklch(0.68 0.19 48);
+  --gradient-to: oklch(0.68 0.2 25);
+  --gradient-angle: 135deg;
+  --gradient-brand: linear-gradient(
+    var(--gradient-angle),
+    var(--gradient-from) 0%,
+    var(--gradient-mid) 48%,
+    var(--gradient-to) 100%
+  );
+
+  --background-gradient:
+    radial-gradient(
+      110% 85% at 0% 0%,
+      oklch(from var(--gradient-from) l c h / 0.10),
+      transparent 60%
+    ),
+    radial-gradient(
+      110% 85% at 100% 0%,
+      oklch(from var(--gradient-to) l c h / 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      110% 85% at 100% 100%,
+      oklch(from var(--gradient-mid) l c h / 0.07),
+      transparent 60%
+    );
+}
+
+html[data-palette="jomlaty"].dark {
+  --background: oklch(0.15 0.018 35);
+  --foreground: oklch(0.96 0.012 55);
+
+  --card: oklch(0.19 0.022 35);
+  --card-foreground: oklch(0.96 0.012 55);
+
+  --popover: oklch(0.19 0.022 35);
+  --popover-foreground: oklch(0.96 0.012 55);
+
+  --primary: oklch(0.74 0.18 50);
+  --primary-foreground: oklch(0.16 0.02 35);
+
+  --secondary: oklch(0.34 0.08 25);
+  --secondary-foreground: oklch(0.96 0.012 55);
+
+  --tertiary: oklch(0.78 0.16 88);
+  --tertiary-foreground: oklch(0.16 0.02 35);
+
+  --muted: oklch(0.25 0.025 35);
+  --muted-foreground: oklch(0.7 0.025 45);
+
+  --accent: oklch(0.27 0.035 35);
+  --accent-foreground: oklch(0.96 0.012 55);
+
+  --destructive: oklch(0.7 0.19 25);
+  --success: oklch(0.68 0.15 150);
+  --info: oklch(0.68 0.15 240);
+  --warning: oklch(0.8 0.15 80);
+
+  --border: oklch(0.32 0.025 35);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.74 0.18 50 / 0.5);
+
+  --chart-1: oklch(0.74 0.18 50);
+  --chart-2: oklch(0.72 0.19 25);
+  --chart-3: oklch(0.78 0.15 88);
+  --chart-4: oklch(0.68 0.18 350);
+  --chart-5: oklch(0.65 0.14 300);
+
+  --sidebar: oklch(0.12 0.018 35);
+  --sidebar-foreground: oklch(0.96 0.012 55);
+
+  --sidebar-primary: oklch(0.74 0.18 50);
+  --sidebar-primary-foreground: oklch(0.16 0.02 35);
+
+  --sidebar-accent: oklch(0.22 0.025 35);
+  --sidebar-accent-foreground: oklch(0.96 0.012 55);
+
+  --sidebar-border: oklch(0.28 0.025 35);
+  --sidebar-ring: oklch(0.74 0.18 50 / 0.5);
+
+  --background-gradient:
+    radial-gradient(
+      110% 85% at 0% 0%,
+      oklch(from var(--gradient-from) l c h / 0.13),
+      transparent 62%
+    ),
+    radial-gradient(
+      110% 85% at 100% 0%,
+      oklch(from var(--gradient-to) l c h / 0.12),
+      transparent 62%
+    ),
+    radial-gradient(
+      110% 85% at 100% 100%,
+      oklch(from var(--gradient-mid) l c h / 0.10),
+      transparent 62%
+    );
+}
+
+/* -----------------------------------------------------------------------
+ * 6. System dark-mode fallback (no explicit .light/.dark class present)
+ * -------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  html:not(.light):not([data-palette="jomlaty"]) {
+    --background: oklch(0.16 0.025 258);
+    --foreground: oklch(0.96 0.008 250);
+    --card: oklch(0.2 0.03 258);
+    --card-foreground: oklch(0.96 0.008 250);
+    --popover: oklch(0.2 0.03 258);
+    --popover-foreground: oklch(0.96 0.008 250);
+
+    --primary: oklch(0.65 0.2 260);
+    --primary-foreground: oklch(0.12 0.02 258);
+    --secondary: oklch(0.4 0.1 262);
+    --secondary-foreground: oklch(0.96 0.008 250);
+    --tertiary: oklch(0.75 0.13 225);
+    --tertiary-foreground: oklch(0.12 0.02 258);
+
+    --muted: oklch(0.26 0.03 258);
+    --muted-foreground: oklch(0.7 0.02 255);
+    --accent: oklch(0.28 0.04 258);
+    --accent-foreground: oklch(0.96 0.008 250);
+
+    --destructive: oklch(0.704 0.191 22.216);
+    --success: oklch(0.65 0.16 155);
+    --info: oklch(0.65 0.16 240);
+    --warning: oklch(0.78 0.15 80);
+
+    --border: oklch(0.34 0.03 258);
+    --input: oklch(1 0 0 / 12%);
+    --ring: oklch(0.65 0.2 260 / 0.5);
+
+    --chart-1: oklch(0.65 0.2 260);
+    --chart-2: oklch(0.68 0.16 235);
+    --chart-3: oklch(0.74 0.12 210);
+    --chart-4: oklch(0.5 0.15 270);
+    --chart-5: oklch(0.4 0.1 262);
+
+    --sidebar: oklch(0.2 0.03 258);
+    --sidebar-foreground: oklch(0.96 0.008 250);
+    --sidebar-primary: oklch(0.65 0.2 260);
+    --sidebar-primary-foreground: oklch(0.12 0.02 258);
+    --sidebar-accent: oklch(0.28 0.04 258);
+    --sidebar-accent-foreground: oklch(0.96 0.008 250);
+    --sidebar-border: oklch(0.3 0.03 258);
+    --sidebar-ring: oklch(0.65 0.2 260 / 0.5);
+
+    --background-gradient:
+      radial-gradient(110% 85% at 0% 0%, oklch(from var(--gradient-from) l c h / 0.16), transparent 62%),
+      radial-gradient(110% 85% at 100% 0%, oklch(from var(--gradient-to) l c h / 0.12), transparent 62%),
+      radial-gradient(110% 85% at 100% 100%, oklch(from var(--gradient-from) l c h / 0.16), transparent 62%),
+      radial-gradient(110% 85% at 0% 100%, oklch(from var(--gradient-to) l c h / 0.12), transparent 62%);
+  }
+
+  html[data-palette="jomlaty"]:not(.light) {
+    --background: oklch(0.15 0.018 35);
+    --foreground: oklch(0.96 0.012 55);
+
+    --card: oklch(0.19 0.022 35);
+    --card-foreground: oklch(0.96 0.012 55);
+
+    --popover: oklch(0.19 0.022 35);
+    --popover-foreground: oklch(0.96 0.012 55);
+
+    --primary: oklch(0.74 0.18 50);
+    --primary-foreground: oklch(0.16 0.02 35);
+
+    --secondary: oklch(0.34 0.08 25);
+    --secondary-foreground: oklch(0.96 0.012 55);
+
+    --tertiary: oklch(0.78 0.16 88);
+    --tertiary-foreground: oklch(0.16 0.02 35);
+
+    --muted: oklch(0.25 0.025 35);
+    --muted-foreground: oklch(0.7 0.025 45);
+
+    --accent: oklch(0.27 0.035 35);
+    --accent-foreground: oklch(0.96 0.012 55);
+
+    --destructive: oklch(0.7 0.19 25);
+    --success: oklch(0.68 0.15 150);
+    --info: oklch(0.68 0.15 240);
+    --warning: oklch(0.8 0.15 80);
+
+    --border: oklch(0.32 0.025 35);
+    --input: oklch(1 0 0 / 12%);
+    --ring: oklch(0.74 0.18 50 / 0.5);
+
+    --chart-1: oklch(0.74 0.18 50);
+    --chart-2: oklch(0.72 0.19 25);
+    --chart-3: oklch(0.78 0.15 88);
+    --chart-4: oklch(0.68 0.18 350);
+    --chart-5: oklch(0.65 0.14 300);
+
+    --sidebar: oklch(0.12 0.018 35);
+    --sidebar-foreground: oklch(0.96 0.012 55);
+
+    --sidebar-primary: oklch(0.74 0.18 50);
+    --sidebar-primary-foreground: oklch(0.16 0.02 35);
+
+    --sidebar-accent: oklch(0.22 0.025 35);
+    --sidebar-accent-foreground: oklch(0.96 0.012 55);
+
+    --sidebar-border: oklch(0.28 0.025 35);
+    --sidebar-ring: oklch(0.74 0.18 50 / 0.5);
+
+    --background-gradient:
+      radial-gradient(
+        110% 85% at 0% 0%,
+        oklch(from var(--gradient-from) l c h / 0.13),
+        transparent 62%
+      ),
+      radial-gradient(
+        110% 85% at 100% 0%,
+        oklch(from var(--gradient-to) l c h / 0.12),
+        transparent 62%
+      ),
+      radial-gradient(
+        110% 85% at 100% 100%,
+        oklch(from var(--gradient-mid) l c h / 0.10),
+        transparent 62%
+      );
+  }
+}
+
+/* -----------------------------------------------------------------------
+ * 7. Utilities
+ * -------------------------------------------------------------------- */
+@utility bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+
+@utility bg-gradient-ambient {
+  background-image: var(--background-gradient);
+  background-repeat: no-repeat;
+}
+
+@utility text-gradient-brand {
+  background-image: var(--gradient-brand);
+  background-clip: text;
+  color: transparent;
+}
+
+@utility disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+@utility scrollbar-modern {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklch, var(--foreground) 22%, transparent) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    background-color: color-mix(in oklch, var(--foreground) 20%, transparent);
+    border: 2px solid transparent;
+    border-radius: 999px;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklch, var(--foreground) 36%, transparent);
+  }
+}
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklch, var(--foreground) 22%, transparent) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    background-color: color-mix(in oklch, var(--foreground) 20%, transparent);
+    border: 2px solid transparent;
+    border-radius: 999px;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklch, var(--foreground) 36%, transparent);
+  }
+}
+
+/* -----------------------------------------------------------------------
+ * 8. Overlay exit-animation fix
+ * ---------------------------------------------------------------------
+ * Presence keeps overlay layers mounted ~200ms after close. Exit
+ * keyframes (fade-out-0) must hold the last frame; otherwise the
+ * animation ends and the node snaps back to resting opacity/transform
+ * until unmount. tw-animate's `animate-out` uses the `animation`
+ * shorthand, which resets fill-mode, so this longhand must win.
+ * -------------------------------------------------------------------- */
+[data-state="closed"]:is([data-slot="dialog-overlay"],
+  [data-slot="dialog-content"],
+  [data-slot="sheet-content"],
+  [data-slot="alert-dialog-content"],
+  [data-slot="drawer-content"],
+  [data-slot="popover-content"],
+  [data-slot="tooltip-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="dropdown-menu-sub-content"],
+  [data-slot="context-menu-content"],
+  [data-slot="context-menu-sub-content"],
+  [data-slot="menubar-content"],
+  [data-slot="menubar-sub-content"],
+  [data-slot="select-content"],
+  [data-slot="navigation-menu-content"],
+  [data-slot="navigation-menu-viewport"],
+  [data-slot="accordion-content"],
+  [data-slot="collapsible-content"]) {
+  animation-fill-mode: forwards !important;
+}
+
+/* -----------------------------------------------------------------------
+ * 9. Base layer
+ * -------------------------------------------------------------------- */
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    width: 100%;
+    min-height: 100dvh;
+    background-image: var(--background-gradient);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: "Be Vietnam Pro", system-ui, sans-serif;
+  }
+
+  .container {
+    @apply mx-auto p-6;
+  }
+
+  :root,
+  body,
+  main {
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--column-width, 0), 1fr));
+  }
+
+  .grid-auto-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--column-width, 0), 1fr));
+  }
+
+  button,
+  select,
+  [role="button"],
+  [role="tab"] {
+    user-select: none;
+    cursor: pointer;
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+  }
+
+  /*
+   * Chart fullscreen host. Do not rely on Tailwind `fullscreen:` utilities —
+   * they are not emitted for these classes. Theme tokens keep light/dark in sync.
+   */
+  [data-slot="chart"]:fullscreen,
+  [data-slot="chart-view"]:fullscreen {
+    aspect-ratio: auto;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  /*
+   * Nested overflow-x + direction:rtl leaves the scrollport at the physical
+   * left, so table cells paint off-screen. Keep the scrollport LTR and restore
+   * RTL only on the table itself.
+   */
+  [dir="rtl"] [data-slot="table-container"] {
+    direction: ltr;
+  }
+
+  [dir="rtl"] [data-slot="table-container"]>[data-slot="table"] {
+    direction: rtl;
+  }
+
+  /*
+   * <Virtual> injects an unstyled overflow:auto scroller. Match the table
+   * chrome: reserve a stable gutter so the sticky header aligns, and keep
+   * the thumb inside the rounded frame.
+   */
+  [data-virtual-header],
+  [data-slot="data-table-virtual-body"]>div {
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    scrollbar-color: color-mix(in oklch, var(--border) 85%, transparent) transparent;
+  }
+
+  [data-virtual-header] {
+    overflow-y: scroll;
+  }
+
+  [data-virtual-header]::-webkit-scrollbar,
+  [data-slot="data-table-virtual-body"]>div::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  [data-virtual-header]::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+}

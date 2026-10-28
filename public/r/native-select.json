@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "native-select",
+  "type": "registry:ui",
+  "title": "Native Select",
+  "description": "Styled native select element.",
+  "dependencies": [
+    "lucide@^0.544.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "icons",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "native-select.tsx",
+      "type": "registry:ui",
+      "content": "import { ChevronDown } from \"lucide\";\n\nimport { Icon } from \"@/lib/icons\";\nimport { cn } from \"@/lib/utils\";\n\ntype NativeSelectProps = Omit<JSX.IntrinsicElements[\"select\"], \"size\"> & {\n  size?: \"sm\" | \"default\";\n};\n\nfunction NativeSelect({\n  class: className,\n  size = \"default\",\n  ...props\n}: NativeSelectProps) {\n  return (\n    <div\n      class={cn(\n        \"group/native-select relative w-fit has-[select:disabled]:opacity-50\",\n        className,\n      )}\n      data-slot=\"native-select-wrapper\"\n      data-size={size}\n    >\n      <select\n        data-slot=\"native-select\"\n        data-size={size}\n        class=\"h-8 w-full min-w-0 appearance-none rounded-lg border border-input bg-transparent py-1 pr-8 pl-2.5 text-sm transition-colors outline-none select-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40\"\n        {...props}\n      />\n      <Icon\n        icon={ChevronDown}\n        class=\"pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground select-none\"\n        aria-hidden=\"true\"\n        data-slot=\"native-select-icon\"\n      />\n    </div>\n  );\n}\n\nfunction NativeSelectOption({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"option\"]) {\n  return (\n    <option\n      data-slot=\"native-select-option\"\n      class={cn(\"bg-[Canvas] text-[CanvasText]\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction NativeSelectOptGroup({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"optgroup\"]) {\n  return (\n    <optgroup\n      data-slot=\"native-select-optgroup\"\n      class={cn(\"bg-[Canvas] text-[CanvasText]\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { NativeSelect, NativeSelectOptGroup, NativeSelectOption };\n"
+    }
+  ]
+}

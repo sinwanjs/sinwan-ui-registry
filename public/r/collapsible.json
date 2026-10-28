@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "collapsible",
+  "type": "registry:ui",
+  "title": "Collapsible",
+  "description": "Panel that shows and hides its content with an animation.",
+  "dependencies": [
+    "sinwan-ui-core@^1.0.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "collapsible.tsx",
+      "type": "registry:ui",
+      "content": "import type { SinwanNode } from \"sinwan/component\";\nimport { cn } from \"@/lib/utils\";\nimport {\n  CollapsibleContent as CollapsibleContentPrimitive,\n  CollapsibleRoot,\n  CollapsibleTrigger as CollapsibleTriggerPrimitive,\n} from \"sinwan-ui-core/overlay\";\n\ntype CollapsibleProps = {\n  children?: SinwanNode;\n  open?: boolean;\n  defaultOpen?: boolean;\n  onOpenChange?: (open: boolean) => void;\n  class?: string;\n};\n\nfunction Collapsible(props: CollapsibleProps) {\n  return <CollapsibleRoot {...props} />;\n}\n\ntype CollapsibleTriggerProps = {\n  children?: SinwanNode;\n  class?: string;\n  asChild?: boolean;\n};\n\nfunction CollapsibleTrigger(props: CollapsibleTriggerProps) {\n  return <CollapsibleTriggerPrimitive {...props} />;\n}\n\ntype CollapsibleContentProps = {\n  children?: SinwanNode;\n  class?: string;\n};\n\nfunction CollapsibleContent({\n  class: className,\n  children,\n}: CollapsibleContentProps) {\n  return (\n    <CollapsibleContentPrimitive class=\"overflow-hidden duration-200 data-open:animate-collapsible-down data-closed:animate-collapsible-up data-closed:!fill-mode-forwards\">\n      <div class={cn(className)}>{children}</div>\n    </CollapsibleContentPrimitive>\n  );\n}\n\nexport { Collapsible, CollapsibleContent, CollapsibleTrigger };\n"
+    }
+  ]
+}

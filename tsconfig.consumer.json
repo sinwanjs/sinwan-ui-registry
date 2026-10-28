@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [],
+    "allowJs": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true
+  },
+  "include": [
+    "src/components/ui/**/*",
+    "src/hooks/**/*",
+    "src/lib/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "r"
+  ]
+}

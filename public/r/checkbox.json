@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "checkbox",
+  "type": "registry:ui",
+  "title": "Checkbox",
+  "description": "Accessible checkbox with checked and indeterminate states.",
+  "dependencies": [
+    "lucide@^0.544.0",
+    "sinwan-ui-core@^1.0.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "icons",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "checkbox.tsx",
+      "type": "registry:ui",
+      "content": "import { getRawProps, type SinwanNode } from \"sinwan/component\";\nimport { Check, Minus } from \"lucide\";\n\nimport { Icon } from \"@/lib/icons\";\nimport { cn } from \"@/lib/utils\";\nimport { CheckboxRoot } from \"sinwan-ui-core/controls\";\n\ntype CheckboxProps = {\n  checked?: boolean;\n  indeterminate?: boolean;\n  defaultChecked?: boolean;\n  onCheckedChange?: (checked: boolean) => void;\n  disabled?: boolean;\n  class?: string;\n  id?: string;\n  name?: string;\n  value?: string;\n  \"aria-label\"?: string;\n  children?: SinwanNode;\n};\n\nfunction Checkbox(props: CheckboxProps) {\n  const { class: className, children, ...rest } = getRawProps(props);\n  return (\n    <CheckboxRoot\n      class={cn(\n        \"peer relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input transition-colors outline-none group-has-disabled/field:opacity-50 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground data-indeterminate:border-primary data-indeterminate:bg-primary data-indeterminate:text-primary-foreground dark:data-checked:bg-primary dark:data-indeterminate:bg-primary\",\n        className,\n      )}\n      {...rest}\n    >\n      <span\n        data-slot=\"checkbox-indicator\"\n        class=\"grid place-content-center text-current transition-none [&_svg]:size-3.5 [[data-state=unchecked]_&]:hidden\"\n      >\n        <span class=\"[[data-state=indeterminate]_&]:hidden\">\n          {children ?? <Icon icon={Check} />}\n        </span>\n        <span class=\"hidden [[data-state=indeterminate]_&]:grid\">\n          <Icon icon={Minus} />\n        </span>\n      </span>\n    </CheckboxRoot>\n  );\n}\n\nexport { Checkbox };\nexport type { CheckboxProps };\n"
+    }
+  ]
+}

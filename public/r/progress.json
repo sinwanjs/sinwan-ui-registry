@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "progress",
+  "type": "registry:ui",
+  "title": "Progress",
+  "description": "Progress bar showing completion of a task.",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "progress.tsx",
+      "type": "registry:ui",
+      "content": "import { cc, getRawProps } from \"sinwan/component\";\n\nimport { cn } from \"@/lib/utils\";\n\ntype ProgressProps = Omit<JSX.IntrinsicElements[\"div\"], \"value\"> & {\n  value?: number | null;\n};\n\nfunction progressPercent(value: unknown): number {\n  if (typeof value !== \"number\" || Number.isNaN(value)) return 0;\n  if (value < 0) return 0;\n  if (value > 100) return 100;\n  return value;\n}\n\nconst Progress = cc<ProgressProps>((props) => {\n  const { class: _className, value: _value, ...rest } = getRawProps(props);\n  return (\n    <div\n      data-slot=\"progress\"\n      role=\"progressbar\"\n      aria-valuemin={0}\n      aria-valuemax={100}\n      aria-valuenow={progressPercent(props.value)}\n      class={cn(\n          \"relative h-1 w-full overflow-hidden rounded-full bg-muted\",\n          props.class,\n        )\n      }\n      {...rest}\n    >\n      <div\n        data-slot=\"progress-indicator\"\n        class=\"h-full bg-primary transition-all\"\n        style={`width: ${progressPercent(props.value)}%`}\n      />\n    </div>\n  );\n});\n\nexport { Progress };\nexport type { ProgressProps };\n"
+    }
+  ]
+}

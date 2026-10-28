@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "empty",
+  "type": "registry:ui",
+  "title": "Empty",
+  "description": "Empty-state placeholder with icon, title, description and actions.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "empty.tsx",
+      "type": "registry:ui",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Empty({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"empty\"\n      class={cn(\n        \"flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-xl border-dashed p-6 text-center text-balance\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction EmptyHeader({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"empty-header\"\n      class={cn(\"flex max-w-sm flex-col items-center gap-2\", className)}\n      {...props}\n    />\n  );\n}\n\nconst emptyMediaVariants = cva(\n  \"mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-transparent\",\n        icon: \"flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground [&_svg:not([class*='size-'])]:size-4\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  },\n);\n\nfunction EmptyMedia({\n  class: className,\n  variant = \"default\",\n  ...props\n}: JSX.IntrinsicElements[\"div\"] & VariantProps<typeof emptyMediaVariants>) {\n  return (\n    <div\n      data-slot=\"empty-icon\"\n      data-variant={variant}\n      class={cn(emptyMediaVariants({ variant, className }))}\n      {...props}\n    />\n  );\n}\n\nfunction EmptyTitle({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"empty-title\"\n      class={cn(\n        \"font-heading text-sm font-medium tracking-tight\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction EmptyDescription({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"p\"]) {\n  return (\n    <div\n      data-slot=\"empty-description\"\n      class={cn(\n        \"text-sm/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction EmptyContent({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"empty-content\"\n      class={cn(\n        \"flex w-full max-w-sm min-w-0 flex-col items-center gap-2.5 text-sm text-balance\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport {\n  Empty,\n  EmptyContent,\n  EmptyDescription,\n  EmptyHeader,\n  EmptyMedia,\n  EmptyTitle,\n};\n"
+    }
+  ]
+}

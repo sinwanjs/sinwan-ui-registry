@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "table",
+  "type": "registry:ui",
+  "title": "Table",
+  "description": "Styled table elements.",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "table.tsx",
+      "type": "registry:ui",
+      "content": "import { cn } from \"@/lib/utils\";\n\nfunction Table({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"table\"]) {\n  return (\n    <div\n      data-slot=\"table-container\"\n      class=\"relative w-full min-w-0 overflow-x-auto\"\n    >\n      <table\n        data-slot=\"table\"\n        class={cn(\"w-full caption-bottom text-sm\", className)}\n        {...props}\n      />\n    </div>\n  );\n}\n\nfunction TableHeader({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"thead\"]) {\n  return (\n    <thead\n      data-slot=\"table-header\"\n      class={cn(\"[&_tr]:border-b\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction TableBody({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"tbody\"]) {\n  return (\n    <tbody\n      data-slot=\"table-body\"\n      class={cn(\"[&_tr:last-child]:border-0\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction TableFooter({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"tfoot\"]) {\n  return (\n    <tfoot\n      data-slot=\"table-footer\"\n      class={cn(\n        \"border-t bg-muted/50 font-medium [&>tr]:last:border-b-0\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction TableRow({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"tr\"]) {\n  return (\n    <tr\n      data-slot=\"table-row\"\n      class={cn(\n        \"border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction TableHead({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"th\"]) {\n  return (\n    <th\n      data-slot=\"table-head\"\n      class={cn(\n        \"h-10 px-2 text-start align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pe-0\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction TableCell({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"td\"]) {\n  return (\n    <td\n      data-slot=\"table-cell\"\n      class={cn(\n        \"p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction TableCaption({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"caption\"]) {\n  return (\n    <caption\n      data-slot=\"table-caption\"\n      class={cn(\"mt-4 text-sm text-muted-foreground\", className)}\n      {...props}\n    />\n  );\n}\n\nexport {\n  Table,\n  TableBody,\n  TableCaption,\n  TableCell,\n  TableFooter,\n  TableHead,\n  TableHeader,\n  TableRow,\n};\n"
+    }
+  ]
+}

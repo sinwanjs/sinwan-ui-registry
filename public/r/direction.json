@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "direction",
+  "type": "registry:ui",
+  "title": "Direction",
+  "description": "Re-exports the direction provider for component-level imports.",
+  "dependencies": [
+    "sinwan-ui-core@^1.0.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "direction.tsx",
+      "type": "registry:ui",
+      "content": "export {\n  DirectionProvider,\n  useDirection,\n} from \"sinwan-ui-core/direction\";\n"
+    }
+  ]
+}

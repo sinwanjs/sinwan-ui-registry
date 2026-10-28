@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "message",
+  "type": "registry:ui",
+  "title": "Message",
+  "description": "Chat message layout with avatar, header and content.",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "message.tsx",
+      "type": "registry:ui",
+      "content": "import { cn } from \"@/lib/utils\";\n\nfunction MessageGroup({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"message-group\"\n      class={cn(\"flex min-w-0 flex-col gap-2\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction Message({\n  class: className,\n  align = \"start\",\n  ...props\n}: JSX.IntrinsicElements[\"div\"] & { align?: \"start\" | \"end\" }) {\n  return (\n    <div\n      data-slot=\"message\"\n      data-align={align}\n      class={cn(\n        \"group/message relative flex w-full min-w-0 gap-2 text-sm data-[align=end]:flex-row-reverse\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction MessageAvatar({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"message-avatar\"\n      class={cn(\n        \"flex w-fit min-w-8 shrink-0 items-center justify-center self-end overflow-hidden rounded-full bg-muted group-has-data-[slot=message-footer]/message:-translate-y-8\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction MessageContent({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"message-content\"\n      class={cn(\n        \"flex w-full min-w-0 flex-col gap-2.5 wrap-break-word group-data-[align=end]/message:*:data-slot:self-end\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction MessageHeader({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"message-header\"\n      class={cn(\n        \"flex max-w-full min-w-0 items-center px-3 text-xs font-medium text-muted-foreground group-has-data-[variant=ghost]/message:px-0\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction MessageFooter({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"div\"]) {\n  return (\n    <div\n      data-slot=\"message-footer\"\n      class={cn(\n        \"flex max-w-full min-w-0 items-center px-3 text-xs font-medium text-muted-foreground group-has-data-[variant=ghost]/message:px-0 group-data-[align=end]/message:justify-end\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport {\n  Message,\n  MessageAvatar,\n  MessageContent,\n  MessageFooter,\n  MessageGroup,\n  MessageHeader,\n};\n"
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+import type { SinwanNode } from "sinwan/component";
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { Button } from "./button";
+import { Input } from "./input";
+import { Textarea } from "./textarea";
+import { cn } from "../../lib/utils";
+import type {
+  DivProps,
+  InputHTMLProps,
+  SpanProps,
+  TextareaHTMLProps,
+} from "sinwan-ui-core/types";
+
+type InputGroupProps = DivProps & {
+  children?: SinwanNode;
+};
+
+function InputGroup({ class: className, ...props }: InputGroupProps) {
+  return (
+    <div
+      data-slot="input-group"
+      role="group"
+      class={cn(
+        "group/input-group relative flex h-8 w-full min-w-0 items-center rounded-lg border border-input transition-colors outline-none in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-disabled:bg-input/50 has-disabled:opacity-50 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto dark:bg-card dark:has-disabled:bg-input/80 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+const inputGroupAddonVariants = cva(
+  "flex h-auto cursor-text items-center justify-center gap-2 py-1.5 text-sm font-medium text-muted-foreground select-none group-data-[disabled=true]/input-group:opacity-50 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4",
+  {
+    variants: {
+      align: {
+        "inline-start":
+          "order-first pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]",
+        "inline-end":
+          "order-last pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]",
+        "block-start":
+          "order-first w-full justify-start px-2.5 pt-2 group-has-[>input]/input-group:pt-2 [.border-b]:pb-2",
+        "block-end":
+          "order-last w-full justify-start px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2",
+      },
+    },
+    defaultVariants: {
+      align: "inline-start",
+    },
+  },
+);
+
+type InputGroupAddonProps = DivProps &
+  VariantProps<typeof inputGroupAddonVariants> & {
+    children?: SinwanNode;
+  };
+
+function InputGroupAddon({
+  class: className,
+  align = "inline-start",
+  ...props
+}: InputGroupAddonProps) {
+  return (
+    <div
+      role="group"
+      data-slot="input-group-addon"
+      data-align={align}
+      class={cn(inputGroupAddonVariants({ align }), className)}
+      onclick={(e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest("button")) return;
+        const parent = (e.currentTarget as HTMLElement).parentElement;
+        parent?.querySelector("input")?.focus();
+      }}
+      {...props}
+    />
+  );
+}
+
+const inputGroupButtonVariants = cva(
+  "flex items-center gap-2 text-sm shadow-none",
+  {
+    variants: {
+      size: {
+        xs: "h-6 gap-1 rounded-[calc(var(--radius)-3px)] px-1.5 [&>svg:not([class*='size-'])]:size-3.5",
+        sm: "",
+        "icon-xs":
+          "size-6 rounded-[calc(var(--radius)-3px)] p-0 has-[>svg]:p-0",
+        "icon-sm": "size-8 p-0 has-[>svg]:p-0",
+      },
+    },
+    defaultVariants: {
+      size: "xs",
+    },
+  },
+);
+
+type InputGroupButtonProps = {
+  class?: string;
+  type?: "button" | "submit" | "reset";
+  variant?:
+    | "default"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "destructive"
+    | "link"
+    | "gradient";
+  size?: VariantProps<typeof inputGroupButtonVariants>["size"];
+  disabled?: boolean;
+  asChild?: boolean;
+  children?: SinwanNode;
+  onclick?: (event: MouseEvent) => void;
+};
+
+function InputGroupButton({
+  class: className,
+  type = "button",
+  variant = "ghost",
+  size = "xs",
+  asChild,
+  ...props
+}: InputGroupButtonProps) {
+  return (
+    <Button
+      type={type}
+      data-size={size}
+      variant={variant}
+      asChild={asChild}
+      class={cn(inputGroupButtonVariants({ size }), className)}
+      {...props}
+    />
+  );
+}
+
+function InputGroupText({ class: className, ...props }: SpanProps) {
+  return (
+    <span
+      class={cn(
+        "flex items-center gap-2 text-sm text-muted-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function InputGroupInput({ class: className, ...props }: InputHTMLProps) {
+  return (
+    <Input
+      data-slot="input-group-control"
+      class={cn(
+        "flex-1 rounded-none border-0 bg-transparent shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function InputGroupTextarea({
+  class: className,
+  ...props
+}: TextareaHTMLProps) {
+  return (
+    <Textarea
+      data-slot="input-group-control"
+      class={cn(
+        "flex-1 resize-none rounded-none border-0 bg-transparent py-2 shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+};

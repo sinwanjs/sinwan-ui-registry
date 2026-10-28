@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "aspect-ratio",
+  "type": "registry:ui",
+  "title": "Aspect Ratio",
+  "description": "Container that keeps its content at a fixed width-to-height ratio.",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "aspect-ratio.tsx",
+      "type": "registry:ui",
+      "content": "type AspectRatioProps = JSX.IntrinsicElements[\"div\"] & {\n  ratio?: number;\n};\n\nfunction AspectRatio({\n  ratio = 1,\n  style,\n  ...props\n}: AspectRatioProps) {\n  return (\n    <div\n      data-slot=\"aspect-ratio\"\n      style={{\n        position: \"relative\",\n        width: \"100%\",\n        aspectRatio: String(ratio),\n        ...(typeof style === \"object\" && style !== null ? style : {}),\n      }}\n      {...props}\n    />\n  );\n}\n\nexport { AspectRatio };\nexport type { AspectRatioProps };\n"
+    }
+  ]
+}

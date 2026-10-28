@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "accordion",
+  "type": "registry:ui",
+  "title": "Accordion",
+  "description": "Vertically stacked headings that expand and collapse their sections.",
+  "dependencies": [
+    "lucide@^0.544.0",
+    "sinwan-ui-core@^1.0.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "icons",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "accordion.tsx",
+      "type": "registry:ui",
+      "content": "import { getRawProps, type SinwanNode } from \"sinwan/component\";\nimport { ChevronDown } from \"lucide\";\n\nimport { Icon } from \"@/lib/icons\";\nimport { cn } from \"@/lib/utils\";\nimport {\n  AccordionContent as AccordionContentPrimitive,\n  AccordionItem as AccordionItemPrimitive,\n  AccordionRoot,\n  AccordionTrigger as AccordionTriggerPrimitive,\n} from \"sinwan-ui-core/controls\";\n\ntype AccordionProps = {\n  children?: SinwanNode;\n  type?: \"single\" | \"multiple\";\n  value?: string | string[];\n  defaultValue?: string | string[];\n  onValueChange?: (v: string | string[]) => void;\n  class?: string;\n  collapsible?: boolean;\n};\n\nfunction Accordion(props: AccordionProps) {\n  const { class: className, ...rest } = getRawProps(props);\n  return (\n    <AccordionRoot\n      class={cn(\"flex w-full flex-col\", className)}\n      {...rest}\n    />\n  );\n}\n\ntype AccordionItemProps = {\n  children?: SinwanNode;\n  class?: string;\n  value: string;\n};\n\nfunction AccordionItem({ class: className, ...props }: AccordionItemProps) {\n  return (\n    <AccordionItemPrimitive\n      class={cn(\"group/accordion-item not-last:border-b\", className)}\n      {...props}\n    />\n  );\n}\n\ntype AccordionTriggerProps = {\n  children?: SinwanNode;\n  class?: string;\n};\n\nfunction AccordionTrigger({\n  class: className,\n  children,\n  ...props\n}: AccordionTriggerProps) {\n  return (\n    <div class=\"flex\">\n      <AccordionTriggerPrimitive\n        class={cn(\n          \"group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent py-2.5 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground aria-expanded:**:data-[slot=accordion-trigger-icon]:rotate-180\",\n          className,\n        )}\n        {...props}\n      >\n        {children}\n        <Icon\n          icon={ChevronDown}\n          data-slot=\"accordion-trigger-icon\"\n          class=\"pointer-events-none shrink-0 transition-transform duration-200 group-data-open/accordion-item:rotate-180\"\n        />\n      </AccordionTriggerPrimitive>\n    </div>\n  );\n}\n\ntype AccordionContentProps = {\n  children?: SinwanNode;\n  class?: string;\n};\n\nfunction AccordionContent({\n  class: className,\n  children,\n  ...props\n}: AccordionContentProps) {\n  return (\n    <AccordionContentPrimitive\n      class=\"overflow-hidden text-sm duration-200 data-open:animate-accordion-down data-closed:animate-accordion-up data-closed:!fill-mode-forwards\"\n      {...props}\n    >\n      <div\n        class={cn(\n          \"pt-0 pb-2.5 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4\",\n          className,\n        )}\n      >\n        {children}\n      </div>\n    </AccordionContentPrimitive>\n  );\n}\n\nexport { Accordion, AccordionContent, AccordionItem, AccordionTrigger };\n"
+    }
+  ]
+}

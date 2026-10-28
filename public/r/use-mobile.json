@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "use-mobile",
+  "type": "registry:hook",
+  "title": "useIsMobile",
+  "description": "Hook that tracks whether the viewport is below the mobile breakpoint.",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "use-mobile.ts",
+      "type": "registry:hook",
+      "content": "import { onMounted, onUnmounted } from \"sinwan/component\";\nimport { signal } from \"sinwan/reactivity\";\n\nconst MOBILE_BREAKPOINT = 768;\n\n/**\n * Reactive mobile breakpoint (max-width 767px). Call during component setup.\n */\nexport function useIsMobile(): () => boolean {\n  const isMobile = signal(false);\n\n  onMounted(() => {\n    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);\n    const onChange = () => {\n      isMobile.value = window.innerWidth < MOBILE_BREAKPOINT;\n    };\n    onChange();\n    mql.addEventListener(\"change\", onChange);\n    onUnmounted(() => mql.removeEventListener(\"change\", onChange));\n  });\n\n  return () => isMobile.value;\n}\n\nexport { MOBILE_BREAKPOINT };\n"
+    }
+  ]
+}

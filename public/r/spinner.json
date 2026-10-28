@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "spinner",
+  "type": "registry:ui",
+  "title": "Spinner",
+  "description": "Animated loading indicator.",
+  "dependencies": [
+    "lucide@^0.544.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "icons",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "spinner.tsx",
+      "type": "registry:ui",
+      "content": "import { Loader2 } from \"lucide\";\n\nimport { Icon } from \"@/lib/icons\";\nimport { cn } from \"@/lib/utils\";\n\nfunction Spinner({\n  class: className,\n  ...props\n}: {\n  class?: string;\n  size?: number | string;\n  strokeWidth?: number | string;\n  absoluteStrokeWidth?: boolean;\n  \"aria-hidden\"?: boolean | \"true\" | \"false\";\n  \"aria-label\"?: string;\n  role?: string;\n  [key: string]: unknown;\n}) {\n  return (\n    <Icon\n      icon={Loader2}\n      data-slot=\"spinner\"\n      role=\"status\"\n      aria-label=\"Loading\"\n      class={cn(\"size-4 animate-spin\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Spinner };\n"
+    }
+  ]
+}

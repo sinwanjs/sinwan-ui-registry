@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "popover",
+  "type": "registry:ui",
+  "title": "Popover",
+  "description": "Floating panel anchored to a trigger.",
+  "dependencies": [
+    "sinwan-ui-core@^1.0.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "popover.tsx",
+      "type": "registry:ui",
+      "content": "import type { SinwanNode } from \"sinwan/component\";\n\nimport { cn } from \"@/lib/utils\";\nimport {\n  PopoverContent as PopoverContentPrimitive,\n  PopoverRoot,\n  PopoverTrigger as PopoverTriggerPrimitive,\n} from \"sinwan-ui-core/overlay\";\nimport type { Align, Placement } from \"sinwan-ui-core/floating\";\n\ntype PopoverProps = {\n  children?: SinwanNode;\n  open?: boolean;\n  defaultOpen?: boolean;\n  onOpenChange?: (open: boolean) => void;\n  placement?: Placement;\n  align?: Align;\n};\n\nfunction Popover(props: PopoverProps) {\n  return <PopoverRoot {...props} />;\n}\n\ntype PopoverTriggerProps = {\n  children?: SinwanNode;\n  class?: string;\n  asChild?: boolean;\n};\n\nfunction PopoverTrigger(props: PopoverTriggerProps) {\n  return <PopoverTriggerPrimitive {...props} />;\n}\n\ntype PopoverContentProps = {\n  children?: SinwanNode;\n  class?: string;\n  align?: Align;\n  side?: Placement;\n  sideOffset?: number;\n};\n\nfunction PopoverContent({\n  class: className,\n  align = \"center\",\n  sideOffset = 4,\n  side,\n  children,\n}: PopoverContentProps) {\n  return (\n    <PopoverContentPrimitive\n      align={align}\n      side={side}\n      sideOffset={sideOffset}\n      class={cn(\n        \"z-50 flex w-72 flex-col gap-2.5 rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-200 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:!fill-mode-forwards\",\n        className,\n      )}\n    >\n      {children}\n    </PopoverContentPrimitive>\n  );\n}\n\ntype PopoverAnchorProps = {\n  children?: SinwanNode;\n  class?: string;\n};\n\nfunction PopoverAnchor({ children, class: className }: PopoverAnchorProps) {\n  return (\n    <div data-slot=\"popover-anchor\" class={className}>\n      {children}\n    </div>\n  );\n}\n\ntype DivProps = {\n  children?: SinwanNode;\n  class?: string;\n};\n\nfunction PopoverHeader({ class: className, ...props }: DivProps) {\n  return (\n    <div\n      data-slot=\"popover-header\"\n      class={cn(\"flex flex-col gap-0.5 text-sm\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction PopoverTitle({ class: className, ...props }: DivProps) {\n  return (\n    <div data-slot=\"popover-title\" class={cn(\"font-medium\", className)} {...props} />\n  );\n}\n\nfunction PopoverDescription({ class: className, children, ...props }: DivProps) {\n  return (\n    <p\n      data-slot=\"popover-description\"\n      class={cn(\"text-muted-foreground\", className)}\n      {...props}\n    >\n      {children}\n    </p>\n  );\n}\n\nexport {\n  Popover,\n  PopoverAnchor,\n  PopoverContent,\n  PopoverDescription,\n  PopoverHeader,\n  PopoverTitle,\n  PopoverTrigger,\n};\n"
+    }
+  ]
+}

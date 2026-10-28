@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "marker",
+  "type": "registry:ui",
+  "title": "Marker",
+  "description": "Inline marker with icon and content for highlights and annotations.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1",
+    "sinwan-ui-core@^1.0.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "marker.tsx",
+      "type": "registry:ui",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { Slot } from \"sinwan-ui-core/slot\";\nimport { cn } from \"@/lib/utils\";\n\nconst markerVariants = cva(\n  \"group/marker relative flex min-h-4 w-full items-center gap-2 text-left text-sm text-muted-foreground [&_svg:not([class*='size-'])]:size-4 [a]:underline [a]:underline-offset-3 [a]:hover:text-foreground\",\n  {\n    variants: {\n      variant: {\n        default: \"\",\n        separator:\n          \"before:mr-1 before:h-px before:min-w-0 before:flex-1 before:bg-border after:ml-1 after:h-px after:min-w-0 after:flex-1 after:bg-border\",\n        border: \"border-b border-border pb-2\",\n      },\n    },\n  },\n);\n\nfunction Marker({\n  class: className,\n  variant = \"default\",\n  asChild = false,\n  ...props\n}: JSX.IntrinsicElements[\"div\"] &\n  VariantProps<typeof markerVariants> & {\n    asChild?: boolean;\n  }) {\n  const shared = {\n    \"data-slot\": \"marker\",\n    \"data-variant\": variant,\n    class: cn(markerVariants({ variant, className })),\n    ...props,\n  };\n\n  if (asChild) {\n    return <Slot {...shared} />;\n  }\n\n  return <div {...shared} />;\n}\n\nfunction MarkerIcon({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"span\"]) {\n  return (\n    <span\n      data-slot=\"marker-icon\"\n      aria-hidden=\"true\"\n      class={cn(\n        \"size-4 shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction MarkerContent({\n  class: className,\n  ...props\n}: JSX.IntrinsicElements[\"span\"]) {\n  return (\n    <span\n      data-slot=\"marker-content\"\n      class={cn(\n        \"min-w-0 wrap-break-word group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Marker, MarkerContent, MarkerIcon, markerVariants };\n"
+    }
+  ]
+}

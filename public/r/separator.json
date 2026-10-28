@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "separator",
+  "type": "registry:ui",
+  "title": "Separator",
+  "description": "Horizontal or vertical divider.",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "separator.tsx",
+      "type": "registry:ui",
+      "content": "import { cn } from \"@/lib/utils\";\n\ntype SeparatorProps = JSX.IntrinsicElements[\"div\"] & {\n  orientation?: \"horizontal\" | \"vertical\";\n  decorative?: boolean;\n};\n\nexport function Separator({\n  class: className,\n  orientation = \"horizontal\",\n  decorative = true,\n  ...props\n}: SeparatorProps) {\n  return (\n    <div\n      data-slot=\"separator\"\n      data-orientation={orientation}\n      data-horizontal={orientation === \"horizontal\" ? \"\" : undefined}\n      data-vertical={orientation === \"vertical\" ? \"\" : undefined}\n      role={decorative ? \"none\" : \"separator\"}\n      aria-orientation={decorative ? undefined : orientation}\n      class={cn(\n        \"shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport type { SeparatorProps };\n"
+    }
+  ]
+}

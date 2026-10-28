@@ -1,0 +1,1001 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry.schema.json",
+  "name": "sinwan-ui",
+  "homepage": "https://sinwanjs.com",
+  "aliasRoots": {
+    "components": "src/components",
+    "ui": "src/components/ui",
+    "lib": "src/lib",
+    "hooks": "src/hooks"
+  },
+  "items": [
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "Vertically stacked headings that expand and collapse their sections.",
+      "files": [
+        {
+          "path": "src/components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Callout for important messages, with title and description slots.",
+      "files": [
+        {
+          "path": "src/components/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert Dialog",
+      "description": "Modal dialog that interrupts the user and expects a confirmation.",
+      "files": [
+        {
+          "path": "src/components/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "registry:ui",
+      "title": "Aspect Ratio",
+      "description": "Container that keeps its content at a fixed width-to-height ratio.",
+      "files": [
+        {
+          "path": "src/components/ui/aspect-ratio.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "Attachment",
+      "description": "File attachment preview with name, size and actions.",
+      "files": [
+        {
+          "path": "src/components/ui/attachment.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "User image with a fallback shown while loading or on error.",
+      "files": [
+        {
+          "path": "src/components/ui/avatar/avatar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/avatar/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/avatar/useAvatar.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Small status or label pill with variants.",
+      "files": [
+        {
+          "path": "src/components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Navigation trail showing the current page within a hierarchy.",
+      "files": [
+        {
+          "path": "src/components/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "bubble",
+      "type": "registry:ui",
+      "title": "Bubble",
+      "description": "Chat bubble with content, grouping and reactions.",
+      "files": [
+        {
+          "path": "src/components/ui/bubble.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Button with variants, sizes and a loading state.",
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button Group",
+      "description": "Groups related buttons into a single segmented control.",
+      "files": [
+        {
+          "path": "src/components/ui/button-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "Date picker calendar with single, multiple and range selection.",
+      "files": [
+        {
+          "path": "src/components/ui/calendar/calendar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/calendar/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/calendar/useCalendar.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Surface with header, content and footer sections.",
+      "files": [
+        {
+          "path": "src/components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "Carousel",
+      "description": "Slide carousel with previous/next controls and swipe support.",
+      "files": [
+        {
+          "path": "src/components/ui/carousel/carousel.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/carousel/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/carousel/useCarousel.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "ECharts wrapper with theming, toolbox and 3D (echarts-gl) support.",
+      "files": [
+        {
+          "path": "src/components/ui/chart/chart.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/chart/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/chart/useChart.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/echarts-gl.d.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Accessible checkbox with checked and indeterminate states.",
+      "files": [
+        {
+          "path": "src/components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "Panel that shows and hides its content with an animation.",
+      "files": [
+        {
+          "path": "src/components/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Searchable select with a filterable list of options.",
+      "files": [
+        {
+          "path": "src/components/ui/combobox/combobox.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/combobox/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/combobox/useCombobox.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "Command palette with search, groups and keyboard navigation.",
+      "files": [
+        {
+          "path": "src/components/ui/command/command.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/command/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/command/useCommand.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "Right-click menu with items, checkboxes, radios and submenus.",
+      "files": [
+        {
+          "path": "src/components/ui/context-menu/context-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/context-menu/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/context-menu/useContextMenu.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "TanStack Table powered data table with sorting, filtering and pagination.",
+      "files": [
+        {
+          "path": "src/components/ui/data-table/data-table-column-header.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/data-table/data-table-features.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/data-table/data-table-node.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/data-table/data-table-pagination.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/data-table/data-table-select.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/data-table/data-table-view-options.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/data-table/data-table.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/data-table/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/data-table/useDataTable.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Modal window rendered in a portal with focus management.",
+      "files": [
+        {
+          "path": "src/components/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "direction",
+      "type": "registry:ui",
+      "title": "Direction",
+      "description": "Re-exports the direction provider for component-level imports.",
+      "files": [
+        {
+          "path": "src/components/ui/direction.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "Drawer",
+      "description": "Panel that slides in from an edge of the screen.",
+      "files": [
+        {
+          "path": "src/components/ui/drawer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "Menu opened from a trigger, with checkboxes, radios and submenus.",
+      "files": [
+        {
+          "path": "src/components/ui/dropdown-menu/dropdown-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/dropdown-menu/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/dropdown-menu/useDropdownMenu.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "Empty",
+      "description": "Empty-state placeholder with icon, title, description and actions.",
+      "files": [
+        {
+          "path": "src/components/ui/empty.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Form field layout with label, description and error message.",
+      "files": [
+        {
+          "path": "src/components/ui/field.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover Card",
+      "description": "Floating card shown while hovering a trigger.",
+      "files": [
+        {
+          "path": "src/components/ui/hover-card/hover-card.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/hover-card/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/hover-card/useHoverCard.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "icons",
+      "type": "registry:lib",
+      "title": "Icons",
+      "description": "Lucide icon component shared by sinwan-ui components.",
+      "files": [
+        {
+          "path": "src/lib/icons.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Text input styled for sinwan-ui forms.",
+      "files": [
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "Input with leading or trailing addons, buttons and text.",
+      "files": [
+        {
+          "path": "src/components/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input OTP",
+      "description": "One-time password input split into individual slots.",
+      "files": [
+        {
+          "path": "src/components/ui/input-otp/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/input-otp/input-otp.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/input-otp/useInputOtp.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "List item layout with media, content and actions.",
+      "files": [
+        {
+          "path": "src/components/ui/item.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "Keyboard key and shortcut display.",
+      "files": [
+        {
+          "path": "src/components/ui/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "Accessible label for form controls.",
+      "files": [
+        {
+          "path": "src/components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "Marker",
+      "description": "Inline marker with icon and content for highlights and annotations.",
+      "files": [
+        {
+          "path": "src/components/ui/marker.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "Menubar",
+      "description": "Desktop-style menu bar with menus, checkboxes, radios and submenus.",
+      "files": [
+        {
+          "path": "src/components/ui/menubar/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/menubar/menubar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/menubar/useMenubar.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "Chat message layout with avatar, header and content.",
+      "files": [
+        {
+          "path": "src/components/ui/message.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "title": "Message Scroller",
+      "description": "Scrollable message list that sticks to the bottom with jump buttons.",
+      "files": [
+        {
+          "path": "src/components/ui/message-scroller/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/message-scroller/message-scroller.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/message-scroller/useMessageScroller.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "native-select",
+      "type": "registry:ui",
+      "title": "Native Select",
+      "description": "Styled native select element.",
+      "files": [
+        {
+          "path": "src/components/ui/native-select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation Menu",
+      "description": "Site navigation with hover or click panels.",
+      "files": [
+        {
+          "path": "src/components/ui/navigation-menu/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/navigation-menu/navigation-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/navigation-menu/useNavigationMenu.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Page navigation with previous, next and page links.",
+      "files": [
+        {
+          "path": "src/components/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Floating panel anchored to a trigger.",
+      "files": [
+        {
+          "path": "src/components/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "Progress bar showing completion of a task.",
+      "files": [
+        {
+          "path": "src/components/ui/progress.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "title": "Questionnaire",
+      "description": "Multi-step questionnaire with choices, keyboard shortcuts and progress.",
+      "files": [
+        {
+          "path": "src/components/ui/questionnaire/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/questionnaire/questionnaire.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/questionnaire/useQuestionnaire.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio Group",
+      "description": "Set of radio buttons where only one can be selected.",
+      "files": [
+        {
+          "path": "src/components/ui/radio-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "Resizable panel groups with draggable handles and collapse support.",
+      "files": [
+        {
+          "path": "src/components/ui/resizable/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/resizable/resizable.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/resizable/useResizable.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "Scroll container with custom overlay scrollbars.",
+      "files": [
+        {
+          "path": "src/components/ui/scroll-area/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/scroll-area/scroll-area.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/scroll-area/useScrollArea.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Select menu with a floating list of options.",
+      "files": [
+        {
+          "path": "src/components/ui/select/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/select/select.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/select/useSelect.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Horizontal or vertical divider.",
+      "files": [
+        {
+          "path": "src/components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "Dialog that slides in from a side of the screen.",
+      "files": [
+        {
+          "path": "src/components/ui/sheet.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Collapsible application sidebar with groups, menus and mobile sheet.",
+      "files": [
+        {
+          "path": "src/components/ui/sidebar/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/sidebar/sidebar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/sidebar/useSidebar.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Loading placeholder that mimics content layout.",
+      "files": [
+        {
+          "path": "src/components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "Range input with one or more draggable thumbs.",
+      "files": [
+        {
+          "path": "src/components/ui/slider/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/slider/slider.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/slider/useSlider.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui",
+      "title": "Sonner",
+      "description": "Toast notification store and Toaster rendering under the shadcn-style sonner name.",
+      "files": [
+        {
+          "path": "src/components/ui/sonner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "Animated loading indicator.",
+      "files": [
+        {
+          "path": "src/components/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "style",
+      "type": "registry:style",
+      "title": "Style",
+      "description": "Global stylesheet with theme tokens, palettes and custom variants.",
+      "files": [
+        {
+          "path": "src/styles/global.css",
+          "type": "registry:style"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Toggle switch for on/off settings.",
+      "files": [
+        {
+          "path": "src/components/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Styled table elements.",
+      "files": [
+        {
+          "path": "src/components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Tabbed panels with line and vertical variants.",
+      "files": [
+        {
+          "path": "src/components/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Multi-line text input.",
+      "files": [
+        {
+          "path": "src/components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "Two-state button that can be on or off.",
+      "files": [
+        {
+          "path": "src/components/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "description": "Group of toggles with single or multiple selection.",
+      "files": [
+        {
+          "path": "src/components/ui/toggle-group/index.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toggle-group/toggle-group.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toggle-group/useToggleGroup.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Popup with information shown on hover or focus.",
+      "files": [
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:hook",
+      "title": "useIsMobile",
+      "description": "Hook that tracks whether the viewport is below the mobile breakpoint.",
+      "files": [
+        {
+          "path": "src/hooks/use-mobile.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Utils",
+      "description": "Class name helper combining clsx and tailwind-merge.",
+      "files": [
+        {
+          "path": "src/lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    }
+  ]
+}

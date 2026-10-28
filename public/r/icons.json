@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/registry-item.schema.json",
+  "name": "icons",
+  "type": "registry:lib",
+  "title": "Icons",
+  "description": "Lucide icon component shared by sinwan-ui components.",
+  "dependencies": [
+    "lucide@^0.544.0"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "icons.tsx",
+      "type": "registry:lib",
+      "content": "import { cc, type SinwanNode } from \"sinwan/component\";\nimport type { IconNode } from \"lucide\";\nimport { cn } from \"@/lib/utils\";\n\nexport type IconProps = {\n  icon: IconNode;\n  class?: string;\n  size?: number | string;\n  strokeWidth?: number | string;\n  absoluteStrokeWidth?: boolean;\n  \"aria-hidden\"?: boolean | \"true\" | \"false\";\n  \"aria-label\"?: string;\n  role?: string;\n  [key: string]: unknown;\n};\n\nfunction isIconNode(value: unknown): value is IconNode {\n  return (\n    Array.isArray(value) &&\n    value.every(\n      (entry: unknown) =>\n        Array.isArray(entry) &&\n        typeof entry[0] === \"string\" &&\n        typeof entry[1] === \"object\" &&\n        entry[1] !== null,\n    )\n  );\n}\n\nfunction toElement(node: IconNode[number], key: number): SinwanNode {\n  const [tag, attrs] = node;\n  const parts: readonly unknown[] = node;\n  const nested = parts[2];\n  const childNodes = isIconNode(nested) ? nested.map((child, i) => toElement(child, i)) : [];\n  return {\n    tag,\n    props: { ...attrs, key },\n    children: childNodes,\n  };\n}\n\n/**\n * Render a Lucide icon node tree as a Sinwan SVG element.\n */\nexport const Icon = cc(\n  ({\n    icon,\n    class: className,\n    size = 24,\n    strokeWidth = 2,\n    absoluteStrokeWidth,\n    ...props\n  }: IconProps): SinwanNode => {\n    const computedStroke =\n      absoluteStrokeWidth && typeof size === \"number\"\n        ? (Number(strokeWidth) * 24) / size\n        : strokeWidth;\n\n    return {\n      tag: \"svg\",\n      props: {\n        xmlns: \"http://www.w3.org/2000/svg\",\n        width: size,\n        height: size,\n        viewBox: \"0 0 24 24\",\n        fill: \"none\",\n        stroke: \"currentColor\",\n        \"stroke-width\": computedStroke,\n        \"stroke-linecap\": \"round\",\n        \"stroke-linejoin\": \"round\",\n        class: cn(\"lucide\", className),\n        ...props,\n      },\n      children: icon.map((node, i) => toElement(node, i)),\n    };\n  },\n);\n\nexport type { IconNode };\n"
+    }
+  ]
+}

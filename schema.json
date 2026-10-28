@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/sinwanjs/sinwan-ui-registry/main/schema.json",
+  "title": "sinwan-ui.json",
+  "description": "Project configuration written by `sinwan-ui init` and read by `add`, `list`, `search`, `view` and `diff`.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "description": "URL of this JSON Schema, for editor validation.",
+      "type": "string"
+    },
+    "tsx": {
+      "description": "Whether the project uses TypeScript (`.tsx`) components.",
+      "type": "boolean",
+      "default": true
+    },
+    "tailwind": {
+      "type": "object",
+      "properties": {
+        "css": {
+          "description": "Project-relative path of the stylesheet that receives the sinwan-ui theme (Tailwind CSS v4).",
+          "type": "string",
+          "minLength": 1,
+          "default": "src/styles/global.css"
+        }
+      },
+      "required": ["css"],
+      "additionalProperties": false
+    },
+    "aliases": {
+      "description": "Import aliases that copied files use. Each one must resolve through `compilerOptions.paths` in the project's `tsconfig.json` or `jsconfig.json`.",
+      "type": "object",
+      "properties": {
+        "components": {
+          "$ref": "#/$defs/alias",
+          "default": "@/components"
+        },
+        "ui": { "$ref": "#/$defs/alias", "default": "@/components/ui" },
+        "lib": { "$ref": "#/$defs/alias", "default": "@/lib" },
+        "utils": { "$ref": "#/$defs/alias", "default": "@/lib/utils" },
+        "hooks": { "$ref": "#/$defs/alias", "default": "@/hooks" }
+      },
+      "required": ["components", "ui", "lib", "utils", "hooks"],
+      "additionalProperties": false
+    },
+    "registries": {
+      "description": "Additional registries addressed as `@namespace/name`. Each value is an item URL (or local path) template containing `{name}`.",
+      "type": "object",
+      "propertyNames": { "pattern": "^@[a-zA-Z0-9][a-zA-Z0-9._-]*$" },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "\\{name\\}"
+      },
+      "default": {}
+    },
+    "packageManager": {
+      "description": "Package manager used to install the npm dependencies of added items. Detected from the lockfile by `init`.",
+      "enum": ["bun", "npm", "pnpm", "yarn"],
+      "default": "bun"
+    }
+  },
+  "required": ["tsx", "tailwind", "aliases", "packageManager"],
+  "additionalProperties": false,
+  "$defs": {
+    "alias": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    }
+  }
+}
