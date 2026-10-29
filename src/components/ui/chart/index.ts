@@ -2,7 +2,6 @@ export { Chart, ChartContainer, ChartStyle } from "./chart";
 export {
   buildChartStyleCss,
   echarts,
-  echartsGlExtension,
   THEMES,
   useChart,
   useChartRoot,

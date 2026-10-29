@@ -142,7 +142,7 @@
       "name": "chart",
       "type": "registry:ui",
       "title": "Chart",
-      "description": "ECharts wrapper with theming, toolbox and 3D (echarts-gl) support.",
+      "description": "ECharts wrapper with theming, toolbox and 3D (echarts-gl) support. Chart types, components and echarts-gl load on demand.",
       "registryDependencies": [
         "utils"
       ]

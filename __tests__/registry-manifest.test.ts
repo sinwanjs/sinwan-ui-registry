@@ -137,9 +137,10 @@ describe("registry.json manifest", () => {
     expect(listedUnowned).toEqual([]);
   });
 
-  test("chart owns the echarts-gl declarations", () => {
+  test("chart owns its lazy module loader and the echarts module declarations", () => {
     const chart = manifest.items.find((item) => item.name === "chart");
-    expect(chart?.files).toContainEqual({ path: "src/lib/echarts-gl.d.ts", type: "registry:lib" });
+    expect(chart?.files).toContainEqual({ path: "src/components/ui/chart/modules.ts", type: "registry:ui" });
+    expect(chart?.files).toContainEqual({ path: "src/lib/echarts-modules.d.ts", type: "registry:lib" });
   });
 });
 

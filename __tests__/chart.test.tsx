@@ -895,6 +895,111 @@ describe("ECharts Chart", () => {
     fallback.unmount();
   });
 
+  test("zoomControls extends the first toolbox of a toolbox array", async () => {
+    let captured: EChartsOption | undefined;
+    const { unmount } = mountUi(() => (
+      <Chart
+        zoomControls
+        option={{
+          ...barOption,
+          toolbox: [{ feature: { saveAsImage: {} } }, { right: 0 }],
+        }}
+        style={chartSize}
+        onReady={(chart) => {
+          const originalSetOption = chart.setOption.bind(chart);
+          chart.setOption = (option, opts) => {
+            captured = option;
+            originalSetOption(option, opts);
+          };
+        }}
+      />
+    ));
+    await flush();
+
+    expect(captured?.toolbox).toEqual([
+      {
+        feature: {
+          saveAsImage: {},
+          myZoom: expect.objectContaining({ title: "Zoom" }),
+          myZoomReset: expect.objectContaining({ title: "Zoom Reset" }),
+        },
+      },
+      { right: 0 },
+    ]);
+    unmount();
+  });
+
+  function trackCharts() {
+    const charts: EChartsInstance[] = [];
+    const applied: unknown[] = [];
+    const onReady = (chart: EChartsInstance) => {
+      charts.push(chart);
+      const originalSetOption = chart.setOption.bind(chart);
+      chart.setOption = (next, opts) => {
+        const series = Array.isArray(next.series) ? next.series : [];
+        applied.push(series[0]?.type);
+        originalSetOption(next, opts);
+      };
+    };
+    return { charts, applied, onReady };
+  }
+
+  test("skips an option whose modules finish loading after a newer option", async () => {
+    const tracked = trackCharts();
+    const option = signal<EChartsOption>(barOption);
+    const { unmount } = mountUi(() => (
+      <Chart option={() => option.value} style={chartSize} onReady={tracked.onReady} />
+    ));
+    await flush();
+    expect(tracked.applied).toEqual(["bar"]);
+
+    option.value = { animation: false, series: [{ type: "gauge", data: [] }] };
+    await Promise.resolve();
+    option.value = { ...barOption };
+    await flush();
+
+    expect(tracked.applied).toEqual(["bar", "bar"]);
+    expect(tracked.charts).toHaveLength(1);
+    unmount();
+  });
+
+  test("recreates the instance when a new option needs a module installed after init", async () => {
+    const tracked = trackCharts();
+    const option = signal<EChartsOption>(barOption);
+    const { root, unmount } = mountUi(() => (
+      <Chart option={() => option.value} style={chartSize} onReady={tracked.onReady} />
+    ));
+    await flush();
+
+    option.value = { animation: false, series: [{ type: "funnel", data: [] }] };
+    await flush();
+    await flush();
+
+    expect(tracked.charts).toHaveLength(2);
+    expect(tracked.charts[0]?.isDisposed()).toBe(true);
+    expect(tracked.applied).toEqual(["bar", "funnel"]);
+    const host = root.querySelector<HTMLElement>('[data-slot="chart-view"]');
+    expect(host !== null && echarts.getInstanceByDom(host) === tracked.charts[1]).toBe(true);
+    unmount();
+  });
+
+  test("does not init when unmounted before the first option's modules load", async () => {
+    const tracked = trackCharts();
+    const { root, unmount } = mountUi(() => (
+      <Chart
+        option={{ animation: false, series: [{ type: "heatmap", data: [] }] }}
+        style={chartSize}
+        onReady={tracked.onReady}
+      />
+    ));
+    const host = root.querySelector<HTMLElement>('[data-slot="chart-view"]');
+    unmount();
+    await flush();
+
+    expect(tracked.charts).toEqual([]);
+    expect(host && echarts.getInstanceByDom(host)).toBeUndefined();
+  });
+
   test("fullscreen injects toolbox control and toggles the Fullscreen API", async () => {
     let captured: EChartsOption | undefined;
     const requests: Element[] = [];

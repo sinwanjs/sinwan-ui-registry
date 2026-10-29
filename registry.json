@@ -205,7 +205,7 @@
       "name": "chart",
       "type": "registry:ui",
       "title": "Chart",
-      "description": "ECharts wrapper with theming, toolbox and 3D (echarts-gl) support.",
+      "description": "ECharts wrapper with theming, toolbox and 3D (echarts-gl) support. Chart types, components and echarts-gl load on demand.",
       "files": [
         {
           "path": "src/components/ui/chart/chart.tsx",
@@ -216,11 +216,15 @@
           "type": "registry:ui"
         },
         {
+          "path": "src/components/ui/chart/modules.ts",
+          "type": "registry:ui"
+        },
+        {
           "path": "src/components/ui/chart/useChart.ts",
           "type": "registry:ui"
         },
         {
-          "path": "src/lib/echarts-gl.d.ts",
+          "path": "src/lib/echarts-modules.d.ts",
           "type": "registry:lib"
         }
       ]

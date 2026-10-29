@@ -7,32 +7,18 @@ import {
   type SinwanNode,
 } from "sinwan/component";
 import { effect, resolve, signal, type Signal } from "sinwan/reactivity";
-import * as echarts from "echarts";
-// Namespace import (not a bare side-effect) so production bundlers keep GL
-// registered on this echarts copy — bare `import "echarts-gl"` is DCE'd.
-import * as echartsGl from "echarts-gl";
 import type {
   EChartsInitOpts,
   EChartsOption,
   SetOptionOpts,
 } from "echarts";
-
-/**
- * Live binding so production bundlers cannot drop the GL extension.
- * Bare `import "echarts-gl"` is eliminated under minify; this export is read
- * during chart setup and must stay in the module graph.
- */
-export const echartsGlExtension = echartsGl;
-
-const ECHARTS_GL_GLOBAL = Symbol.for("sinwan-ui.echarts-gl");
-
-function retainEchartsGl(): void {
-  const scope = globalThis as typeof globalThis & {
-    [ECHARTS_GL_GLOBAL]?: typeof echartsGl;
-  };
-  // Assigning the namespace keeps echarts-gl in production graphs (Bun DCE).
-  scope[ECHARTS_GL_GLOBAL] ??= echartsGlExtension;
-}
+import {
+  chartModuleLoaders,
+  chartModulesNewerThan,
+  chartModulesVersion,
+  echarts,
+  installChartModules,
+} from "./modules";
 
 export type EChartsInstance = {
   group: string;
@@ -443,6 +429,17 @@ function withZoomControlsToolbox(
   };
 }
 
+/** Adds the components `useChartView` injects, so their modules load before init. */
+function withModuleKeys(option: EChartsOption, props: ChartProps): EChartsOption {
+  const toolbox =
+    Boolean(resolve(props.zoomControls)) || Boolean(resolve(props.fullscreen));
+  return {
+    ...option,
+    tooltip: option.tooltip ?? {},
+    toolbox: toolbox ? (option.toolbox ?? {}) : option.toolbox,
+  };
+}
+
 function roundedBox(width: number, height: number): string {
   return `${Math.round(width)}x${Math.round(height)}`;
 }
@@ -504,12 +501,43 @@ export type ChartViewReturn = {
 export function useChartView(props: ChartProps): ChartViewReturn {
   const ctx = inject<ChartContextProps | undefined>(ChartKey, undefined);
   const hostEl = signal<HTMLElement | null>(null);
-  retainEchartsGl();
 
   onMounted(() => {
     const el = hostEl.value;
     if (!el) return;
 
+    let mounted = true;
+    let teardown: (() => void) | undefined;
+    const start = () => {
+      if (!mounted) return;
+      teardown?.();
+      teardown = mountChart(el, restart);
+    };
+    const restart = () => {
+      void Promise.resolve().then(start);
+    };
+    onUnmounted(() => {
+      mounted = false;
+      teardown?.();
+      teardown = undefined;
+    });
+
+    // Modules must be installed before `echarts.init` to take effect.
+    const initial = readOption(props.option);
+    const pending = initial
+      ? installChartModules(chartModuleLoaders(withModuleKeys(initial, props)))
+      : null;
+    if (pending) {
+      void pending.then(start);
+    } else {
+      start();
+    }
+  });
+
+  function mountChart(
+    el: HTMLElement,
+    restart: () => void,
+  ): (() => void) | undefined {
     disposeExisting(el);
 
     const renderer = resolve(props.renderer) ?? "canvas";
@@ -517,6 +545,7 @@ export function useChartView(props: ChartProps): ChartViewReturn {
     const initOpts = resolve(props.initOpts) ?? resolve(props.opts);
     const view = el.ownerDocument.defaultView;
     const hasBox = el.clientWidth > 0 && el.clientHeight > 0;
+    const initVersion = chartModulesVersion();
     const created: unknown = echarts.init(el, theme, {
       devicePixelRatio: view?.devicePixelRatio || 1,
       ...(hasBox ? {} : { width: 320, height: 180 }),
@@ -551,6 +580,7 @@ export function useChartView(props: ChartProps): ChartViewReturn {
     let lastReplaceMerge: SetOptionOpts["replaceMerge"];
     let lastFullscreen = false;
     let lastZoomControls = false;
+    let applySeq = 0;
 
     let sizeEl: HTMLElement = el;
     let node: HTMLElement | null = el.parentElement;
@@ -605,12 +635,27 @@ export function useChartView(props: ChartProps): ChartViewReturn {
             toggleElementFullscreen(sizeEl);
           });
         }
-        chart.setOption(next, {
-          notMerge,
-          lazyUpdate,
-          silent,
-          replaceMerge,
-        });
+        const seq = ++applySeq;
+        const loaders = chartModuleLoaders(next);
+        const apply = () => {
+          if (!alive || chart.isDisposed() || seq !== applySeq) return;
+          if (chartModulesNewerThan(loaders, initVersion)) {
+            restart();
+            return;
+          }
+          chart.setOption(next, {
+            notMerge,
+            lazyUpdate,
+            silent,
+            replaceMerge,
+          });
+        };
+        const pending = installChartModules(loaders);
+        if (pending) {
+          void pending.then(apply);
+        } else {
+          apply();
+        }
       }
       const loading =
         resolve(props.loading) ?? resolve(props.showLoading) ?? false;
@@ -686,7 +731,7 @@ export function useChartView(props: ChartProps): ChartViewReturn {
       });
     }
 
-    onUnmounted(() => {
+    return () => {
       alive = false;
       stop();
       observer?.disconnect();
@@ -704,8 +749,8 @@ export function useChartView(props: ChartProps): ChartViewReturn {
       bound.clear();
       if (!chart.isDisposed()) chart.dispose();
       ctx?.setInstance(null);
-    });
-  });
+    };
+  }
 
   return {
     nested: Boolean(ctx),
