@@ -29,6 +29,17 @@ const barOption: EChartsOption = {
 
 const chartSize = { width: "320px", height: "180px" };
 
+/** The chart's default tooltip host while it is not fullscreen. */
+function bodyTooltipLayer(): HTMLElement {
+  const layer = document.querySelector<HTMLElement>(
+    '[data-slot="chart-tooltip-layer"]',
+  );
+  if (layer?.parentElement !== document.body) {
+    throw new Error("chart tooltip layer is not on body");
+  }
+  return layer;
+}
+
 async function flush() {
   await new Promise((r) => setTimeout(r, 0));
   await new Promise((r) => setTimeout(r, 0));
@@ -515,7 +526,7 @@ describe("ECharts Chart", () => {
     unmount();
   });
 
-  test("defaults tooltip.appendTo to body and preserves an explicit opt-out", async () => {
+  test("defaults tooltip.appendTo to the body tooltip layer and preserves an explicit opt-out", async () => {
     let captured: EChartsOption | undefined;
     const { unmount } = mountUi(() => (
       <ChartContainer config={{ sales: { label: "Sales", color: "#3366ff" } }}>
@@ -542,7 +553,7 @@ describe("ECharts Chart", () => {
       single && typeof single === "object" && "appendTo" in single
         ? single.appendTo
         : undefined,
-    ).toBe("body");
+    ).toBe(bodyTooltipLayer());
     unmount();
 
     let opted: EChartsOption | undefined;
@@ -621,7 +632,7 @@ describe("ECharts Chart", () => {
             tip && typeof tip === "object" && "appendTo" in tip
               ? tip.appendTo
               : undefined,
-          ).toBe("body");
+          ).toBe(bodyTooltipLayer());
         }
       }
       unmount();
@@ -716,7 +727,7 @@ describe("ECharts Chart", () => {
           "appendTo" in captured.tooltip
           ? captured.tooltip.appendTo
           : undefined,
-      ).toBe("body");
+      ).toBe(bodyTooltipLayer());
       unmount();
     } finally {
       window.getComputedStyle = original;
@@ -1076,19 +1087,40 @@ describe("ECharts Chart", () => {
         '[data-slot="chart"]',
       ) as HTMLElement | null;
       expect(container).toBeTruthy();
+      // Only the fullscreen element paints, so the tooltip layer follows it.
+      const layer = document.querySelector<HTMLElement>(
+        '[data-slot="chart-tooltip-layer"]',
+      );
+      expect(layer?.parentElement).toBe(document.body);
+      // ECharts maps tooltip coordinates through the container's corners, so
+      // the layer needs a real box (a zero-size one pins the tooltip at 0,0).
+      expect(layer?.style.right).toMatch(/^0(px)?$/);
+      expect(layer?.style.bottom).toMatch(/^0(px)?$/);
+      expect(layer?.style.pointerEvents).toBe("none");
       feature?.myFullScreen?.onclick?.();
       expect(requests[0]).toBe(container as HTMLElement);
+      expect(layer?.parentElement).toBe(container);
       expect(
         (container as HTMLElement).style.getPropertyValue("background-color"),
       ).toBe("var(--background)");
 
       feature?.myFullScreen?.onclick?.();
       expect(exitCount).toBe(1);
+      expect(layer?.parentElement).toBe(document.body);
       expect(
         (container as HTMLElement).style.getPropertyValue("background-color"),
       ).toBe("");
 
+      const unrelated = document.createElement("div");
+      document.body.appendChild(unrelated);
+      fullscreenEl = unrelated;
+      document.dispatchEvent(new Event("fullscreenchange"));
+      expect(layer?.parentElement).toBe(document.body);
+      fullscreenEl = null;
+      unrelated.remove();
+
       unmount();
+      expect(layer?.isConnected).toBe(false);
 
       let arrayToolbox: EChartsOption | undefined;
       const second = mountUi(() => (

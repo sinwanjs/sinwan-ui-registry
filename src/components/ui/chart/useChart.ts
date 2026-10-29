@@ -202,19 +202,44 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 /**
  * Keep HTML tooltips off the overflow/resize host so hover does not flash
- * (and pie slices do not stick in a blurred/empty state). Callers can opt out
- * by setting tooltip.appendTo or tooltip.appendToBody themselves.
+ * (and pie slices do not stick in a blurred/empty state). They go in a layer
+ * that lives on `body` and follows the fullscreen element (see
+ * `placeTooltipLayer`). Callers can opt out by setting tooltip.appendTo or
+ * tooltip.appendToBody themselves.
  */
-function withStableTooltip(tooltip: unknown): unknown {
+function withStableTooltip(tooltip: unknown, layer: HTMLElement): unknown {
   if (tooltip == null) return tooltip;
   if (Array.isArray(tooltip)) {
-    return tooltip.map((entry) => withStableTooltip(entry));
+    return tooltip.map((entry) => withStableTooltip(entry, layer));
   }
   if (!isRecord(tooltip)) return tooltip;
   if (tooltip.appendTo != null || tooltip.appendToBody != null) {
     return tooltip;
   }
-  return { ...tooltip, appendTo: "body" };
+  return { ...tooltip, appendTo: layer };
+}
+
+function createTooltipLayer(doc: Document): HTMLElement {
+  const layer = doc.createElement("div");
+  layer.setAttribute("data-slot", "chart-tooltip-layer");
+  // Out of flow and click-through. It must have a real box: ECharts maps
+  // chart coordinates through markers at the container's corners, and a
+  // zero-size container leaves the tooltip stuck at 0,0.
+  layer.style.cssText =
+    "position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none";
+  return layer;
+}
+
+/**
+ * Only the fullscreen element and its subtree paint, so a tooltip on `body`
+ * is hidden while the chart is fullscreen. ECharts resolves `appendTo` once,
+ * but measures the container on every show, so moving the layer is enough.
+ */
+function placeTooltipLayer(layer: HTMLElement, chartEl: HTMLElement): void {
+  const doc = chartEl.ownerDocument;
+  const full = doc.fullscreenElement;
+  const parent = full && full.contains(chartEl) ? full : doc.body;
+  if (layer.parentElement !== parent) parent.appendChild(layer);
 }
 
 /**
@@ -258,6 +283,7 @@ function withChartDefaults(
   option: EChartsOption,
   palette: string[],
   host: HTMLElement,
+  tooltipLayer: HTMLElement,
 ): EChartsOption {
   const next: EChartsOption = { ...option };
   if (next.color == null && palette.length > 0) {
@@ -279,9 +305,12 @@ function withChartDefaults(
     next.animationThreshold = 2000;
   }
   if (next.tooltip !== undefined) {
-    next.tooltip = withStableTooltip(next.tooltip) as EChartsOption["tooltip"];
+    next.tooltip = withStableTooltip(
+      next.tooltip,
+      tooltipLayer,
+    ) as EChartsOption["tooltip"];
   } else {
-    next.tooltip = { appendTo: "body" };
+    next.tooltip = { appendTo: tooltipLayer };
   }
   return next;
 }
@@ -592,6 +621,9 @@ export function useChartView(props: ChartProps): ChartViewReturn {
       node = node.parentElement;
     }
 
+    const tooltipLayer = createTooltipLayer(el.ownerDocument);
+    placeTooltipLayer(tooltipLayer, el);
+
     const sync = () => {
       if (!alive || chart.isDisposed()) return;
       const option = readOption(props.option);
@@ -625,7 +657,7 @@ export function useChartView(props: ChartProps): ChartViewReturn {
         lastFullscreen = fullscreen;
         lastZoomControls = zoomControls;
         const palette = ctx ? paletteFromConfig(ctx.config, el) : [];
-        let next = withChartDefaults(option, palette, el);
+        let next = withChartDefaults(option, palette, el, tooltipLayer);
         if (zoomControls) {
           next = withZoomControlsToolbox(next, chart);
         }
@@ -706,6 +738,7 @@ export function useChartView(props: ChartProps): ChartViewReturn {
     const onFullscreenChange = () => {
       if (!alive || chart.isDisposed()) return;
       syncFullscreenSurface(sizeEl);
+      placeTooltipLayer(tooltipLayer, el);
       lastBox = "";
       resizeTo(sizeEl.clientWidth, sizeEl.clientHeight);
     };
@@ -748,6 +781,7 @@ export function useChartView(props: ChartProps): ChartViewReturn {
       }
       bound.clear();
       if (!chart.isDisposed()) chart.dispose();
+      tooltipLayer.remove();
       ctx?.setInstance(null);
     };
   }

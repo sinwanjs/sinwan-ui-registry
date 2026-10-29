@@ -19,6 +19,7 @@ import { install as Geo3DComponent } from "echarts-gl/lib/component/geo3D/instal
 import { install as GlobeComponent } from "echarts-gl/lib/component/globe/install.js";
 import { install as Mapbox3DComponent } from "echarts-gl/lib/component/mapbox3D/install.js";
 import { install as Maptalks3DComponent } from "echarts-gl/lib/component/maptalks3D/install.js";
+import graphicGL from "echarts-gl/lib/util/graphicGL.js";
 import {
   chartModuleLoaders,
   chartModulesNewerThan,
@@ -43,7 +44,7 @@ const seriesTypes = [
 ];
 
 const componentKeys = [
-  "grid", "xAxis", "yAxis", "polar", "angleAxis", "radiusAxis", "radar", "geo",
+  "grid", "xAxis", "yAxis", "polar", "angleAxis", "radiusAxis", "radar",
   "singleAxis", "parallel", "parallelAxis", "calendar", "matrix", "graphic",
   "toolbox", "tooltip", "axisPointer", "brush", "title", "timeline", "legend",
   "dataZoom", "visualMap", "thumbnail", "aria", "dataset", "grid3D", "xAxis3D",
@@ -72,8 +73,7 @@ describe("chart modules", () => {
         SurfaceChart, Map3DChart, ScatterGLChart, GraphGLChart, FlowGLChart,
         LinesGLChart,
         components.GridComponent, components.PolarComponent,
-        components.RadarComponent, components.GeoComponent,
-        components.SingleAxisComponent, components.ParallelComponent,
+        components.RadarComponent, components.SingleAxisComponent, components.ParallelComponent,
         components.CalendarComponent, components.MatrixComponent,
         components.GraphicComponent, components.ToolboxComponent,
         components.TooltipComponent, components.AxisPointerComponent,
@@ -137,10 +137,12 @@ describe("chart modules", () => {
     );
   });
 
-  test("ignores null keys, plain settings and unregistered series types", () => {
+  test("ignores null keys, static modules, plain settings and unregistered series types", () => {
     // Extension series types (registered by the app) are outside EChartsOption.
     const option: Record<string, unknown> = {
       title: undefined,
+      // Geo is installed with the renderers, so it needs no loader.
+      geo: { map: "world" },
       color: ["#000"],
       animation: false,
       series: [{ type: "wordCloud" }, { type: "toString" }, { name: "untyped" }],
@@ -195,5 +197,24 @@ describe("chart modules", () => {
     } finally {
       teardownDom();
     }
+  });
+
+  test("registers the echarts-gl shadow shader with every Geo3DBuilder module", async () => {
+    // Only mapbox3D/maptalks3D register it upstream; geo3D, map3D and
+    // polygons3D create a shadow ground material from it.
+    const stub = "@export ecgl.displayShadow.vertex\nstub\n@end";
+    for (const option of [{ geo3D: {} }, { series: { type: "map3D" } }, { series: { type: "polygons3D" } }]) {
+      graphicGL.Shader.import(stub);
+      await installersFor(option as EChartsOption);
+      expect(graphicGL.Shader.source("ecgl.displayShadow.vertex")).toContain("v_WorldPosition");
+      expect(graphicGL.Shader.source("ecgl.displayShadow.fragment")).toContain("shadowEnabled");
+    }
+  });
+
+  test("registers maps before any chart module loads", () => {
+    // Apps call registerMap at module scope; map, geo and geo3D read it later.
+    const geoJson = { type: "FeatureCollection" as const, features: [] };
+    echarts.registerMap("chart-modules-test", geoJson);
+    expect(echarts.getMap("chart-modules-test")?.geoJSON).toBe(geoJson);
   });
 });

@@ -1,10 +1,14 @@
 import * as echarts from "echarts/core";
 import { CanvasRenderer, SVGRenderer } from "echarts/renderers";
+import { install as GeoComponent } from "echarts/lib/component/geo/install.js";
 import type { EChartsOption } from "echarts";
 
 // Renderers stay static so `echarts.init` works synchronously; charts,
 // components and echarts-gl load on demand for the options that need them.
+// Geo is static too: it implements `echarts.registerMap` / `getMap`, which
+// apps call at module scope, before any option has loaded a module.
 echarts.use([CanvasRenderer, SVGRenderer]);
+echarts.use(GeoComponent);
 
 export type ChartModuleInstaller = Parameters<typeof echarts.use>[0];
 export type ChartModuleLoader = () => Promise<ChartModuleInstaller>;
@@ -13,6 +17,21 @@ type InstallModule = { install: ChartModuleInstaller };
 
 function fromInstall(load: () => Promise<InstallModule>): ChartModuleLoader {
   return () => load().then((mod) => mod.install);
+}
+
+// echarts-gl's Geo3DBuilder (geo3D, map3D, polygons3D) creates a `shadow`
+// ground material, but only the mapbox3D and maptalks3D views register that
+// shader. The full echarts-gl entry hid this; per-module installs do not.
+function withDisplayShadow(load: ChartModuleLoader): ChartModuleLoader {
+  return () =>
+    Promise.all([
+      load(),
+      import("echarts-gl/lib/util/graphicGL.js"),
+      import("echarts-gl/lib/util/shader/displayShadow.glsl.js"),
+    ]).then(([installer, graphicGL, shader]) => {
+      graphicGL.default.Shader.import(shader.default);
+      return installer;
+    });
 }
 
 // One deep import per module, so bundlers emit a chunk per chart type.
@@ -83,11 +102,13 @@ const seriesLoaders: Readonly<Record<string, ChartModuleLoader>> = {
     () => import("echarts-gl/lib/chart/scatter3D/install.js"),
   ),
   lines3D: fromInstall(() => import("echarts-gl/lib/chart/lines3D/install.js")),
-  polygons3D: fromInstall(
-    () => import("echarts-gl/lib/chart/polygons3D/install.js"),
+  polygons3D: withDisplayShadow(
+    fromInstall(() => import("echarts-gl/lib/chart/polygons3D/install.js")),
   ),
   surface: fromInstall(() => import("echarts-gl/lib/chart/surface/install.js")),
-  map3D: fromInstall(() => import("echarts-gl/lib/chart/map3D/install.js")),
+  map3D: withDisplayShadow(
+    fromInstall(() => import("echarts-gl/lib/chart/map3D/install.js")),
+  ),
   scatterGL: fromInstall(
     () => import("echarts-gl/lib/chart/scatterGL/install.js"),
   ),
@@ -104,7 +125,6 @@ const componentLoaders: Readonly<Record<string, ChartModuleLoader>> = {
   angleAxis: polar,
   radiusAxis: polar,
   radar: fromInstall(() => import("echarts/lib/component/radar/install.js")),
-  geo: fromInstall(() => import("echarts/lib/component/geo/install.js")),
   singleAxis: fromInstall(
     () => import("echarts/lib/component/singleAxis/install.js"),
   ),
@@ -149,7 +169,9 @@ const componentLoaders: Readonly<Record<string, ChartModuleLoader>> = {
   xAxis3D: grid3D,
   yAxis3D: grid3D,
   zAxis3D: grid3D,
-  geo3D: fromInstall(() => import("echarts-gl/lib/component/geo3D/install.js")),
+  geo3D: withDisplayShadow(
+    fromInstall(() => import("echarts-gl/lib/component/geo3D/install.js")),
+  ),
   globe: fromInstall(() => import("echarts-gl/lib/component/globe/install.js")),
   mapbox3D: fromInstall(
     () => import("echarts-gl/lib/component/mapbox3D/install.js"),
