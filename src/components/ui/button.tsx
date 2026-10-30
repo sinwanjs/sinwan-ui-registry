@@ -24,6 +24,9 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 enabled-only:hover:underline",
         gradient:
           "bg-gradient-brand text-white enabled-only:hover:brightness-95",
+        // Solid page surface for buttons on coloured or brand panels, in both themes.
+        inverse:
+          "bg-background text-foreground shadow-sm enabled-only:hover:bg-background/90 aria-expanded:bg-background/90",
       },
       size: {
         default:

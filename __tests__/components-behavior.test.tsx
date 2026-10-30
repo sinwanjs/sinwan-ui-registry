@@ -180,6 +180,17 @@ beforeEach(() => {
 afterEach(() => teardownDom());
 
 describe("Button behavior", () => {
+  test("inverse is a solid surface for coloured panels in both themes", () => {
+    const { root, unmount } = mountUi(() => <Button variant="inverse">Get started</Button>);
+    const button = root.querySelector<HTMLElement>('[data-slot="button"]');
+    const classes = button?.className.split(/\s+/) ?? [];
+    expect(classes).toContain("bg-background");
+    expect(classes).toContain("text-foreground");
+    expect(classes).toContain("shadow-sm");
+    expect(classes.some((name) => name.startsWith("dark:bg-input"))).toBe(false);
+    unmount();
+  });
+
   test("variants loading disabled and asChild", () => {
     const variants = [
       "default",
@@ -189,6 +200,7 @@ describe("Button behavior", () => {
       "destructive",
       "link",
       "gradient",
+      "inverse",
     ] as const;
     const { root, unmount } = mountUi(() => (
       <>
