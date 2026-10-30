@@ -6,7 +6,7 @@
   "description": "Tabbed panels with line and vertical variants.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "sinwan-ui-core@^1.0.0"
+    "sinwan-ui-core@^1.1.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

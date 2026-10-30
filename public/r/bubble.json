@@ -6,7 +6,7 @@
   "description": "Chat bubble with content, grouping and reactions.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "sinwan-ui-core@^1.0.0"
+    "sinwan-ui-core@^1.1.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

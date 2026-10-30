@@ -23,7 +23,7 @@
         "typescript": "^5.9.3",
       },
       "peerDependencies": {
-        "sinwan-ui-core": "^1.0.0",
+        "sinwan-ui-core": "^1.1.0",
       },
       "optionalPeers": [
         "sinwan-ui-core",
@@ -79,7 +79,7 @@
 
     "@types/bun": ["@types/bun@1.4.4", "", { "dependencies": { "bun-types": "1.4.4" } }, "sha512-9wkRDXUXK124pEnAutE6n/l18j+i9GC5IAHK8TmX/2nlySETmky0OU6yL5U8pW1AoKh++AN9auDCr647BfurjQ=="],
 
-    "@types/node": ["@types/node@26.6.5", "", { "dependencies": { "undici-types": "~8.9.0" } }, "sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg=="],
+    "@types/node": ["@types/node@26.6.6", "", { "dependencies": { "undici-types": "~8.9.0" } }, "sha512-MzQj+8Kx3XI40OmUAE6Qoh58ZMNstNNMwn2nfd3qWsfe7nDNSqJNzes4njhz6AHwrSHOffSLwXU6yb474Q4aog=="],
 
     "@types/whatwg-mimetype": ["@types/whatwg-mimetype@3.0.2", "", {}, "sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA=="],
 
@@ -115,7 +115,7 @@
 
     "sinwan": ["sinwan@2.0.3", "", { "dependencies": { "csstype": "^3.2.3" }, "peerDependencies": { "typescript": ">=5.0.0 <8.0.0" } }, "sha512-alptCLbtDavuZ7Tks/KfNY3CnxJVSVdpTwG/afGnobe9BxxKRPBNZ/E4V49ZFwQNtx9wuLkvJeO6IFo1iQwNzw=="],
 
-    "sinwan-compiler": ["sinwan-compiler@1.0.0", "", { "dependencies": { "esrap": "^2.3.7", "oxc-parser": "^0.150.0" }, "peerDependencies": { "typescript": ">=5.0.0 <8.0.0" }, "bin": { "sinwan": "dist/cli.js" } }, "sha512-bsJs7gC8pY+5Yfpt0wNTbnNs3R7s/BSr5W0VggSaK054EaUZ6VlP4xDNuysSK8jZUXQsNpM8MEHpQRtGabZOWg=="],
+    "sinwan-compiler": ["sinwan-compiler@1.1.1", "", { "dependencies": { "esrap": "^2.3.7", "oxc-parser": "^0.150.0" }, "peerDependencies": { "typescript": ">=5.0.0 <8.0.0" }, "bin": { "sinwan": "dist/cli.js" } }, "sha512-az5jyh8JzJOo9ibuL8adBQxSxYVsZyZc2PGCT5Tev+QCAHrRdDZOsgh1VuwTCD529mkcB+n3Gw4Us7RoR0qIpw=="],
 
     "tailwind-merge": ["tailwind-merge@3.7.0", "", {}, "sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA=="],
 

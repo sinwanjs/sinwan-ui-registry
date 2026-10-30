@@ -5,7 +5,7 @@
   "title": "Popover",
   "description": "Floating panel anchored to a trigger.",
   "dependencies": [
-    "sinwan-ui-core@^1.0.0"
+    "sinwan-ui-core@^1.1.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

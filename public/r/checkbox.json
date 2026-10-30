@@ -6,7 +6,7 @@
   "description": "Accessible checkbox with checked and indeterminate states.",
   "dependencies": [
     "lucide@^0.544.0",
-    "sinwan-ui-core@^1.0.0"
+    "sinwan-ui-core@^1.1.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

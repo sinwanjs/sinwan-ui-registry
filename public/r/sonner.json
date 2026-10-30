@@ -6,7 +6,7 @@
   "description": "Toast notification store and Toaster rendering under the shadcn-style sonner name.",
   "dependencies": [
     "lucide@^0.544.0",
-    "sinwan-ui-core@^1.0.0"
+    "sinwan-ui-core@^1.1.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

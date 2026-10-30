@@ -5,7 +5,7 @@
   "title": "Alert Dialog",
   "description": "Modal dialog that interrupts the user and expects a confirmation.",
   "dependencies": [
-    "sinwan-ui-core@^1.0.0"
+    "sinwan-ui-core@^1.1.0"
   ],
   "devDependencies": [],
   "registryDependencies": [
