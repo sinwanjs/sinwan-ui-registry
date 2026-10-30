@@ -6,7 +6,7 @@
   "description": "Right-click menu with items, checkboxes, radios and submenus.",
   "dependencies": [
     "lucide@^0.544.0",
-    "sinwan-ui-core@^1.1.0"
+    "sinwan-ui-core@^1.2.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

@@ -5,7 +5,7 @@
   "title": "Drawer",
   "description": "Panel that slides in from an edge of the screen, with a drag handle to dismiss.",
   "dependencies": [
-    "sinwan-ui-core@^1.1.0"
+    "sinwan-ui-core@^1.2.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

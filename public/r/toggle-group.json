@@ -6,7 +6,7 @@
   "description": "Group of toggles with single or multiple selection.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "sinwan-ui-core@^1.1.0"
+    "sinwan-ui-core@^1.2.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

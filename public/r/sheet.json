@@ -6,7 +6,7 @@
   "description": "Dialog that slides in from a side of the screen.",
   "dependencies": [
     "lucide@^0.544.0",
-    "sinwan-ui-core@^1.1.0"
+    "sinwan-ui-core@^1.2.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

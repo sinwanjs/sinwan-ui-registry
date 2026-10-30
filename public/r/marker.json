@@ -6,7 +6,7 @@
   "description": "Inline marker with icon and content for highlights and annotations.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "sinwan-ui-core@^1.1.0"
+    "sinwan-ui-core@^1.2.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

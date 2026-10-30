@@ -5,7 +5,7 @@
   "title": "Hover Card",
   "description": "Floating card shown while hovering a trigger.",
   "dependencies": [
-    "sinwan-ui-core@^1.1.0"
+    "sinwan-ui-core@^1.2.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

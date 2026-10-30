@@ -6,7 +6,7 @@
   "description": "Searchable select with a filterable list of options.",
   "dependencies": [
     "lucide@^0.544.0",
-    "sinwan-ui-core@^1.1.0"
+    "sinwan-ui-core@^1.2.0"
   ],
   "devDependencies": [],
   "registryDependencies": [
