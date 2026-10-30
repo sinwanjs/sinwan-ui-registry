@@ -1,4 +1,5 @@
-import { afterEach, beforeEach, describe, expect, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, spyOn, test } from "bun:test";
+import { cc } from "sinwan/component";
 import { Button } from "../src/components/ui/button";
 import {
   Dialog,
@@ -18,7 +19,10 @@ import {
   Drawer,
   DrawerContent,
   DrawerTitle,
+  useDrawerDrag,
+  type DrawerDirection,
 } from "../src/components/ui/drawer";
+import { DialogRoot } from "sinwan-ui-core/overlay";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -442,6 +446,274 @@ describe("Drawer inset", () => {
     expect(sidePanel.className).not.toContain("inset-y-0");
     expect(sidePanel.className).not.toContain("rounded-r-xl");
     side.unmount();
+  });
+});
+
+const waitMs = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+type Point = { x: number; y: number };
+
+function pointer(type: string, point: Point, button = 0): PointerEvent {
+  return new PointerEvent(type, {
+    bubbles: true,
+    cancelable: true,
+    button,
+    clientX: point.x,
+    clientY: point.y,
+  });
+}
+
+function mountDrawer(
+  direction: DrawerDirection,
+  changes: boolean[] = [],
+  size = { width: 300, height: 400 },
+) {
+  const ui = mountUi(() => (
+    <Drawer
+      defaultOpen
+      direction={direction}
+      onOpenChange={(open: boolean) => changes.push(open)}
+    >
+      <DrawerContent direction={direction}>
+        <DrawerTitle>Drag me</DrawerTitle>
+      </DrawerContent>
+    </Drawer>
+  ));
+  const panel = ui.query('[data-slot="drawer-content"]') as HTMLElement;
+  const handle = ui.query('[data-slot="drawer-handle"]') as HTMLElement;
+  spyOn(panel, "getBoundingClientRect").mockReturnValue(
+    new window.DOMRect(0, 0, size.width, size.height),
+  );
+  return { ui, panel, handle, changes };
+}
+
+describe("Drawer handle", () => {
+  test("renders a visible drag handle on every side", () => {
+    const expected: Record<DrawerDirection, string> = {
+      bottom: "order-first",
+      top: "order-last",
+      left: "right-0",
+      right: "left-0",
+    };
+    for (const direction of Object.keys(expected) as DrawerDirection[]) {
+      const { ui, handle } = mountDrawer(direction);
+      expect(handle).not.toBeNull();
+      expect(handle.className).toContain(expected[direction]);
+      expect(handle.className).toContain("touch-none");
+      expect(handle.className).not.toContain("hidden");
+      const bar = handle.firstElementChild as HTMLElement;
+      expect(bar.className).toContain("bg-foreground/20");
+      ui.unmount();
+    }
+  });
+
+  test("showHandle={false} renders no handle", () => {
+    const ui = mountUi(() => (
+      <Drawer defaultOpen>
+        <DrawerContent showHandle={false}>
+          <DrawerTitle>No handle</DrawerTitle>
+        </DrawerContent>
+      </Drawer>
+    ));
+    expect(ui.query('[data-slot="drawer-handle"]')).toBeNull();
+    ui.unmount();
+  });
+});
+
+describe("Drawer drag to close", () => {
+  test("dragging the bottom handle past a quarter of the panel closes it from the drag position", async () => {
+    const { ui, panel, handle, changes } = mountDrawer("bottom");
+    handle.dispatchEvent(pointer("pointerdown", { x: 50, y: 100 }));
+    await nextTick();
+    expect(handle.getAttribute("data-dragging")).toBe("true");
+    expect(panel.style.transition).toBe("none");
+
+    window.dispatchEvent(pointer("pointermove", { x: 50, y: 250 }));
+    expect(panel.style.transform).toBe("translate3d(0, 150px, 0)");
+
+    window.dispatchEvent(pointer("pointerup", { x: 50, y: 250 }));
+    expect(changes).toEqual([false]);
+    expect(panel.style.transform).toBe("translate3d(0, 150px, 0)");
+    expect(panel.style.getPropertyValue("--tw-exit-translate-y")).toBe(
+      "calc(max(100%, 150px) + 1rem)",
+    );
+    await nextTick();
+    expect(handle.getAttribute("data-dragging")).toBe("false");
+    ui.unmount();
+  });
+
+  test("each direction closes toward its own edge", () => {
+    const cases: Array<{
+      direction: DrawerDirection;
+      to: Point;
+      transform: string;
+      property: string;
+      exit: string;
+    }> = [
+      {
+        direction: "top",
+        to: { x: 0, y: -150 },
+        transform: "translate3d(0, -150px, 0)",
+        property: "--tw-exit-translate-y",
+        exit: "calc(-1 * (max(100%, 150px) + 1rem))",
+      },
+      {
+        direction: "left",
+        to: { x: -150, y: 0 },
+        transform: "translate3d(-150px, 0, 0)",
+        property: "--tw-exit-translate-x",
+        exit: "calc(-1 * (max(100%, 150px) + 1rem))",
+      },
+      {
+        direction: "right",
+        to: { x: 150, y: 0 },
+        transform: "translate3d(150px, 0, 0)",
+        property: "--tw-exit-translate-x",
+        exit: "calc(max(100%, 150px) + 1rem)",
+      },
+    ];
+    for (const item of cases) {
+      const { ui, panel, handle, changes } = mountDrawer(item.direction);
+      handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }));
+      window.dispatchEvent(pointer("pointermove", item.to));
+      expect(panel.style.transform).toBe(item.transform);
+      window.dispatchEvent(pointer("pointerup", item.to));
+      expect(changes).toEqual([false]);
+      expect(panel.style.getPropertyValue(item.property)).toBe(item.exit);
+      ui.unmount();
+    }
+  });
+
+  test("a short slow drag snaps back and clears the transition afterwards", async () => {
+    const now = spyOn(performance, "now");
+    now.mockReturnValue(0);
+    const { ui, panel, handle, changes } = mountDrawer("bottom");
+    handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }));
+    now.mockReturnValue(1000);
+    window.dispatchEvent(pointer("pointermove", { x: 0, y: 40 }));
+    window.dispatchEvent(pointer("pointerup", { x: 0, y: 40 }));
+    expect(changes).toEqual([]);
+    expect(panel.getAttribute("data-state")).toBe("open");
+    expect(panel.style.transform).toBe("");
+    expect(panel.style.transition).toContain("transform 200ms");
+    await waitMs(230);
+    expect(panel.style.transition).toBe("");
+    now.mockRestore();
+    ui.unmount();
+  });
+
+  test("a fast flick closes even below the distance threshold", () => {
+    const now = spyOn(performance, "now");
+    now.mockReturnValue(0);
+    const { ui, handle, changes } = mountDrawer("bottom");
+    handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }));
+    now.mockReturnValue(20);
+    window.dispatchEvent(pointer("pointermove", { x: 0, y: 30 }));
+    now.mockReturnValue(30);
+    window.dispatchEvent(pointer("pointerup", { x: 0, y: 30 }));
+    expect(changes).toEqual([false]);
+    now.mockRestore();
+    ui.unmount();
+  });
+
+  test("a flick that stopped before release does not close", () => {
+    const now = spyOn(performance, "now");
+    now.mockReturnValue(0);
+    const { ui, handle, changes } = mountDrawer("bottom");
+    handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }));
+    now.mockReturnValue(20);
+    window.dispatchEvent(pointer("pointermove", { x: 0, y: 30 }));
+    now.mockReturnValue(400);
+    window.dispatchEvent(pointer("pointerup", { x: 0, y: 30 }));
+    expect(changes).toEqual([]);
+    now.mockRestore();
+    ui.unmount();
+  });
+
+  test("dragging away from the close edge is resisted and never closes", () => {
+    const { ui, panel, handle, changes } = mountDrawer("bottom");
+    handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 200 }));
+    window.dispatchEvent(pointer("pointermove", { x: 0, y: 100 }));
+    expect(panel.style.transform).toBe("translate3d(0, -20px, 0)");
+    window.dispatchEvent(pointer("pointerup", { x: 0, y: 100 }));
+    expect(changes).toEqual([]);
+    expect(panel.style.transform).toBe("");
+    ui.unmount();
+  });
+
+  test("pointercancel snaps back without closing", () => {
+    const { ui, panel, handle, changes } = mountDrawer("bottom");
+    handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }));
+    window.dispatchEvent(pointer("pointermove", { x: 0, y: 300 }));
+    window.dispatchEvent(pointer("pointercancel", { x: 0, y: 300 }));
+    expect(changes).toEqual([]);
+    expect(panel.style.transform).toBe("");
+    ui.unmount();
+  });
+
+  test("ignores non-primary buttons", () => {
+    const { ui, panel, handle } = mountDrawer("bottom");
+    handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }, 2));
+    expect(handle.getAttribute("data-dragging")).toBe("false");
+    window.dispatchEvent(pointer("pointermove", { x: 0, y: 300 }));
+    expect(panel.style.transform).toBe("");
+    ui.unmount();
+  });
+
+  test("a new press replaces an unfinished drag", () => {
+    const { ui, panel, handle, changes } = mountDrawer("bottom");
+    handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }));
+    handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }));
+    window.dispatchEvent(pointer("pointermove", { x: 0, y: 200 }));
+    window.dispatchEvent(pointer("pointerup", { x: 0, y: 200 }));
+    expect(changes).toEqual([false]);
+    expect(panel.style.transform).toBe("translate3d(0, 200px, 0)");
+    ui.unmount();
+  });
+
+  test("unmounting mid-drag or mid-snap releases listeners and timers", async () => {
+    const drag = mountDrawer("bottom");
+    drag.handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }));
+    drag.ui.unmount();
+    window.dispatchEvent(pointer("pointermove", { x: 0, y: 300 }));
+    window.dispatchEvent(pointer("pointerup", { x: 0, y: 300 }));
+    expect(drag.changes).toEqual([]);
+
+    const snap = mountDrawer("bottom");
+    snap.handle.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }));
+    window.dispatchEvent(pointer("pointerup", { x: 0, y: 0 }));
+    expect(snap.panel.style.transition).toContain("transform");
+    snap.ui.unmount();
+    await waitMs(230);
+    expect(snap.panel.style.transition).toContain("transform");
+  });
+});
+
+describe("useDrawerDrag", () => {
+  test("does nothing when the handle is outside a drawer panel", () => {
+    let onPointerDown: ((event: PointerEvent) => void) | undefined;
+    const Probe = cc(() => {
+      onPointerDown = useDrawerDrag("bottom").onPointerDown;
+      return <div data-testid="loose-handle" />;
+    });
+    const ui = mountUi(() => (
+      <DialogRoot defaultOpen>
+        <Probe />
+      </DialogRoot>
+    ));
+    const loose = ui.query('[data-testid="loose-handle"]') as HTMLElement;
+    loose.addEventListener("pointerdown", (event) => onPointerDown?.(event));
+    loose.dispatchEvent(pointer("pointerdown", { x: 0, y: 0 }));
+    onPointerDown?.(pointer("pointerdown", { x: 0, y: 0 }));
+    window.dispatchEvent(pointer("pointermove", { x: 0, y: 300 }));
+    expect(loose.style.transform).toBe("");
+    ui.unmount();
+  });
+
+  test("throws outside a Drawer", () => {
+    expect(() => withSetup(() => useDrawerDrag("bottom"))).toThrow(
+      /within a <Drawer \/>/,
+    );
   });
 });
 

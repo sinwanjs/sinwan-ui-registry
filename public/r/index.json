@@ -239,7 +239,7 @@
       "name": "drawer",
       "type": "registry:ui",
       "title": "Drawer",
-      "description": "Panel that slides in from an edge of the screen.",
+      "description": "Panel that slides in from an edge of the screen, with a drag handle to dismiss.",
       "registryDependencies": [
         "utils"
       ]

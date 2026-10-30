@@ -1,6 +1,6 @@
 /* =============================================================================
  * sinwan-ui — global stylesheet
- * Palettes: "credit-blue" (default) | "jomlaty" via html[data-palette]
+ * Palettes: "credit-blue" (default) | "jomlaty" | "cazview" via html[data-palette]
  * Mode: light / dark / system via .light / .dark (ThemeProvider)
  * ========================================================================== */
 
@@ -397,10 +397,172 @@ html[data-palette="jomlaty"].dark {
 }
 
 /* -----------------------------------------------------------------------
+ * 5c. Palette — Cazview (midnight text, electric blue → violet brand)
+ * ---------------------------------------------------------------------
+ * Applied when ThemeProvider sets html[data-palette="cazview"].
+ * Brand: #111E2E text, #1A73E8 → #3B52D9 → #7B2CBF gradient, #FAFAFA
+ * surface. Dark mode lifts the gradient stops so they read on navy.
+ * -------------------------------------------------------------------- */
+html[data-palette="cazview"] {
+  --background: oklch(0.985 0 0);
+  --foreground: oklch(0.232 0.036 254);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.232 0.036 254);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.232 0.036 254);
+
+  --primary: oklch(0.507 0.207 270);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.94 0.035 295);
+  --secondary-foreground: oklch(0.4 0.17 303);
+
+  --tertiary: oklch(0.574 0.195 258);
+  --tertiary-foreground: oklch(0.985 0 0);
+
+  --muted: oklch(0.965 0.004 260);
+  --muted-foreground: oklch(0.5 0.025 256);
+
+  --accent: oklch(0.95 0.02 270);
+  --accent-foreground: oklch(0.232 0.036 254);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --success: oklch(0.6 0.16 155);
+  --info: oklch(0.574 0.195 258);
+  --warning: oklch(0.75 0.16 80);
+
+  --border: oklch(0.91 0.008 260);
+  --input: oklch(0.91 0.008 260);
+  --ring: oklch(0.507 0.207 270 / 0.5);
+
+  --chart-1: oklch(0.574 0.195 258);
+  --chart-2: oklch(0.507 0.207 270);
+  --chart-3: oklch(0.487 0.213 304);
+  --chart-4: oklch(0.7 0.13 230);
+  --chart-5: oklch(0.62 0.18 330);
+
+  --sidebar: oklch(0.97 0.004 260);
+  --sidebar-foreground: oklch(0.232 0.036 254);
+
+  --sidebar-primary: oklch(0.507 0.207 270);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+
+  --sidebar-accent: oklch(0.94 0.02 270);
+  --sidebar-accent-foreground: oklch(0.232 0.036 254);
+
+  --sidebar-border: oklch(0.91 0.008 260);
+  --sidebar-ring: oklch(0.507 0.207 270 / 0.5);
+
+  --gradient-from: oklch(0.574 0.195 258);
+  --gradient-mid: oklch(0.507 0.207 270);
+  --gradient-to: oklch(0.487 0.213 304);
+  --gradient-angle: 135deg;
+  --gradient-brand: linear-gradient(
+    var(--gradient-angle),
+    var(--gradient-from) 0%,
+    var(--gradient-mid) 50%,
+    var(--gradient-to) 100%
+  );
+
+  --background-gradient:
+    radial-gradient(
+      110% 85% at 0% 0%,
+      oklch(from var(--gradient-from) l c h / 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      110% 85% at 100% 0%,
+      oklch(from var(--gradient-to) l c h / 0.06),
+      transparent 60%
+    ),
+    radial-gradient(
+      110% 85% at 100% 100%,
+      oklch(from var(--gradient-mid) l c h / 0.06),
+      transparent 60%
+    );
+}
+
+html[data-palette="cazview"].dark {
+  --background: oklch(0.17 0.03 256);
+  --foreground: oklch(0.985 0 0);
+
+  --card: oklch(0.21 0.035 256);
+  --card-foreground: oklch(0.985 0 0);
+
+  --popover: oklch(0.21 0.035 256);
+  --popover-foreground: oklch(0.985 0 0);
+
+  --primary: oklch(0.66 0.18 270);
+  --primary-foreground: oklch(0.17 0.03 256);
+
+  --secondary: oklch(0.36 0.12 300);
+  --secondary-foreground: oklch(0.985 0 0);
+
+  --tertiary: oklch(0.68 0.16 258);
+  --tertiary-foreground: oklch(0.17 0.03 256);
+
+  --muted: oklch(0.26 0.03 256);
+  --muted-foreground: oklch(0.7 0.02 256);
+
+  --accent: oklch(0.28 0.04 270);
+  --accent-foreground: oklch(0.985 0 0);
+
+  --destructive: oklch(0.704 0.191 22.216);
+  --success: oklch(0.65 0.16 155);
+  --info: oklch(0.68 0.16 258);
+  --warning: oklch(0.78 0.15 80);
+
+  --border: oklch(0.33 0.03 256);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.66 0.18 270 / 0.5);
+
+  --chart-1: oklch(0.68 0.16 258);
+  --chart-2: oklch(0.66 0.18 270);
+  --chart-3: oklch(0.64 0.2 304);
+  --chart-4: oklch(0.76 0.11 230);
+  --chart-5: oklch(0.7 0.17 330);
+
+  --sidebar: oklch(0.14 0.028 256);
+  --sidebar-foreground: oklch(0.985 0 0);
+
+  --sidebar-primary: oklch(0.66 0.18 270);
+  --sidebar-primary-foreground: oklch(0.17 0.03 256);
+
+  --sidebar-accent: oklch(0.24 0.035 260);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+
+  --sidebar-border: oklch(0.3 0.03 256);
+  --sidebar-ring: oklch(0.66 0.18 270 / 0.5);
+
+  --gradient-from: oklch(0.68 0.16 258);
+  --gradient-mid: oklch(0.66 0.18 270);
+  --gradient-to: oklch(0.64 0.2 304);
+
+  --background-gradient:
+    radial-gradient(
+      110% 85% at 0% 0%,
+      oklch(from var(--gradient-from) l c h / 0.14),
+      transparent 62%
+    ),
+    radial-gradient(
+      110% 85% at 100% 0%,
+      oklch(from var(--gradient-to) l c h / 0.12),
+      transparent 62%
+    ),
+    radial-gradient(
+      110% 85% at 100% 100%,
+      oklch(from var(--gradient-mid) l c h / 0.10),
+      transparent 62%
+    );
+}
+
+/* -----------------------------------------------------------------------
  * 6. System dark-mode fallback (no explicit .light/.dark class present)
  * -------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
-  html:not(.light):not([data-palette="jomlaty"]) {
+  html:not(.light):not([data-palette="jomlaty"]):not([data-palette="cazview"]) {
     --background: oklch(0.16 0.025 258);
     --foreground: oklch(0.96 0.008 250);
     --card: oklch(0.2 0.03 258);
@@ -507,6 +669,80 @@ html[data-palette="jomlaty"].dark {
       radial-gradient(
         110% 85% at 0% 0%,
         oklch(from var(--gradient-from) l c h / 0.13),
+        transparent 62%
+      ),
+      radial-gradient(
+        110% 85% at 100% 0%,
+        oklch(from var(--gradient-to) l c h / 0.12),
+        transparent 62%
+      ),
+      radial-gradient(
+        110% 85% at 100% 100%,
+        oklch(from var(--gradient-mid) l c h / 0.10),
+        transparent 62%
+      );
+  }
+
+  html[data-palette="cazview"]:not(.light) {
+    --background: oklch(0.17 0.03 256);
+    --foreground: oklch(0.985 0 0);
+
+    --card: oklch(0.21 0.035 256);
+    --card-foreground: oklch(0.985 0 0);
+
+    --popover: oklch(0.21 0.035 256);
+    --popover-foreground: oklch(0.985 0 0);
+
+    --primary: oklch(0.66 0.18 270);
+    --primary-foreground: oklch(0.17 0.03 256);
+
+    --secondary: oklch(0.36 0.12 300);
+    --secondary-foreground: oklch(0.985 0 0);
+
+    --tertiary: oklch(0.68 0.16 258);
+    --tertiary-foreground: oklch(0.17 0.03 256);
+
+    --muted: oklch(0.26 0.03 256);
+    --muted-foreground: oklch(0.7 0.02 256);
+
+    --accent: oklch(0.28 0.04 270);
+    --accent-foreground: oklch(0.985 0 0);
+
+    --destructive: oklch(0.704 0.191 22.216);
+    --success: oklch(0.65 0.16 155);
+    --info: oklch(0.68 0.16 258);
+    --warning: oklch(0.78 0.15 80);
+
+    --border: oklch(0.33 0.03 256);
+    --input: oklch(1 0 0 / 12%);
+    --ring: oklch(0.66 0.18 270 / 0.5);
+
+    --chart-1: oklch(0.68 0.16 258);
+    --chart-2: oklch(0.66 0.18 270);
+    --chart-3: oklch(0.64 0.2 304);
+    --chart-4: oklch(0.76 0.11 230);
+    --chart-5: oklch(0.7 0.17 330);
+
+    --sidebar: oklch(0.14 0.028 256);
+    --sidebar-foreground: oklch(0.985 0 0);
+
+    --sidebar-primary: oklch(0.66 0.18 270);
+    --sidebar-primary-foreground: oklch(0.17 0.03 256);
+
+    --sidebar-accent: oklch(0.24 0.035 260);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+
+    --sidebar-border: oklch(0.3 0.03 256);
+    --sidebar-ring: oklch(0.66 0.18 270 / 0.5);
+
+    --gradient-from: oklch(0.68 0.16 258);
+    --gradient-mid: oklch(0.66 0.18 270);
+    --gradient-to: oklch(0.64 0.2 304);
+
+    --background-gradient:
+      radial-gradient(
+        110% 85% at 0% 0%,
+        oklch(from var(--gradient-from) l c h / 0.14),
         transparent 62%
       ),
       radial-gradient(

@@ -1,6 +1,6 @@
-import { getRawProps, type SinwanNode } from "sinwan/component";
+import { cc, getRawProps, type SinwanNode } from "sinwan/component";
 
-import { cn } from "../../lib/utils";
+import { cn } from "../../../lib/utils";
 import {
   DialogClose as DialogClosePrimitive,
   DialogContent as DialogContentPrimitive,
@@ -9,8 +9,7 @@ import {
   DialogTrigger as DialogTriggerPrimitive,
 } from "sinwan-ui-core/overlay";
 import { UiPortal } from "sinwan-ui-core/core";
-
-type DrawerDirection = "top" | "bottom" | "left" | "right";
+import { useDrawerDrag, type DrawerDirection } from "./useDrawer";
 
 type DrawerProps = {
   children?: SinwanNode;
@@ -74,6 +73,48 @@ function DrawerOverlay({ class: className }: DrawerOverlayProps) {
   );
 }
 
+const DRAWER_HANDLE_CLASSES: Record<DrawerDirection, string> = {
+  bottom: "order-first w-full pt-4 pb-2",
+  top: "order-last w-full pt-2 pb-4",
+  left: "absolute inset-y-0 right-0 w-4",
+  right: "absolute inset-y-0 left-0 w-4",
+};
+
+const DRAWER_HANDLE_BAR_CLASSES: Record<DrawerDirection, string> = {
+  bottom: "h-1 w-[100px]",
+  top: "h-1 w-[100px]",
+  left: "h-[100px] w-1",
+  right: "h-[100px] w-1",
+};
+
+type DrawerHandleProps = {
+  direction: DrawerDirection;
+};
+
+const DrawerHandle = cc<DrawerHandleProps>((props) => {
+  const direction = props.direction;
+  const { isDragging, onPointerDown } = useDrawerDrag(direction);
+  return (
+    <div
+      data-slot="drawer-handle"
+      data-dragging={() => (isDragging.value ? "true" : "false")}
+      aria-hidden="true"
+      class={cn(
+        "group/drawer-handle flex shrink-0 cursor-grab touch-none items-center justify-center select-none data-[dragging=true]:cursor-grabbing",
+        DRAWER_HANDLE_CLASSES[direction],
+      )}
+      onpointerdown={onPointerDown}
+    >
+      <div
+        class={cn(
+          "rounded-full bg-foreground/20 transition-colors group-hover/drawer-handle:bg-foreground/30 group-data-[dragging=true]/drawer-handle:bg-foreground/40",
+          DRAWER_HANDLE_BAR_CLASSES[direction],
+        )}
+      />
+    </div>
+  );
+});
+
 type DrawerContentProps = {
   children?: SinwanNode;
   class?: string;
@@ -98,9 +139,7 @@ function DrawerContent({
           className,
         )}
       >
-        {showHandle ? (
-          <div class="mx-auto mt-4 hidden h-1 w-[100px] shrink-0 rounded-full bg-muted group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
-        ) : null}
+        {showHandle ? <DrawerHandle direction={direction} /> : null}
         {children}
       </DialogContentPrimitive>
     </>

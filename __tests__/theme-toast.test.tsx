@@ -164,7 +164,7 @@ describe("ThemeProvider", () => {
       </ThemeProvider>
     ));
     expect(api!.palette.value).toBe("credit-blue");
-    expect(api!.palettes).toEqual(["credit-blue", "jomlaty"]);
+    expect(api!.palettes).toEqual(["credit-blue", "jomlaty", "cazview"]);
     expect(document.documentElement.getAttribute("data-palette")).toBe(
       "credit-blue",
     );
@@ -235,7 +235,7 @@ describe("ThemeProvider", () => {
         <Child />
       </ThemeProvider>
     ));
-    expect(api!.palettes).toEqual(["credit-blue", "jomlaty"]);
+    expect(api!.palettes).toEqual(["credit-blue", "jomlaty", "cazview"]);
     empty.unmount();
   });
 });
