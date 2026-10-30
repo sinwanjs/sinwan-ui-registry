@@ -470,6 +470,7 @@
       "type": "registry:lib",
       "title": "Icons",
       "description": "Lucide icon component shared by sinwan-ui components.",
+      "dependencies": ["sinwan@^2.1.0"],
       "files": [
         {
           "path": "src/lib/icons.tsx",

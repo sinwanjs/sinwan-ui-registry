@@ -1,4 +1,4 @@
-import { cc, type SinwanNode } from "sinwan/component";
+import { cc, getRawProps, type SinwanNode } from "sinwan/component";
 import type { IconNode } from "lucide";
 import { cn } from "./utils";
 
@@ -39,41 +39,42 @@ function toElement(node: IconNode[number], key: number): SinwanNode {
   };
 }
 
+function iconStrokeWidth(props: IconProps): number | string {
+  const size = props.size ?? 24;
+  const strokeWidth = props.strokeWidth ?? 2;
+  return props.absoluteStrokeWidth && typeof size === "number"
+    ? (Number(strokeWidth) * 24) / size
+    : strokeWidth;
+}
+
 /**
  * Render a Lucide icon node tree as a Sinwan SVG element.
  */
-export const Icon = cc(
-  ({
-    icon,
-    class: className,
-    size = 24,
-    strokeWidth = 2,
-    absoluteStrokeWidth,
-    ...props
-  }: IconProps): SinwanNode => {
-    const computedStroke =
-      absoluteStrokeWidth && typeof size === "number"
-        ? (Number(strokeWidth) * 24) / size
-        : strokeWidth;
-
-    return {
-      tag: "svg",
-      props: {
-        xmlns: "http://www.w3.org/2000/svg",
-        width: size,
-        height: size,
-        viewBox: "0 0 24 24",
-        fill: "none",
-        stroke: "currentColor",
-        "stroke-width": computedStroke,
-        "stroke-linecap": "round",
-        "stroke-linejoin": "round",
-        class: cn("lucide", className),
-        ...props,
-      },
-      children: icon.map((node, i) => toElement(node, i)),
-    };
-  },
-);
+export const Icon = cc((props: IconProps) => {
+  const {
+    icon: _icon,
+    class: _className,
+    size: _size,
+    strokeWidth: _strokeWidth,
+    absoluteStrokeWidth: _absoluteStrokeWidth,
+    ...rest
+  } = getRawProps(props);
+  return (
+    <svg
+      width={props.size ?? 24}
+      height={props.size ?? 24}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width={() => iconStrokeWidth(props)}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cn("lucide", props.class)}
+      {...rest}
+    >
+      {props.icon.map((node, i) => toElement(node, i))}
+    </svg>
+  );
+});
 
 export type { IconNode };

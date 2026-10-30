@@ -17,7 +17,7 @@
         "@types/bun": "latest",
         "bun-plugin-sinwan": "1.0.0",
         "happy-dom": "^20.14.5",
-        "sinwan": ">=2.0.3 <3.0.0",
+        "sinwan": ">=2.1.0 <3.0.0",
         "tailwindcss": "^4.3.3",
         "tw-animate-css": "^1.4.0",
         "typescript": "^5.9.3",
@@ -113,7 +113,7 @@
 
     "oxc-parser": ["oxc-parser@0.150.0", "", { "dependencies": { "@oxc-project/types": "^0.150.0" }, "optionalDependencies": { "@oxc-parser/binding-android-arm-eabi": "0.150.0", "@oxc-parser/binding-android-arm64": "0.150.0", "@oxc-parser/binding-darwin-arm64": "0.150.0", "@oxc-parser/binding-darwin-x64": "0.150.0", "@oxc-parser/binding-freebsd-x64": "0.150.0", "@oxc-parser/binding-linux-arm-gnueabihf": "0.150.0", "@oxc-parser/binding-linux-arm-musleabihf": "0.150.0", "@oxc-parser/binding-linux-arm64-gnu": "0.150.0", "@oxc-parser/binding-linux-arm64-musl": "0.150.0", "@oxc-parser/binding-linux-ppc64-gnu": "0.150.0", "@oxc-parser/binding-linux-riscv64-gnu": "0.150.0", "@oxc-parser/binding-linux-riscv64-musl": "0.150.0", "@oxc-parser/binding-linux-s390x-gnu": "0.150.0", "@oxc-parser/binding-linux-x64-gnu": "0.150.0", "@oxc-parser/binding-linux-x64-musl": "0.150.0", "@oxc-parser/binding-openharmony-arm64": "0.150.0", "@oxc-parser/binding-win32-arm64-msvc": "0.150.0", "@oxc-parser/binding-win32-ia32-msvc": "0.150.0", "@oxc-parser/binding-win32-x64-msvc": "0.150.0" } }, "sha512-zwajKw1GUa57IOdafIS7/yOObGF2NihwIfZfs5yJTRprMSkiwhWOc/k+n8bwnUPbHr2/XsjfBO8KyTPaW3VpWg=="],
 
-    "sinwan": ["sinwan@2.0.3", "", { "dependencies": { "csstype": "^3.2.3" }, "peerDependencies": { "typescript": ">=5.0.0 <8.0.0" } }, "sha512-alptCLbtDavuZ7Tks/KfNY3CnxJVSVdpTwG/afGnobe9BxxKRPBNZ/E4V49ZFwQNtx9wuLkvJeO6IFo1iQwNzw=="],
+    "sinwan": ["sinwan@2.1.0", "", { "dependencies": { "csstype": "^3.2.3" }, "peerDependencies": { "typescript": ">=5.0.0 <8.0.0" } }, "sha512-K2JuoL0RNzkrojaU1JbxKVc5/uvN0y7TiRvSXzEKEM3fBLWL5rFInabnS9A6mFBuTrf5kHU1BTQuPhQHQPiomw=="],
 
     "sinwan-compiler": ["sinwan-compiler@1.1.1", "", { "dependencies": { "esrap": "^2.3.7", "oxc-parser": "^0.150.0" }, "peerDependencies": { "typescript": ">=5.0.0 <8.0.0" }, "bin": { "sinwan": "dist/cli.js" } }, "sha512-az5jyh8JzJOo9ibuL8adBQxSxYVsZyZc2PGCT5Tev+QCAHrRdDZOsgh1VuwTCD529mkcB+n3Gw4Us7RoR0qIpw=="],
 

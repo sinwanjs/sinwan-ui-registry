@@ -152,7 +152,7 @@ import {
 import { ScrollArea, ScrollBar } from "../src/components/ui/scroll-area";
 import { ThemeProvider, useTheme } from "sinwan-ui-core/theme";
 import { toast, Toaster } from "../src/components/ui/sonner";
-import { asVNode, lastIntersectionObserver, lastMutationObserver, lastResizeObserver, mountUi, setMatchMediaPrefersDark, setupDom, teardownDom, triggerMatchMediaChange, withSetup } from "./helpers";
+import { lastIntersectionObserver, lastMutationObserver, lastResizeObserver, mountUi, setMatchMediaPrefersDark, setupDom, teardownDom, triggerMatchMediaChange, withSetup } from "./helpers";
 
 beforeEach(() => {
   setupDom();
@@ -2089,9 +2089,14 @@ describe("coverage-100 — primitives theme icons toast", () => {
         [["path", { d: "M2 2h4v4H2z" }]] as unknown as IconNode,
       ],
     ] as unknown as IconNode;
-    const node = asVNode(Icon({ icon: nested, size: "1em" }));
-    expect(node.tag).toBe("svg");
-    expect(node.children.length).toBe(1);
+    const icon = mountUi(() => <Icon icon={nested} size="1em" />);
+    const svg = icon.query("svg");
+    expect(svg?.getAttribute("width")).toBe("1em");
+    expect(svg?.getAttribute("stroke-width")).toBe("2");
+    expect(svg?.children.length).toBe(1);
+    expect(icon.query("svg > g")?.getAttribute("stroke-linecap")).toBe("round");
+    expect(icon.query("svg > g > path")?.getAttribute("d")).toBe("M2 2h4v4H2z");
+    icon.unmount();
 
     toast.dismiss();
     toast({ title: "a", description: "b", type: "default", duration: 0 });

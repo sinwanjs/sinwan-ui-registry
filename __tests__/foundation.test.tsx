@@ -183,18 +183,66 @@ describe("Slot", () => {
 
 describe("Icon", () => {
   test("renders svg from lucide node", () => {
-    const node = asVNode(Icon({ icon: Loader2, class: "size-4", size: 16 }));
-    expect(node.tag).toBe("svg");
-    expect(node.props.class).toContain("size-4");
-    expect(node.props.width).toBe(16);
-    expect(node.children.length).toBeGreaterThan(0);
+    setupDom();
+    try {
+      const { query, unmount } = mountUi(() => (
+        <Icon icon={Loader2} class="size-4" size={16} aria-label="Loading" />
+      ));
+      const svg = query("svg");
+      expect(svg?.namespaceURI).toBe("http://www.w3.org/2000/svg");
+      expect(svg?.getAttribute("class")).toBe("lucide size-4");
+      expect(svg?.getAttribute("width")).toBe("16");
+      expect(svg?.getAttribute("fill")).toBe("none");
+      expect(svg?.getAttribute("stroke-width")).toBe("2");
+      expect(svg?.getAttribute("stroke-linecap")).toBe("round");
+      expect(svg?.getAttribute("aria-label")).toBe("Loading");
+      expect(svg?.children.length).toBeGreaterThan(0);
+      unmount();
+    } finally {
+      teardownDom();
+    }
   });
 
   test("absoluteStrokeWidth adjusts stroke", () => {
-    const node = asVNode(
-      Icon({ icon: Loader2, size: 48, strokeWidth: 2, absoluteStrokeWidth: true }),
-    );
-    expect(node.props["stroke-width"]).toBe(1);
+    setupDom();
+    try {
+      const { query, unmount } = mountUi(() => (
+        <Icon icon={Loader2} size={48} strokeWidth={2} absoluteStrokeWidth />
+      ));
+      expect(query("svg")?.getAttribute("stroke-width")).toBe("1");
+      unmount();
+    } finally {
+      teardownDom();
+    }
+  });
+
+  test("class, size and stroke follow later prop updates", async () => {
+    setupDom();
+    try {
+      const className = signal("size-4");
+      const size = signal(24);
+      const { query, unmount } = mountUi(() => (
+        <Icon
+          icon={Loader2}
+          class={className.value}
+          size={size.value}
+          absoluteStrokeWidth
+        />
+      ));
+      const svg = query("svg");
+      expect(svg?.getAttribute("class")).toBe("lucide size-4");
+      expect(svg?.getAttribute("stroke-width")).toBe("2");
+
+      className.value = "size-6";
+      size.value = 48;
+      await Promise.resolve();
+      expect(svg?.getAttribute("class")).toBe("lucide size-6");
+      expect(svg?.getAttribute("width")).toBe("48");
+      expect(svg?.getAttribute("stroke-width")).toBe("1");
+      unmount();
+    } finally {
+      teardownDom();
+    }
   });
 });
 
