@@ -31,4 +31,18 @@ describe("SidebarInput / SidebarSeparator classes", () => {
     expect(separator?.className).toContain("extra-sep");
     unmount();
   });
+
+  test("SidebarSeparator replaces Separator's full width so its mx-2 inset stays inside the sidebar", () => {
+    const { query, unmount } = mountUi(() => (
+      <SidebarProvider>
+        <SidebarSeparator />
+      </SidebarProvider>
+    ));
+
+    const classes = query('[data-slot="sidebar-separator"]')?.className.split(/\s+/) ?? [];
+    expect(classes).toContain("mx-2");
+    expect(classes).toContain("data-horizontal:w-auto");
+    expect(classes).not.toContain("data-horizontal:w-full");
+    unmount();
+  });
 });
