@@ -35,7 +35,7 @@
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "sinwan-ui-core": "^1.2.0"
+    "sinwan-ui-core": "^1.2.1"
   },
   "peerDependenciesMeta": {
     "sinwan-ui-core": {
