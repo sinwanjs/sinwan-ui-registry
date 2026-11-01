@@ -98,6 +98,11 @@ describe("ThemeProvider", () => {
   test("locks transitions and applies document theme before variant classes", () => {
     let api: ThemeApi | undefined;
     const htmlWhenVariantRan: string[] = [];
+    const lockedWhenVariantRan: boolean[] = [];
+    const transitionLocked = () =>
+      [...document.head.querySelectorAll("style")].some((style) =>
+        (style.textContent ?? "").includes("transition:none"),
+      );
     const Child = () => {
       api = useTheme();
       return (
@@ -106,6 +111,7 @@ describe("ThemeProvider", () => {
           // @ts-expect-error intentional live getter with instrumentation
           variant={() => {
             htmlWhenVariantRan.push(document.documentElement.className);
+            lockedWhenVariantRan.push(transitionLocked());
             return api!.theme.value === "dark" ? "default" : "outline";
           }}
         >
@@ -119,11 +125,12 @@ describe("ThemeProvider", () => {
       </ThemeProvider>
     ));
     htmlWhenVariantRan.length = 0;
+    lockedWhenVariantRan.length = 0;
     api!.setTheme("dark");
-    const lock = [...document.head.querySelectorAll("style")].some((style) =>
-      (style.textContent ?? "").includes("transition:none"),
-    );
-    expect(lock).toBe(true);
+    // The variant class changes while transitions are locked, and the lock is
+    // released (after a forced style read) before setTheme returns.
+    expect(lockedWhenVariantRan.at(-1)).toBe(true);
+    expect(transitionLocked()).toBe(false);
     expect(htmlWhenVariantRan.at(-1)).toContain("dark");
     expect(query("[data-slot=button]")?.getAttribute("data-variant")).toBe(
       "default",
