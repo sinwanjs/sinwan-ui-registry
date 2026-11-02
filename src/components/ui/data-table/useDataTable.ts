@@ -2,14 +2,18 @@ import { onUnmounted, type SinwanNode } from "sinwan/component";
 import {
   computed,
   effect,
+  signal,
   type Computed,
   type Signal,
 } from "sinwan/reactivity";
 import {
   constructTable,
+  functionalUpdate,
   type HeaderGroup,
+  type PaginationState,
   type RowData,
   type SortDirection,
+  type SortingState,
 } from "@tanstack/table-core";
 
 import {
@@ -20,7 +24,7 @@ import {
   type DataTableInstance,
   type DataTableRow,
 } from "./data-table-features";
-import { useTableRevision } from "./data-table-node";
+import { notifyTableOptions, useTableRevision } from "./data-table-node";
 
 export type DataTableVirtualOptions = {
   itemHeight?: number;
@@ -41,6 +45,25 @@ export type DataTableProps<TData extends RowData = RowData> = {
   hidePagination?: boolean;
   hideViewOptions?: boolean;
   pageSizes?: readonly number[];
+  /**
+   * Server-side pagination: the number of rows across every page. When set,
+   * `data` is the current page only and the table does not paginate it again
+   * (TanStack `manualPagination`). Pair it with `pagination` and
+   * `onPaginationChange`, and load the page the callback asks for.
+   */
+  rowCount?: number;
+  /** Controlled pagination (`pageIndex` from 0). */
+  pagination?: PaginationState;
+  /** Called with the next pagination when the user changes page or page size. */
+  onPaginationChange?: (pagination: PaginationState) => void;
+  /** Controlled sorting. */
+  sorting?: SortingState;
+  /** Called with the next sorting when the user sorts a column. */
+  onSortingChange?: (sorting: SortingState) => void;
+  /** `data` arrives sorted (server-side): the table only reports `sorting` changes. */
+  manualSorting?: boolean;
+  /** Adds a "Custom" rows-per-page choice: any whole number from 1 to this. */
+  maxPageSize?: number;
   /**
    * Window body rows with Sinwan `<Virtual>`. Uses the pre-pagination row
    * model so filtering/sorting still apply. Pagination is hidden while this
@@ -68,6 +91,13 @@ export type DataTableHostProps = {
   hidePagination: boolean;
   hideViewOptions: boolean;
   pageSizes?: readonly number[];
+  rowCount?: number;
+  pagination?: PaginationState;
+  onPaginationChange?: (pagination: PaginationState) => void;
+  sorting?: SortingState;
+  onSortingChange?: (sorting: SortingState) => void;
+  manualSorting?: boolean;
+  maxPageSize?: number;
   virtual?: boolean | DataTableVirtualOptions;
 };
 
@@ -132,19 +162,29 @@ export type DataTableColumnHeaderReturn = {
 export type DataTablePaginationProps<TData extends RowData = RowData> = {
   table: DataTableInstance<TData>;
   pageSizes?: readonly number[];
+  /** Adds a "Custom" rows-per-page choice: any whole number from 1 to this. */
+  maxPageSize?: number;
   class?: string;
 };
 
 export type DataTablePaginationHostProps = {
   table: DataTableInstance;
   pageSizes: readonly number[];
+  maxPageSize?: number;
   class?: string;
 };
 
 export type DataTablePaginationReturn = {
   revision: Signal<number>;
   selectedText: Computed<string>;
+  /** "21–40 of 57" with server-side pagination (`rowCount`), else `null`. */
+  rangeText: Computed<string | null>;
+  /** The select's value: the page size, or `CUSTOM_PAGE_SIZE` for a size outside `pageSizes`. */
   pageSize: Computed<string>;
+  /** Whether the custom size field shows (chosen, or the size is not one of `pageSizes`). */
+  showCustomSize: Computed<boolean>;
+  /** Applies the custom size field's value (Enter or blur), clamped to 1…`maxPageSize`. */
+  onCustomSizeCommit: (event: Event) => void;
   pageStatus: Computed<string>;
   canPreviousPage: Computed<boolean>;
   canNextPage: Computed<boolean>;
@@ -180,6 +220,36 @@ export type DataTableSelectRowReturn = {
 };
 
 export const DEFAULT_DATA_TABLE_PAGE_SIZES = [10, 20, 25, 30, 40, 50];
+
+/** The rows-per-page select's value for "Custom". */
+export const CUSTOM_PAGE_SIZE = "custom";
+
+/** TanStack options for server-side pagination and sorting; callbacks only when given. */
+function controlledOptions(props: DataTableHostProps, table: () => DataTableInstance) {
+  const state: { pagination?: PaginationState; sorting?: SortingState } = {};
+  if (props.pagination) state.pagination = props.pagination;
+  if (props.sorting) state.sorting = props.sorting;
+  const onPaginationChange = props.onPaginationChange;
+  const onSortingChange = props.onSortingChange;
+  return {
+    manualPagination: props.rowCount !== undefined,
+    rowCount: props.rowCount,
+    manualSorting: props.manualSorting ?? false,
+    state,
+    ...(onPaginationChange
+      ? {
+          onPaginationChange: (updater: PaginationState | ((old: PaginationState) => PaginationState)) =>
+            onPaginationChange(functionalUpdate(updater, table().store.get().pagination)),
+        }
+      : {}),
+    ...(onSortingChange
+      ? {
+          onSortingChange: (updater: SortingState | ((old: SortingState) => SortingState)) =>
+            onSortingChange(functionalUpdate(updater, table().store.get().sorting)),
+        }
+      : {}),
+  };
+}
 
 const DEFAULT_VIRTUAL_ITEM_HEIGHT = 48;
 const DEFAULT_VIRTUAL_CONTAINER_HEIGHT = 384;
@@ -234,20 +304,25 @@ function leafGridStyle(
 }
 
 export function useDataTable(props: DataTableHostProps): DataTableReturn {
-  const table = constructTable({
+  const getTable = () => table;
+  const table: DataTableInstance = constructTable({
     features: dataTableFeatures,
     columns: props.columns,
     data: resolveTableData(props.data),
     getRowId: props.getRowId,
+    ...controlledOptions(props, getTable),
   });
   const revision = useTableRevision(table);
   const stopData = effect(() => {
     const next = resolveTableData(props.data);
+    const controlled = controlledOptions(props, getTable);
     table.setOptions((current) => ({
       ...current,
+      ...controlled,
       data: next,
       columns: props.columns,
     }));
+    notifyTableOptions(table);
   });
   onUnmounted(stopData);
 
@@ -316,19 +391,48 @@ export function useDataTableColumnHeader(
 
 export function useDataTablePagination(
   table: DataTableInstance,
+  pageSizes: readonly number[] = DEFAULT_DATA_TABLE_PAGE_SIZES,
+  maxPageSize?: number,
 ): DataTablePaginationReturn {
   const revision = useTableRevision(table);
+  const customChosen = signal(false);
+  const currentSize = () => table.store.get().pagination.pageSize;
+  const outsideList = () => maxPageSize !== undefined && !pageSizes.includes(currentSize());
   return {
     revision,
+    rangeText: computed(() => {
+      void revision.value;
+      if (!table.options.manualPagination) return null;
+      const { pageIndex, pageSize } = table.store.get().pagination;
+      const total = table.getRowCount();
+      if (total === 0) return "No rows";
+      const first = Math.min(pageIndex * pageSize + 1, total);
+      const last = Math.min((pageIndex + 1) * pageSize, total);
+      return `${first}–${last} of ${total}`;
+    }),
+    showCustomSize: computed(() => (revision.value, customChosen.value || outsideList())),
+    onCustomSizeCommit: (event) => {
+      const input = event.currentTarget as HTMLInputElement;
+      const size = Math.floor(Number(input.value));
+      if (!Number.isFinite(size) || size < 1) {
+        input.value = String(currentSize());
+        return;
+      }
+      const next = Math.min(size, maxPageSize ?? size);
+      input.value = String(next);
+      customChosen.value = !pageSizes.includes(next);
+      table.setPageSize(next);
+    },
     selectedText: computed(
       () => (
         revision.value,
         `${table.getFilteredSelectedRowModel().rows.length} of ${table.getFilteredRowModel().rows.length} row(s) selected.`
       ),
     ),
-    pageSize: computed(
-      () => (revision.value, String(table.store.get().pagination.pageSize)),
-    ),
+    pageSize: computed(() => {
+      void revision.value;
+      return customChosen.value || outsideList() ? CUSTOM_PAGE_SIZE : String(currentSize());
+    }),
     pageStatus: computed(
       () => (
         revision.value,
@@ -339,6 +443,11 @@ export function useDataTablePagination(
     canNextPage: computed(() => (revision.value, table.getCanNextPage())),
     onPageSizeChange: (event) => {
       const select = event.currentTarget as HTMLSelectElement;
+      if (select.value === CUSTOM_PAGE_SIZE) {
+        customChosen.value = true;
+        return;
+      }
+      customChosen.value = false;
       table.setPageSize(Number(select.value));
     },
     firstPage: () => table.firstPage(),

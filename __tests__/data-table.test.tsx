@@ -702,3 +702,227 @@ describe("DataTable", () => {
     off.unmount();
   });
 });
+
+describe("DataTable server mode", () => {
+  const pageOf = (index: number, size: number) => payments.slice(0, Math.min(size, payments.length)).map((row) => ({
+    ...row,
+    id: `p${index}-${row.id}`,
+  }));
+
+  test("renders the given page as is, shows the range, and reports page and size changes", async () => {
+    const page = signal({ pageIndex: 1, pageSize: 5 });
+    const changes: Array<{ pageIndex: number; pageSize: number }> = [];
+    const { root, click, unmount } = mountUi(() => (
+      <DataTable
+        columns={columns}
+        data={pageOf(page.value.pageIndex, page.value.pageSize)}
+        getRowId={(row) => row.id}
+        rowCount={57}
+        pagination={page.value}
+        onPaginationChange={(next) => {
+          changes.push(next);
+          page.value = next;
+        }}
+        pageSizes={[5, 10]}
+      />
+    ));
+    const range = () => root.querySelector('[data-slot="data-table-selected-count"]')?.textContent;
+    const status = () => root.querySelector('[data-slot="data-table-page-status"]')?.textContent;
+    // The table does not slice the page again: all 5 rows of page 2 are shown.
+    expect(root.querySelectorAll('[data-slot="table-body"] [data-slot="table-row"]').length).toBe(5);
+    expect(range()).toBe("6–10 of 57");
+    expect(status()).toBe("Page 2 of 12");
+
+    click('[data-slot="data-table-next-page"]');
+    await flush();
+    expect(changes.at(-1)).toEqual({ pageIndex: 2, pageSize: 5 });
+    expect(range()).toBe("11–15 of 57");
+
+    click('[data-slot="data-table-last-page"]');
+    await flush();
+    expect(changes.at(-1)).toEqual({ pageIndex: 11, pageSize: 5 });
+    expect(range()).toBe("56–57 of 57");
+    expect((root.querySelector('[data-slot="data-table-next-page"]') as HTMLButtonElement).disabled).toBe(true);
+
+    click('[data-slot="data-table-first-page"]');
+    await flush();
+    expect(changes.at(-1)).toEqual({ pageIndex: 0, pageSize: 5 });
+    click('[data-slot="data-table-next-page"]');
+    await flush();
+    click('[data-slot="data-table-previous-page"]');
+    await flush();
+    expect(changes.at(-1)).toEqual({ pageIndex: 0, pageSize: 5 });
+
+    const select = root.querySelector('[data-slot="data-table-page-size"]') as HTMLSelectElement;
+    select.value = "10";
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+    await flush();
+    expect(changes.at(-1)?.pageSize).toBe(10);
+    expect(status()).toBe("Page 1 of 6");
+    unmount();
+  });
+
+  test("new data and row count replace the rows and range without a pagination change", async () => {
+    const data = signal(payments.slice(0, 3));
+    const total = signal(3);
+    const { root, unmount } = mountUi(() => (
+      <DataTable
+        columns={columns}
+        data={data.value}
+        getRowId={(row) => row.id}
+        rowCount={total.value}
+        pagination={{ pageIndex: 0, pageSize: 10 }}
+        onPaginationChange={() => {}}
+      />
+    ));
+    const emails = () =>
+      Array.from(root.querySelectorAll('[data-slot="table-body"] [data-column-id="email"]')).map((cell) => cell.textContent);
+    const range = () => root.querySelector('[data-slot="data-table-selected-count"]')?.textContent;
+    expect(emails()).toEqual(payments.slice(0, 3).map((row) => row.email));
+    expect(range()).toBe("1–3 of 3");
+
+    data.value = payments.slice(3, 8);
+    total.value = 5;
+    await flush();
+    expect(emails()).toEqual(payments.slice(3, 8).map((row) => row.email));
+    expect(range()).toBe("1–5 of 5");
+    unmount();
+  });
+
+  test("client mode: new data replaces the rows and the page count", async () => {
+    const rows = signal(payments);
+    const { root, unmount } = mountUi(() => (
+      <DataTable columns={columns} data={rows.value} getRowId={(row) => row.id} />
+    ));
+    const bodyRows = () => root.querySelectorAll('[data-slot="table-body"] [data-slot="table-row"]').length;
+    const status = () => root.querySelector('[data-slot="data-table-page-status"]')?.textContent;
+    expect(bodyRows()).toBe(10);
+    expect(status()).toBe("Page 1 of 2");
+
+    rows.value = payments.slice(0, 3);
+    await flush();
+    expect(bodyRows()).toBe(3);
+    expect(status()).toBe("Page 1 of 1");
+    unmount();
+  });
+
+  test("an empty server result says so and cannot page", async () => {
+    const { root, unmount } = mountUi(() => (
+      <DataTable
+        columns={columns}
+        data={[]}
+        rowCount={0}
+        pagination={{ pageIndex: 0, pageSize: 10 }}
+        onPaginationChange={() => {}}
+      />
+    ));
+    expect(root.querySelector('[data-slot="data-table-selected-count"]')?.textContent).toBe("No rows");
+    expect((root.querySelector('[data-slot="data-table-next-page"]') as HTMLButtonElement).disabled).toBe(true);
+    unmount();
+  });
+
+  test("server sorting reports the column and keeps the server's order", async () => {
+    const sorting = signal<Array<{ id: string; desc: boolean }>>([]);
+    const reported: Array<Array<{ id: string; desc: boolean }>> = [];
+    const order = ["user3@mail.test", "m@example.com", "user1@mail.test"];
+    const rows = order.map((email, index) => ({ id: `s${index}`, amount: index, status: "pending", email }));
+    const { root, unmount } = mountUi(() => (
+      <DataTable
+        columns={columns}
+        data={rows}
+        getRowId={(row) => row.id}
+        manualSorting
+        sorting={sorting.value}
+        onSortingChange={(next) => {
+          reported.push(next);
+          sorting.value = next;
+        }}
+        hidePagination
+      />
+    ));
+    triggerByText(root, "Email").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await flush();
+    clickMenuItem("Asc");
+    await flush();
+    expect(reported.at(-1)).toEqual([{ id: "email", desc: false }]);
+    const emails = Array.from(root.querySelectorAll('[data-slot="table-body"] [data-column-id="email"]')).map(
+      (cell) => cell.textContent,
+    );
+    expect(emails).toEqual(order);
+    unmount();
+  });
+
+  test("custom rows per page: chosen from the list, typed, clamped, and shown for a size outside the list", async () => {
+    const page = signal({ pageIndex: 0, pageSize: 10 });
+    const { root, unmount } = mountUi(() => (
+      <DataTable
+        columns={columns}
+        data={payments}
+        getRowId={(row) => row.id}
+        rowCount={240}
+        pagination={page.value}
+        onPaginationChange={(next) => {
+          page.value = next;
+        }}
+        pageSizes={[10, 20]}
+        maxPageSize={100}
+      />
+    ));
+    const select = () => root.querySelector('[data-slot="data-table-page-size"]') as HTMLSelectElement;
+    const custom = () => root.querySelector('[data-slot="data-table-custom-page-size"]') as HTMLInputElement | null;
+    expect(Array.from(select().options).map((option) => option.value)).toEqual(["10", "20", "custom"]);
+    expect(custom()).toBeNull();
+
+    select().value = "custom";
+    select().dispatchEvent(new Event("change", { bubbles: true }));
+    await flush();
+    expect(custom()).not.toBeNull();
+    expect(page.value.pageSize).toBe(10);
+
+    custom()!.value = "35";
+    custom()!.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    await flush();
+    expect(page.value.pageSize).toBe(35);
+    expect(select().value).toBe("custom");
+
+    custom()!.value = "500";
+    custom()!.dispatchEvent(new Event("change", { bubbles: true }));
+    await flush();
+    expect(page.value.pageSize).toBe(100);
+
+    custom()!.value = "0";
+    custom()!.dispatchEvent(new Event("change", { bubbles: true }));
+    await flush();
+    expect(page.value.pageSize).toBe(100);
+    expect(custom()!.value).toBe("100");
+
+    // Other keys do not commit.
+    custom()!.value = "7";
+    custom()!.dispatchEvent(new KeyboardEvent("keydown", { key: "a", bubbles: true }));
+    await flush();
+    expect(page.value.pageSize).toBe(100);
+
+    // A size from the list goes back to the list and hides the field.
+    custom()!.value = "20";
+    custom()!.dispatchEvent(new Event("change", { bubbles: true }));
+    await flush();
+    expect(page.value.pageSize).toBe(20);
+    expect(select().value).toBe("20");
+    expect(custom()).toBeNull();
+
+    select().value = "custom";
+    select().dispatchEvent(new Event("change", { bubbles: true }));
+    await flush();
+    select().value = "10";
+    select().dispatchEvent(new Event("change", { bubbles: true }));
+    await flush();
+    expect(page.value.pageSize).toBe(10);
+    expect(custom()).toBeNull();
+
+    page.value = { pageIndex: 0, pageSize: 45 };
+    await flush();
+    expect(select().value).toBe("custom");
+    expect(custom()?.value).toBe("45");
+    unmount();
+  });
+});

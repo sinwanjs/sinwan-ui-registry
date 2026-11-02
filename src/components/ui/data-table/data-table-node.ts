@@ -1,5 +1,5 @@
 import { onUnmounted, type SinwanNode } from "sinwan/component";
-import { signal, type Signal } from "sinwan/reactivity";
+import { effect, signal, untrack, type Signal } from "sinwan/reactivity";
 import { FlexRender, type FlexRenderProps } from "@tanstack/table-core/flex-render";
 import type { RowData } from "@tanstack/table-core";
 
@@ -33,15 +33,45 @@ export function DataTableFlexRender<TData extends RowData>(
   return toTableNode(FlexRender(props));
 }
 
+/** Per table: bumped when its options change (`data`, `rowCount`, `columns`), which the store does not report. */
+const optionVersions = new WeakMap<DataTableInstance, Signal<number>>();
+
+function optionsVersion(table: DataTableInstance): Signal<number> {
+  let version = optionVersions.get(table);
+  if (!version) {
+    version = signal(0);
+    optionVersions.set(table, version);
+  }
+  return version;
+}
+
+/**
+ * Call after `table.setOptions(...)`: rows, row counts and columns live in the
+ * options, not in the state store, so revision readers would otherwise keep
+ * showing the previous data.
+ */
+export function notifyTableOptions(table: DataTableInstance): void {
+  const version = optionsVersion(table);
+  version.value = untrack(() => version.value) + 1;
+}
+
+/** A counter that changes whenever the table's state or options change; read it to recompute table-derived values. */
 export function useTableRevision(
   table: DataTableInstance,
 ): Signal<number> {
   const revision = signal(0);
-  const subscription = table.store.subscribe(() => {
-    revision.value += 1;
+  const bump = () => {
+    revision.value = untrack(() => revision.value) + 1;
+  };
+  const subscription = table.store.subscribe(bump);
+  const version = optionsVersion(table);
+  const stopOptions = effect(() => {
+    void version.value;
+    bump();
   });
   onUnmounted(() => {
     subscription.unsubscribe();
+    stopOptions();
   });
   return revision;
 }

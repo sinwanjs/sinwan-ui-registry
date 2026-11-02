@@ -217,7 +217,11 @@ const DataTableHost = cc<DataTableHostProps>((props) => {
         )}
       </div>
       {dataTable.hidePagination ? null : (
-        <DataTablePagination table={table} pageSizes={props.pageSizes} />
+        <DataTablePagination
+          table={table}
+          pageSizes={props.pageSizes}
+          maxPageSize={props.maxPageSize}
+        />
       )}
     </div>
   );
@@ -244,6 +248,13 @@ export function DataTable<TData extends RowData>(
       hidePagination={props.hidePagination ?? false}
       hideViewOptions={props.hideViewOptions ?? false}
       pageSizes={props.pageSizes}
+      rowCount={props.rowCount}
+      pagination={props.pagination}
+      onPaginationChange={props.onPaginationChange}
+      sorting={props.sorting}
+      onSortingChange={props.onSortingChange}
+      manualSorting={props.manualSorting}
+      maxPageSize={props.maxPageSize}
       virtual={props.virtual}
     />
   );
