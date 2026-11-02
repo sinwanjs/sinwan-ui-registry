@@ -10,10 +10,12 @@ import type { RowData } from "@tanstack/table-core";
 import { Icon } from "../../../lib/icons";
 import { cn } from "../../../lib/utils";
 import { Button } from "../button";
+import { Input } from "../input";
 import { Label } from "../label";
 import { NativeSelect, NativeSelectOption } from "../native-select";
 import { type DataTableInstance } from "./data-table-features";
 import {
+  CUSTOM_PAGE_SIZE,
   DEFAULT_DATA_TABLE_PAGE_SIZES,
   useDataTablePagination,
   type DataTablePaginationHostProps,
@@ -21,8 +23,8 @@ import {
 } from "./useDataTable";
 
 const DataTablePaginationHost = cc<DataTablePaginationHostProps>(
-  ({ table, pageSizes, class: className }) => {
-    const pagination = useDataTablePagination(table);
+  ({ table, pageSizes, maxPageSize, class: className }) => {
+    const pagination = useDataTablePagination(table, pageSizes, maxPageSize);
     const { revision } = pagination;
 
     return (
@@ -37,7 +39,7 @@ const DataTablePaginationHost = cc<DataTablePaginationHostProps>(
           class="flex-1 text-sm text-muted-foreground"
           data-slot="data-table-selected-count"
         >
-          {pagination.selectedText.value}
+          {pagination.rangeText.value ?? pagination.selectedText.value}
         </div>
         {(revision.value, (
             <div class="flex flex-wrap items-center gap-4 lg:gap-6">
@@ -57,7 +59,26 @@ const DataTablePaginationHost = cc<DataTablePaginationHostProps>(
                       {size}
                     </NativeSelectOption>
                   ))}
+                  {maxPageSize !== undefined ? (
+                    <NativeSelectOption value={CUSTOM_PAGE_SIZE}>Custom…</NativeSelectOption>
+                  ) : null}
                 </NativeSelect>
+                {pagination.showCustomSize.value ? (
+                  <Input
+                    data-slot="data-table-custom-page-size"
+                    type="number"
+                    inputMode="numeric"
+                    min="1"
+                    max={String(maxPageSize)}
+                    aria-label={`Rows per page, 1 to ${maxPageSize}`}
+                    class="h-8 w-20"
+                    value={String(table.store.get().pagination.pageSize)}
+                    onchange={pagination.onCustomSizeCommit}
+                    onkeydown={(event: KeyboardEvent) => {
+                      if (event.key === "Enter") pagination.onCustomSizeCommit(event);
+                    }}
+                  />
+                ) : null}
               </div>
               <div
                 class="text-sm font-medium whitespace-nowrap"
@@ -121,6 +142,7 @@ export function DataTablePagination<TData extends RowData>(
     <DataTablePaginationHost
       table={props.table as DataTableInstance}
       pageSizes={props.pageSizes ?? DEFAULT_DATA_TABLE_PAGE_SIZES}
+      maxPageSize={props.maxPageSize}
       class={props.class}
     />
   );

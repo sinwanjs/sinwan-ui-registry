@@ -6,6 +6,8 @@ export { DataTableViewOptions } from "./data-table-view-options";
 export { DataTableSelectAll, DataTableSelectRow } from "./data-table-select";
 export { DataTable } from "./data-table";
 export {
+  CUSTOM_PAGE_SIZE,
+  DEFAULT_DATA_TABLE_PAGE_SIZES,
   useDataTable,
   useDataTableColumnHeader,
   useDataTableColumnToggle,
