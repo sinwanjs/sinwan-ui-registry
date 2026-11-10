@@ -158,12 +158,12 @@ const toastTypeClass: Record<ToastType, string> = {
   default:
     "border-border bg-popover text-popover-foreground [&_[data-slot=toast-icon]]:text-muted-foreground",
   success:
-    "border-success/30 bg-success/10 text-foreground [&_[data-slot=toast-icon]]:text-success [&_[data-slot=toast-title]]:text-success",
+    "border-success/30 bg-popover bg-linear-to-r from-success/10 to-success/10 text-foreground [&_[data-slot=toast-icon]]:text-success [&_[data-slot=toast-title]]:text-success",
   error:
-    "border-destructive/30 bg-destructive/10 text-foreground [&_[data-slot=toast-icon]]:text-destructive [&_[data-slot=toast-title]]:text-destructive",
-  info: "border-info/30 bg-info/10 text-foreground [&_[data-slot=toast-icon]]:text-info [&_[data-slot=toast-title]]:text-info",
+    "border-destructive/30 bg-popover bg-linear-to-r from-destructive/10 to-destructive/10 text-foreground [&_[data-slot=toast-icon]]:text-destructive [&_[data-slot=toast-title]]:text-destructive",
+  info: "border-info/30 bg-popover bg-linear-to-r from-info/10 to-info/10 text-foreground [&_[data-slot=toast-icon]]:text-info [&_[data-slot=toast-title]]:text-info",
   warning:
-    "border-warning/30 bg-warning/10 text-foreground [&_[data-slot=toast-icon]]:text-warning [&_[data-slot=toast-title]]:text-warning",
+    "border-warning/30 bg-popover bg-linear-to-r from-warning/10 to-warning/10 text-foreground [&_[data-slot=toast-icon]]:text-warning [&_[data-slot=toast-title]]:text-warning",
   loading:
     "border-border bg-popover text-popover-foreground [&_[data-slot=toast-icon]]:text-muted-foreground",
 };

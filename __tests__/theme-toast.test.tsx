@@ -351,6 +351,26 @@ describe("toast", () => {
     unmount();
   });
 
+  test("coloured toasts sit on an opaque surface, tinted on top", async () => {
+    const { unmount } = mountUi(() => <Toaster />);
+    toast.success("saved");
+    toast.error("failed");
+    toast.info("note");
+    toast.warning("careful");
+    await Promise.resolve();
+    await new Promise((r) => setTimeout(r, 0));
+    const tones = { success: "success", error: "destructive", info: "info", warning: "warning" } as const;
+    for (const [type, tone] of Object.entries(tones)) {
+      const classes = (document.querySelector(`[data-slot="toast"][data-type="${type}"]`)?.className ?? "").split(/\s+/);
+      // A translucent tint alone as the background lets text behind the toast show through.
+      expect(classes).toContain("bg-popover");
+      expect(classes).not.toContain(`bg-${tone}/10`);
+      expect(classes).toContain(`from-${tone}/10`);
+    }
+    toast.dismiss();
+    unmount();
+  });
+
   test("Toaster without a ThemeProvider renders silently with the system theme", () => {
     const warn = console.warn;
     const seen: unknown[] = [];
