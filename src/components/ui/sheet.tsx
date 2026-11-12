@@ -7,7 +7,9 @@ import {
   DialogClose as DialogClosePrimitive,
   DialogContent as DialogContentPrimitive,
   DialogOverlay as DialogOverlayPrimitive,
+  DialogDescription as DialogDescriptionPrimitive,
   DialogRoot,
+  DialogTitle as DialogTitlePrimitive,
   DialogTrigger as DialogTriggerPrimitive,
 } from "sinwan-ui-core/overlay";
 import { Button } from "./button";
@@ -138,7 +140,7 @@ function SheetFooter({ class: className, ...props }: DivProps) {
 
 function SheetTitle({ class: className, children, ...props }: DivProps) {
   return (
-    <h2
+    <DialogTitlePrimitive
       data-slot="sheet-title"
       class={cn(
         "font-heading text-base font-medium text-foreground",
@@ -147,19 +149,19 @@ function SheetTitle({ class: className, children, ...props }: DivProps) {
       {...props}
     >
       {children}
-    </h2>
+    </DialogTitlePrimitive>
   );
 }
 
 function SheetDescription({ class: className, children, ...props }: DivProps) {
   return (
-    <p
+    <DialogDescriptionPrimitive
       data-slot="sheet-description"
       class={cn("text-sm text-muted-foreground", className)}
       {...props}
     >
       {children}
-    </p>
+    </DialogDescriptionPrimitive>
   );
 }
 

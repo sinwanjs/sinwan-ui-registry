@@ -7,7 +7,9 @@ import {
   DialogClose as DialogClosePrimitive,
   DialogContent as DialogContentPrimitive,
   DialogOverlay as DialogOverlayPrimitive,
+  DialogDescription as DialogDescriptionPrimitive,
   DialogRoot,
+  DialogTitle as DialogTitlePrimitive,
   DialogTrigger as DialogTriggerPrimitive,
 } from "sinwan-ui-core/overlay";
 import { UiPortal } from "sinwan-ui-core/core";
@@ -147,7 +149,7 @@ function DialogFooter({
 
 function DialogTitle({ class: className, children, ...props }: DivProps) {
   return (
-    <h2
+    <DialogTitlePrimitive
       data-slot="dialog-title"
       class={cn(
         "font-heading text-base leading-none font-medium",
@@ -156,13 +158,13 @@ function DialogTitle({ class: className, children, ...props }: DivProps) {
       {...props}
     >
       {children}
-    </h2>
+    </DialogTitlePrimitive>
   );
 }
 
 function DialogDescription({ class: className, children, ...props }: DivProps) {
   return (
-    <p
+    <DialogDescriptionPrimitive
       data-slot="dialog-description"
       class={cn(
         "text-sm text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
@@ -171,7 +173,7 @@ function DialogDescription({ class: className, children, ...props }: DivProps) {
       {...props}
     >
       {children}
-    </p>
+    </DialogDescriptionPrimitive>
   );
 }
 

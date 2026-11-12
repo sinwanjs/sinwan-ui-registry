@@ -5,7 +5,9 @@ import {
   DialogClose as DialogClosePrimitive,
   DialogContent as DialogContentPrimitive,
   DialogOverlay as DialogOverlayPrimitive,
+  DialogDescription as DialogDescriptionPrimitive,
   DialogRoot,
+  DialogTitle as DialogTitlePrimitive,
   DialogTrigger as DialogTriggerPrimitive,
 } from "sinwan-ui-core/overlay";
 import { UiPortal } from "sinwan-ui-core/core";
@@ -176,7 +178,7 @@ function DrawerFooter({ class: className, ...props }: DivProps) {
 
 function DrawerTitle({ class: className, children, ...props }: DivProps) {
   return (
-    <h2
+    <DialogTitlePrimitive
       data-slot="drawer-title"
       class={cn(
         "font-heading text-base font-medium text-foreground",
@@ -185,7 +187,7 @@ function DrawerTitle({ class: className, children, ...props }: DivProps) {
       {...props}
     >
       {children}
-    </h2>
+    </DialogTitlePrimitive>
   );
 }
 
@@ -195,13 +197,13 @@ function DrawerDescription({
   ...props
 }: DivProps) {
   return (
-    <p
+    <DialogDescriptionPrimitive
       data-slot="drawer-description"
       class={cn("text-sm text-muted-foreground", className)}
       {...props}
     >
       {children}
-    </p>
+    </DialogDescriptionPrimitive>
   );
 }
 

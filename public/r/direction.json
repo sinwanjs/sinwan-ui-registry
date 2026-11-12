@@ -5,7 +5,7 @@
   "title": "Direction",
   "description": "Re-exports the direction provider for component-level imports.",
   "dependencies": [
-    "sinwan-ui-core@^1.2.1"
+    "sinwan-ui-core@^1.3.0"
   ],
   "devDependencies": [],
   "registryDependencies": [],

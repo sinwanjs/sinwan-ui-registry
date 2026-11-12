@@ -5,7 +5,7 @@
   "title": "Tooltip",
   "description": "Popup with information shown on hover or focus.",
   "dependencies": [
-    "sinwan-ui-core@^1.2.1"
+    "sinwan-ui-core@^1.3.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

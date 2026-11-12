@@ -6,7 +6,7 @@
   "description": "Groups related buttons into a single segmented control.",
   "dependencies": [
     "class-variance-authority@^0.7.1",
-    "sinwan-ui-core@^1.2.1"
+    "sinwan-ui-core@^1.3.0"
   ],
   "devDependencies": [],
   "registryDependencies": [

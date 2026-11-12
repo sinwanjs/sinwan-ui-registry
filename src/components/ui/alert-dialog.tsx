@@ -5,7 +5,9 @@ import {
   DialogClose as DialogClosePrimitive,
   DialogContent as DialogContentPrimitive,
   DialogOverlay as DialogOverlayPrimitive,
+  DialogDescription as DialogDescriptionPrimitive,
   DialogRoot,
+  DialogTitle as DialogTitlePrimitive,
   DialogTrigger as DialogTriggerPrimitive,
 } from "sinwan-ui-core/overlay";
 import { UiPortal } from "sinwan-ui-core/core";
@@ -70,6 +72,7 @@ function AlertDialogContent({
     <>
       <AlertDialogOverlay />
       <DialogContentPrimitive
+        role="alertdialog"
         data-slot="alert-dialog-content"
         data-size={size}
         class={cn(
@@ -129,7 +132,7 @@ function AlertDialogMedia({ class: className, ...props }: DivProps) {
 
 function AlertDialogTitle({ class: className, children, ...props }: DivProps) {
   return (
-    <h2
+    <DialogTitlePrimitive
       data-slot="alert-dialog-title"
       class={cn(
         "font-heading text-base font-medium sm:group-data-[size=default]/alert-dialog-content:group-has-data-[slot=alert-dialog-media]/alert-dialog-content:col-start-2",
@@ -138,7 +141,7 @@ function AlertDialogTitle({ class: className, children, ...props }: DivProps) {
       {...props}
     >
       {children}
-    </h2>
+    </DialogTitlePrimitive>
   );
 }
 
@@ -148,7 +151,7 @@ function AlertDialogDescription({
   ...props
 }: DivProps) {
   return (
-    <p
+    <DialogDescriptionPrimitive
       data-slot="alert-dialog-description"
       class={cn(
         "text-sm text-balance text-muted-foreground md:text-pretty *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
@@ -157,7 +160,7 @@ function AlertDialogDescription({
       {...props}
     >
       {children}
-    </p>
+    </DialogDescriptionPrimitive>
   );
 }
 
