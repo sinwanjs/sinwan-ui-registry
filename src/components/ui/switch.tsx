@@ -29,7 +29,7 @@ function Switch(props: SwitchProps) {
     >
       <span
         data-slot="switch-thumb"
-        class="pointer-events-none block size-4 rounded-full bg-background shadow-sm ring-0 transition-transform group-data-[size=sm]/switch:size-3 translate-x-0 group-data-[state=checked]/switch:translate-x-[calc(100%-2px)] group-data-[state=checked]/switch:bg-primary-foreground dark:group-data-[state=unchecked]/switch:bg-foreground"
+        class="pointer-events-none block size-4 rounded-full bg-background shadow-sm ring-0 transition-transform group-data-[size=sm]/switch:size-3 translate-x-0 group-data-[state=checked]/switch:translate-x-[calc(100%-2px)] rtl:group-data-[state=checked]/switch:-translate-x-[calc(100%-2px)] group-data-[state=checked]/switch:bg-primary-foreground dark:group-data-[state=unchecked]/switch:bg-foreground"
       />
     </SwitchRoot>
   );

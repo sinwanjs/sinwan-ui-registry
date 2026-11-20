@@ -80,12 +80,12 @@ function PaginationPrevious({
     <PaginationLink
       aria-label="Go to previous page"
       size="default"
-      class={cn("pl-1.5!", className)}
+      class={cn("ps-1.5!", className)}
       {...props}
     >
       {children ?? (
         <>
-          <Icon icon={ChevronLeft} data-icon="inline-start" />
+          <Icon icon={ChevronLeft} data-icon="inline-start" class="rtl:rotate-180" />
           <span class="hidden sm:block">{text}</span>
         </>
       )}
@@ -103,13 +103,13 @@ function PaginationNext({
     <PaginationLink
       aria-label="Go to next page"
       size="default"
-      class={cn("pr-1.5!", className)}
+      class={cn("pe-1.5!", className)}
       {...props}
     >
       {children ?? (
         <>
           <span class="hidden sm:block">{text}</span>
-          <Icon icon={ChevronRight} data-icon="inline-end" />
+          <Icon icon={ChevronRight} data-icon="inline-end" class="rtl:rotate-180" />
         </>
       )}
     </PaginationLink>

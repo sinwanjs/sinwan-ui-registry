@@ -8,6 +8,7 @@ import {
   useCarousel,
   useCarouselRoot,
   useCarouselSwipe,
+  isRtl,
   type CarouselProps,
 } from "./useCarousel";
 
@@ -21,10 +22,14 @@ export const Carousel: SinwanComponent<CarouselProps> = cc((props) => {
       aria-roledescription="carousel"
       class={cn("relative", root.class)}
       onkeydown={(event: KeyboardEvent) => {
-        if (event.key === "ArrowLeft") {
+        // The arrow toward the end of the line goes forward: Left in RTL.
+        const rtl = isRtl(event.currentTarget as Element | null);
+        const back = rtl ? "ArrowRight" : "ArrowLeft";
+        const forward = rtl ? "ArrowLeft" : "ArrowRight";
+        if (event.key === back) {
           event.preventDefault();
           root.scrollPrev();
-        } else if (event.key === "ArrowRight") {
+        } else if (event.key === forward) {
           event.preventDefault();
           root.scrollNext();
         }
@@ -57,7 +62,9 @@ export const CarouselContent: SinwanComponent<CarouselContentProps> = cc(
             swipe.isDragging.value
               ? "transition-none"
               : "transition-transform duration-300",
-            swipe.orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+            swipe.orientation === "horizontal"
+              ? "-ms-4 [--carousel-sign:-1] rtl:[--carousel-sign:1]"
+              : "-mt-4 flex-col [--carousel-sign:-1]",
             className,
           )}
           style={
@@ -86,7 +93,7 @@ export const CarouselItem: SinwanComponent<CarouselItemProps> = cc(
         data-slot="carousel-item"
         class={cn(
           "min-w-0 shrink-0 grow-0 basis-full",
-          orientation === "horizontal" ? "pl-4" : "pt-4",
+          orientation === "horizontal" ? "ps-4" : "pt-4",
           className,
         )}
         {...props}
@@ -114,7 +121,7 @@ export const CarouselPrevious: SinwanComponent<CarouselControlProps> = cc(
         class={cn(
           "absolute touch-manipulation rounded-full data-disabled:pointer-events-none data-disabled:opacity-50",
           orientation === "horizontal"
-            ? "inset-y-0 -left-12 my-auto"
+            ? "inset-y-0 -start-12 my-auto"
             : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
           className,
         )}
@@ -124,7 +131,7 @@ export const CarouselPrevious: SinwanComponent<CarouselControlProps> = cc(
         }}
         {...(props as ButtonProps)}
       >
-        <Icon icon={ChevronLeft} />
+        <Icon icon={ChevronLeft} class={orientation === "horizontal" ? "rtl:rotate-180" : undefined} />
         <span class="sr-only">Previous slide</span>
       </Button>
     );
@@ -148,7 +155,7 @@ export const CarouselNext: SinwanComponent<CarouselControlProps> = cc(
         class={cn(
           "absolute touch-manipulation rounded-full data-disabled:pointer-events-none data-disabled:opacity-50",
           orientation === "horizontal"
-            ? "inset-y-0 -right-12 my-auto"
+            ? "inset-y-0 -end-12 my-auto"
             : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
           className,
         )}
@@ -158,7 +165,7 @@ export const CarouselNext: SinwanComponent<CarouselControlProps> = cc(
         }}
         {...(props as ButtonProps)}
       >
-        <Icon icon={ChevronRight} />
+        <Icon icon={ChevronRight} class={orientation === "horizontal" ? "rtl:rotate-180" : undefined} />
         <span class="sr-only">Next slide</span>
       </Button>
     );

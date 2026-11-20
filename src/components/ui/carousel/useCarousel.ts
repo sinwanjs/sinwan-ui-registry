@@ -77,6 +77,11 @@ function swipeAxis(
     : { main: point.clientY, cross: point.clientX };
 }
 
+/** Whether `element` reads right to left (the nearest `dir` attribute, as Tailwind's `rtl:` does). */
+export function isRtl(element: Element | null): boolean {
+  return element?.closest("[dir]")?.getAttribute("dir") === "rtl";
+}
+
 function resistedSwipeDelta(
   raw: number,
   canScrollPrev: boolean,
@@ -191,6 +196,9 @@ export function useCarouselSwipe(): CarouselSwipeReturn {
     const startPoint = pointerClientPoint(event);
     if (!startPoint) return;
     const start = swipeAxis(startPoint, orientation);
+    // In RTL the next slide sits to the left: a drag to the right brings it in.
+    const sign =
+      orientation === "horizontal" && isRtl(event.currentTarget as Element | null) ? -1 : 1;
     let locked: boolean | null = null;
     let rawDelta = 0;
 
@@ -199,7 +207,7 @@ export function useCarouselSwipe(): CarouselSwipeReturn {
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onCancel);
       if (commit && locked && Math.abs(rawDelta) >= SWIPE_COMMIT_PX) {
-        if (rawDelta < 0) {
+        if (rawDelta * sign < 0) {
           if (canScrollNext.value) scrollNext();
         } else if (canScrollPrev.value) {
           scrollPrev();
@@ -230,11 +238,13 @@ export function useCarouselSwipe(): CarouselSwipeReturn {
       if (!locked) return;
       if (moveEvent.cancelable) moveEvent.preventDefault();
       rawDelta = dMain;
-      dragOffset.value = resistedSwipeDelta(
-        dMain,
-        canScrollPrev.value,
-        canScrollNext.value,
-      );
+      dragOffset.value =
+        sign *
+        resistedSwipeDelta(
+          dMain * sign,
+          canScrollPrev.value,
+          canScrollNext.value,
+        );
     };
 
     const onUp = () => finish(true);
@@ -251,10 +261,11 @@ export function useCarouselSwipe(): CarouselSwipeReturn {
     stopSwipe?.();
   });
 
+  /** `--carousel-sign` is -1, or 1 in RTL (set by `CarouselContent`), so slides move toward the reading direction. */
   const trackTransform = () => {
-    const base = `${-index.value * 100}%`;
+    const base = `var(--carousel-sign, -1) * ${index.value * 100}%`;
     const offset = dragOffset.value;
-    if (offset === 0) return base;
+    if (offset === 0) return `calc(${base})`;
     return `calc(${base} + ${offset}px)`;
   };
 

@@ -219,13 +219,13 @@ const ComboboxItem = cc(function ComboboxItem(props: ComboboxItemProps) {
         aria-selected={item.selected.value}
         disabled={Boolean(props.disabled)}
         class={cn(
-          "relative flex w-full cursor-default items-center gap-2 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+          "relative flex w-full cursor-default items-center gap-2 rounded-md py-1 pe-8 ps-1.5 text-sm outline-hidden select-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
           props.class,
         )}
         onclick={item.select}
       >
         {props.children}
-        <span class="pointer-events-none absolute right-2 flex size-4 items-center justify-center">
+        <span class="pointer-events-none absolute end-2 flex size-4 items-center justify-center">
           <Show when={item.selected.value} fallback={null}>
             <Icon icon={Check} class="pointer-events-none" />
           </Show>
@@ -346,7 +346,7 @@ function ComboboxChip({
     <span
       data-slot="combobox-chip"
       class={cn(
-        "flex h-[calc(--spacing(5.25))] w-fit items-center justify-center gap-1 rounded-sm bg-muted px-1.5 text-xs font-medium whitespace-nowrap text-foreground has-disabled:pointer-events-none has-disabled:cursor-not-allowed has-disabled:opacity-50 has-data-[slot=combobox-chip-remove]:pr-0",
+        "flex h-[calc(--spacing(5.25))] w-fit items-center justify-center gap-1 rounded-sm bg-muted px-1.5 text-xs font-medium whitespace-nowrap text-foreground has-disabled:pointer-events-none has-disabled:cursor-not-allowed has-disabled:opacity-50 has-data-[slot=combobox-chip-remove]:pe-0",
         className,
       )}
     >
@@ -356,7 +356,7 @@ function ComboboxChip({
           variant="ghost"
           size="icon-xs"
           data-slot="combobox-chip-remove"
-          class="-ml-1 opacity-50 hover:opacity-100"
+          class="-ms-1 opacity-50 hover:opacity-100"
           onclick={remove}
         >
           <Icon icon={X} class="pointer-events-none" />

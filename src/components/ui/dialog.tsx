@@ -92,7 +92,7 @@ function DialogContent({
         {children}
         {showCloseButton ? (
           <DialogClosePrimitive asChild>
-            <Button variant="ghost" class="absolute top-2 right-2" size="icon-sm">
+            <Button variant="ghost" class="absolute top-2 end-2" size="icon-sm">
               <Icon icon={X} />
               <span class="sr-only">Close</span>
             </Button>

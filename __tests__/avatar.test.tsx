@@ -86,7 +86,8 @@ describe("Avatar fallback overlay", () => {
     expect(avatar.className).not.toContain("overflow-hidden");
     expect(badge.className).toContain("absolute");
     expect(badge.className).toContain("z-10");
-    expect(badge.className).toContain("right-0");
+    // `end-0`: the badge sits on the end corner, the left one in RTL.
+    expect(badge.className).toContain("end-0");
     expect(badge.className).toContain("bottom-0");
 
     unmount();

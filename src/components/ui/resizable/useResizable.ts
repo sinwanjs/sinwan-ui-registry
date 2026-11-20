@@ -453,6 +453,12 @@ export function useResizableHandle(
     stopResize?.();
 
     const start = orientation === "horizontal" ? event.clientX : event.clientY;
+    // In RTL the first panel is on the right: moving the handle left grows it.
+    const sign =
+      orientation === "horizontal" &&
+      group.closest("[dir]")?.getAttribute("dir") === "rtl"
+        ? -1
+        : 1;
     const rect = group.getBoundingClientRect();
     const containerSize =
       orientation === "horizontal" ? rect.width : rect.height;
@@ -473,7 +479,7 @@ export function useResizableHandle(
         orientation === "horizontal" ? moveEvent.clientX : moveEvent.clientY;
       const result = api.resizeFromHandle(
         handleIndex,
-        current - last,
+        (current - last) * sign,
         containerSize,
       );
       last = current;

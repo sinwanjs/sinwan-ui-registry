@@ -31,7 +31,7 @@ const Slider = cc<SliderProps>((props) => {
             "absolute bg-primary select-none",
             slider.orientation.value === "vertical"
               ? "w-full bottom-0"
-              : "h-full left-0",
+              : "h-full start-0",
           )}
           style={slider.orientation.value === "vertical"
               ? `height: ${slider.percent.value}%`
@@ -63,10 +63,16 @@ const Slider = cc<SliderProps>((props) => {
       <span
         data-slot="slider-thumb"
         aria-hidden="true"
-        class="pointer-events-none absolute z-0 size-3 shrink-0 rounded-full border border-ring bg-white ring-ring/50 transition-[color,box-shadow] select-none after:absolute after:-inset-2"
+        class={cn(
+          "pointer-events-none absolute z-0 size-3 shrink-0 rounded-full border border-ring bg-white ring-ring/50 transition-[color,box-shadow] select-none after:absolute after:-inset-2",
+          // The native range runs right to left in RTL; the thumb follows from the start side.
+          slider.orientation.value === "vertical"
+            ? "left-1/2 -translate-x-1/2 translate-y-1/2"
+            : "-translate-x-1/2 -translate-y-1/2 rtl:translate-x-1/2",
+        )}
         style={slider.orientation.value === "vertical"
-            ? `left: 50%; bottom: ${slider.percent.value}%; transform: translate(-50%, 50%)`
-            : `top: 50%; left: ${slider.percent.value}%; transform: translate(-50%, -50%)`
+            ? `bottom: ${slider.percent.value}%`
+            : `top: 50%; inset-inline-start: ${slider.percent.value}%`
         }
       />
     </div>

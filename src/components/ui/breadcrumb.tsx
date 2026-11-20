@@ -97,7 +97,7 @@ function BreadcrumbSeparator({
       class={cn("[&>svg]:size-3.5", className)}
       {...props}
     >
-      {children ?? <Icon icon={ChevronRight} />}
+      {children ?? <Icon icon={ChevronRight} class="rtl:rotate-180" />}
     </li>
   );
 }

@@ -89,7 +89,7 @@ function CommandInput({
   const onInput = useCommandInput(oninput);
   return (
     <div data-slot="command-input-wrapper" class="p-1 pb-0">
-      <InputGroup class="h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!">
+      <InputGroup class="h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:ps-2!">
         <input
           data-slot="command-input"
           class={cn(
@@ -206,7 +206,7 @@ const CommandItem = cc(function CommandItem(props: CommandItemProps) {
         {props.children}
         <Icon
           icon={Check}
-          class="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100"
+          class="ms-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100"
         />
       </button>
     </Show>
@@ -223,7 +223,7 @@ function CommandShortcut({ class: className, children }: CommandShortcutProps) {
     <span
       data-slot="command-shortcut"
       class={cn(
-        "ml-auto text-xs tracking-widest text-muted-foreground group-data-[checked=true]/command-item:text-foreground",
+        "ms-auto text-xs tracking-widest text-muted-foreground group-data-[checked=true]/command-item:text-foreground",
         className,
       )}
     >

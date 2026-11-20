@@ -43,10 +43,10 @@ const ToggleGroupItem = cc<ToggleGroupItemProps>((props) => {
       class={cn(
         "shrink-0 focus:z-10 focus-visible:z-10",
         item.spacing === 0 &&
-          "rounded-none px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 first:rounded-l-lg last:rounded-r-lg data-[variant=outline]:border-l-0 data-[variant=outline]:first:border-l",
+          "rounded-none px-2 has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 first:rounded-s-lg last:rounded-e-lg data-[variant=outline]:border-s-0 data-[variant=outline]:first:border-s",
         item.orientation === "vertical" &&
           item.spacing === 0 &&
-          "first:rounded-t-lg first:rounded-l-none last:rounded-b-lg last:rounded-r-none data-[variant=outline]:border-t-0 data-[variant=outline]:border-l data-[variant=outline]:first:border-t",
+          "first:rounded-t-lg first:rounded-s-none last:rounded-b-lg last:rounded-e-none data-[variant=outline]:border-t-0 data-[variant=outline]:border-s data-[variant=outline]:first:border-t",
         toggleVariants({
           variant: item.variant,
           size: item.size,

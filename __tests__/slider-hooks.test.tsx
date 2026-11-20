@@ -78,12 +78,13 @@ describe("Slider markup", () => {
       '[data-slot="slider-input"]',
     ) as HTMLInputElement;
     expect(range.getAttribute("style")).toContain("width: 25%");
-    expect(thumb.getAttribute("style")).toContain("left: 25%");
+    // `inset-inline-start`: in RTL the native range runs right to left, and the thumb follows.
+    expect(thumb.getAttribute("style")).toContain("inset-inline-start: 25%");
 
     volume.value = [80];
     await Promise.resolve();
     expect(range.getAttribute("style")).toContain("width: 80%");
-    expect(thumb.getAttribute("style")).toContain("left: 80%");
+    expect(thumb.getAttribute("style")).toContain("inset-inline-start: 80%");
     expect(input.value).toBe("80");
     expect(root.querySelector('[data-slot="slider-input"]')).toBe(input);
     unmount();

@@ -100,7 +100,7 @@ const SheetContent = cc<SheetContentProps>(({
           <DialogClosePrimitive asChild>
             <Button
               variant="ghost"
-              class="absolute top-3 right-3"
+              class="absolute top-3 end-3"
               size="icon-sm"
             >
               <Icon icon={X} />
