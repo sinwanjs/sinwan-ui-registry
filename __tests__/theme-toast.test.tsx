@@ -159,7 +159,7 @@ describe("ThemeProvider", () => {
     unmount();
   });
 
-  test("defaults to credit-blue palette and switches via setPalette", () => {
+  test("defaults to carzow palette and switches via setPalette", () => {
     let api: ThemeApi | undefined;
     const Child = () => {
       api = useTheme();
@@ -170,10 +170,10 @@ describe("ThemeProvider", () => {
         <Child />
       </ThemeProvider>
     ));
-    expect(api!.palette.value).toBe("credit-blue");
-    expect(api!.palettes).toEqual(["credit-blue", "jomlaty", "cazview"]);
+    expect(api!.palette.value).toBe("carzow");
+    expect(api!.palettes).toEqual(["carzow", "jomlaty", "cazview", "voltzig"]);
     expect(document.documentElement.getAttribute("data-palette")).toBe(
-      "credit-blue",
+      "carzow",
     );
     api!.setPalette("jomlaty");
     expect(api!.palette.value).toBe("jomlaty");
@@ -181,6 +181,11 @@ describe("ThemeProvider", () => {
       "jomlaty",
     );
     expect(localStorage.getItem("sinwan-ui-palette")).toBe("jomlaty");
+    api!.setPalette("voltzig");
+    expect(api!.palette.value).toBe("voltzig");
+    expect(document.documentElement.getAttribute("data-palette")).toBe(
+      "voltzig",
+    );
     unmount();
   });
 
@@ -200,15 +205,15 @@ describe("ThemeProvider", () => {
     stored.unmount();
 
     const forced = mountUi(() => (
-      <ThemeProvider defaultTheme="light" forcedPalette="credit-blue">
+      <ThemeProvider defaultTheme="light" forcedPalette="carzow">
         <Capture />
       </ThemeProvider>
     ));
-    expect(api!.palette.value).toBe("credit-blue");
+    expect(api!.palette.value).toBe("carzow");
     api!.setPalette("jomlaty");
-    expect(api!.palette.value).toBe("credit-blue");
+    expect(api!.palette.value).toBe("carzow");
     expect(document.documentElement.getAttribute("data-palette")).toBe(
-      "credit-blue",
+      "carzow",
     );
     forced.unmount();
   });
@@ -223,14 +228,14 @@ describe("ThemeProvider", () => {
     const { unmount } = mountUi(() => (
       <ThemeProvider
         defaultTheme="light"
-        defaultPalette="credit-blue"
+        defaultPalette="carzow"
         paletteStorageKey="custom-palette"
-        palettes={["credit-blue", "jomlaty"]}
+        palettes={["carzow", "jomlaty"]}
       >
         <Child />
       </ThemeProvider>
     ));
-    expect(api!.palette.value).toBe("credit-blue");
+    expect(api!.palette.value).toBe("carzow");
     api!.setPalette("jomlaty");
     expect(api!.palette.value).toBe("jomlaty");
     api!.setPalette("neon" as Palette);
@@ -242,7 +247,7 @@ describe("ThemeProvider", () => {
         <Child />
       </ThemeProvider>
     ));
-    expect(api!.palettes).toEqual(["credit-blue", "jomlaty", "cazview"]);
+    expect(api!.palettes).toEqual(["carzow", "jomlaty", "cazview", "voltzig"]);
     empty.unmount();
   });
 });

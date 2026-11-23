@@ -5,7 +5,7 @@
   "title": "Data Table",
   "description": "TanStack Table powered data table with sorting, filtering and pagination.",
   "dependencies": [
-    "@tanstack/table-core@^9.2.4",
+    "@tanstack/table-core@^9.3.1",
     "lucide@^0.544.0"
   ],
   "devDependencies": [],
