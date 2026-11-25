@@ -171,7 +171,7 @@ describe("ThemeProvider", () => {
       </ThemeProvider>
     ));
     expect(api!.palette.value).toBe("carzow");
-    expect(api!.palettes).toEqual(["carzow", "jomlaty", "cazview", "voltzig"]);
+    expect(api!.palettes.value).toEqual(["carzow", "jomlaty", "cazview", "voltzig"]);
     expect(document.documentElement.getAttribute("data-palette")).toBe(
       "carzow",
     );
@@ -247,7 +247,7 @@ describe("ThemeProvider", () => {
         <Child />
       </ThemeProvider>
     ));
-    expect(api!.palettes).toEqual(["carzow", "jomlaty", "cazview", "voltzig"]);
+    expect(api!.palettes.value).toEqual(["carzow", "jomlaty", "cazview", "voltzig"]);
     empty.unmount();
   });
 });

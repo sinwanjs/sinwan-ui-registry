@@ -84,6 +84,22 @@ bunx sinwan-ui add @acme/fancy-card
 
 An item's `registryDependencies` may be bare names (same registry), `@namespace/name`, or full URLs. To publish your own registry, write a `registry.json` against `registry.schema.json`, run `sinwan-ui build`, and serve the output.
 
+### Theme and custom palettes
+
+The `style` item (`global.css`) defines the tokens (`--background`, `--primary`, …) for four palettes: `carzow` (default), `jomlaty`, `cazview` and `voltzig`. Wrap the app in `ThemeProvider` (from `sinwan-ui-core/theme`) to switch the light/dark mode and the palette.
+
+To add a palette, copy the structure of a built-in one into your `global.css` under a new name:
+
+```css
+html[data-palette="ocean"] { /* light tokens */ }
+html[data-palette="ocean"].dark { /* dark tokens */ }
+@media (prefers-color-scheme: dark) {
+  html[data-palette="ocean"]:not(.light) { /* dark tokens again */ }
+}
+```
+
+`ThemeProvider` discovers it from the stylesheet (sinwan-ui-core 1.6.0 or later), so `<ThemeProvider defaultPalette="ocean">` and `setPalette("ocean")` work, and `useTheme().palettes` lists it. Define every color token in both modes: a token you leave out keeps its `carzow` value.
+
 ## URL scheme and versioning
 
 ```

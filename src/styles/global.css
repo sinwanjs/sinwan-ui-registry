@@ -1,6 +1,8 @@
 /* =============================================================================
  * sinwan-ui — global stylesheet
  * Palettes: "carzow" (default) | "jomlaty" | "cazview" | "voltzig" via html[data-palette]
+ * Custom palettes: add your own html[data-palette="name"] blocks (section 5z);
+ * ThemeProvider discovers them, so <ThemeProvider defaultPalette="name"> works.
  * Mode: light / dark / system via .light / .dark (ThemeProvider)
  * ========================================================================== */
 
@@ -712,10 +714,32 @@ html[data-palette="voltzig"].dark {
 }
 
 /* -----------------------------------------------------------------------
+ * 5z. Custom palettes
+ * ---------------------------------------------------------------------
+ * A palette is the blocks above under a name of your own. Add them to this
+ * file (or any stylesheet the page loads); ThemeProvider finds every
+ * html[data-palette="name"] selector, lists the palette in useTheme().palettes
+ * and accepts it in defaultPalette, forcedPalette and setPalette.
+ *
+ *   html[data-palette="ocean"] { --primary: …; --background: …; }        light
+ *   html[data-palette="ocean"].dark { --primary: …; --background: …; }   dark
+ *   @media (prefers-color-scheme: dark) {                         system dark
+ *     html[data-palette="ocean"]:not(.light) { same tokens as .dark }
+ *   }
+ *
+ * Any token a palette leaves out keeps its carzow value from :root / .dark,
+ * so define every color token in both modes, as the built-in palettes do.
+ * -------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------------------
  * 6. System dark-mode fallback (no explicit .light/.dark class present)
+ * ---------------------------------------------------------------------
+ * Carzow only: no palette, or data-palette="carzow". Every other palette,
+ * built-in or custom, brings its own html[data-palette="name"]:not(.light).
  * -------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
-  html:not(.light):not([data-palette="jomlaty"]):not([data-palette="cazview"]):not([data-palette="voltzig"]) {
+  html:not(.light):not([data-palette]),
+  html[data-palette="carzow"]:not(.light) {
     --background: oklch(0.16 0.025 258);
     --foreground: oklch(0.96 0.008 250);
     --card: oklch(0.2 0.03 258);
